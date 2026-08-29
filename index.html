@@ -28,6 +28,7 @@
 *{box-sizing:border-box;}
 html,body{
   margin:0;padding:0;height:100%;
+  overflow: hidden;
   background:
     radial-gradient(ellipse at 50% -10%, #16203a 0%, var(--bg) 55%),
     repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
@@ -39,7 +40,7 @@ html,body{
 #app{
   max-width:820px;
   margin:0 auto;
-  min-height:100vh;
+  height:100%;
   display:flex;
   flex-direction:column;
   padding:14px 14px 20px;
@@ -51,6 +52,7 @@ html,body{
   display:flex;justify-content:space-between;align-items:flex-start;
   padding:2px 4px 6px;
   border-bottom:2px solid var(--edge-dim);
+  flex-shrink: 0;
 }
 #titlebar h1{
   font-size:22px;margin:0;color:var(--red);
@@ -83,7 +85,7 @@ html,body{
 .frame-inner.tight{padding:8px 10px;}
 
 /* ---------- scene (non-battle summary) ---------- */
-#scene{font-size:12px;}
+#scene{font-size:12px; flex-shrink: 0;}
 .hud-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;}
 .hud-name{color:var(--text);font-weight:normal;}
 .hud-name b{color:#fff;}
@@ -156,11 +158,11 @@ html,body{
 @keyframes cyanflash{0%,100%{box-shadow:none;}50%{box-shadow:inset 0 0 0 4px #00ffcc;}}
 
 /* ---------- log ---------- */
-#logWrap{flex:1;display:flex;min-height:200px;}
+#logWrap{flex:1;display:flex;min-height:0;}
 #logFrame{flex:1;display:flex;}
 #log{
   flex:1;overflow-y:auto;white-space:pre-wrap;word-break:break-word;
-  padding:4px 2px;line-height:1.7;font-size:12px;max-height:46vh;
+  padding:4px 2px;line-height:1.7;font-size:12px;
 }
 #log::-webkit-scrollbar{width:8px;}
 #log::-webkit-scrollbar-thumb{background:var(--edge-dim);}
@@ -173,7 +175,7 @@ html,body{
 .c-strong{color:#fff;font-weight:bold;}
 
 /* ---------- action buttons ---------- */
-#actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+#actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px; flex-shrink: 0;}
 .action-btn{
   background:var(--panel-soft);border:2px solid #000;outline:2px solid var(--edge-dim);
   color:var(--text);padding:11px 6px;font-family:inherit;font-size:11px;cursor:pointer;
@@ -245,8 +247,7 @@ html,body{
 
   <div id="logWrap">
     <div class="frame" id="logFrame" style="width:100%;">
-      <!-- 💡 여기에 flex:1; width:100%; 를 추가하여 텍스트 길이에 상관없이 꽉 차게 만듭니다 -->
-      <div class="frame-inner" style="height:100%; display:flex; flex:1; width:100%;">
+      <div class="frame-inner" style="height:100%; display:flex; flex-direction:column; flex:1; width:100%; min-height:0;">
         <div id="log"></div>
       </div>
     </div>
@@ -554,6 +555,36 @@ function setPaginatedButtons(btnList, page=0){
     items.push(page<totalPages-1 ? ["다음 페이지 ▶", ()=>setPaginatedButtons(btnList,page+1)] : ["",()=>{}]);
   }
   setButtons(items);
+}
+
+/* =====================================================================
+   AUTO SAVE SYSTEM
+===================================================================== */
+const SAVE_KEY = "dark_abyss_epic_save_v1";
+
+function autoSave() {
+  if (S.player) {
+    const data = { player: S.player, stageIdx: S.stageIdx, townName: S.currentTownName };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  }
+}
+
+function hasSave() { return !!localStorage.getItem(SAVE_KEY); }
+
+function loadGameData() {
+  const raw = localStorage.getItem(SAVE_KEY);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch (e) { return null; }
+}
+
+async function resetGameData() {
+  const ok = await confirmModal("정말로 모든 데이터를 삭제하고 처음부터 다시 시작하시겠습니까?", "초기화", "취소");
+  if (ok) {
+    localStorage.removeItem(SAVE_KEY);
+    location.reload(); 
+  } else {
+    statusOrSaveMenu();
+  }
 }
 
 /* =====================================================================
@@ -925,22 +956,6 @@ function confirmModal(title, okLabel="확인", cancelLabel="취소"){
 }
 
 /* =====================================================================
-   SAVE / LOAD
-===================================================================== */
-const SAVE_KEY = "dark_abyss_epic_save_v1";
-function saveGame(){
-  const data = {player:S.player, stageIdx:S.stageIdx, townName:S.currentTownName};
-  localStorage.setItem(SAVE_KEY, JSON.stringify(data));
-  toast("💾 게임이 저장되었습니다!");
-}
-function hasSave(){ return !!localStorage.getItem(SAVE_KEY); }
-function loadGameData(){
-  const raw = localStorage.getItem(SAVE_KEY);
-  if(!raw) return null;
-  try{ return JSON.parse(raw); }catch(e){ return null; }
-}
-
-/* =====================================================================
    MENU FLOW
 ===================================================================== */
 function mainMenu(){
@@ -963,8 +978,6 @@ function mainMenu(){
   displayText(story, {clear:true});
 
   const opts = [["⚔️ 새 모험 시작", newGame]];
-  if(hasSave()) opts.push(["💾 여정 이어하기", loadGame]);
-  opts.push(["🚪 게임 종료", ()=>{ document.body.innerHTML = "<div style=\"padding:40px;text-align:center;font-family:sans-serif;color:#888\">게임을 종료했습니다. 탭을 닫아주세요.</div>"; }]);
   setButtons(opts);
 }
 
@@ -982,6 +995,7 @@ async function newGame(){
     S.player = createPlayer(name, job);
     S.stageIdx = 0;
     S.currentTownName = "루센트 마을";
+    autoSave(); 
     displayText(`▶ 클래스 [${job}] '${name}' 님의 기나긴 여정이 시작됩니다!`, {clear:true});
     await wait(1200);
     town();
@@ -993,25 +1007,6 @@ async function newGame(){
     ["🗡️ 도적 선택", ()=>selectJob("도적")],
     ["처음으로", mainMenu]
   ]);
-}
-
-async function loadGame(){
-  setButtons([]);
-  const data = loadGameData();
-  if(!data){ toast("세이브 파일을 불러올 수 없습니다."); mainMenu(); return; }
-  S.player = data.player;
-  S.stageIdx = data.stageIdx;
-  S.currentTownName = data.townName || "루센트 마을";
-  if(!S.player.equipment_inventory) S.player.equipment_inventory = [];
-  displayText(`▶ 저장된 데이터를 불러왔습니다.\n(STAGE ${S.stageIdx+1}부터 시작)`, {clear:true});
-  await wait(1000);
-  town();
-}
-
-async function saveAndExit(){
-  saveGame();
-  await wait(500);
-  mainMenu();
 }
 
 function town(){
@@ -1036,7 +1031,7 @@ function town(){
     ["🎒 장비 인벤토리", equipmentInvenMenu],
     ["🏨 여관 및 시설", townFacilityMenu],
     ["🗺️ 해금된 마을 이동", travelTown],
-    ["📊 상태창 / 💾 저장", statusOrSaveMenu]
+    ["📊 시스템 메뉴", statusOrSaveMenu]
   ]);
 }
 
@@ -1046,8 +1041,7 @@ function statusOrSaveMenu(){
   displayText("=== [ 시스템 선택 ] ===", {clear:true});
   setButtons([
     ["📊 상태창 확인", showStatus],
-    ["💾 게임 저장하기", ()=>{ saveGame(); }],
-    ["🚪 저장 후 종료", saveAndExit],
+    ["🔄 데이터 초기화", resetGameData],
     ["마을로 돌아가기", town]
   ]);
 }
@@ -1074,6 +1068,7 @@ function travelTown(){
 async function moveToTownIdx(sNum){
   setButtons([]);
   S.stageIdx = sNum;
+  autoSave();
   const tName = TOWN_DATA[sNum].name;
   displayText(`▶ 안전하게 ${tName}로 이동했습니다! (스테이지 거점 변경)`);
   await wait(700);
@@ -1187,6 +1182,7 @@ function equipItem(item){
     displayText(`▶ [${item.name}] 장신구를 장착했습니다!`);
   }
   p.equipment_inventory = p.equipment_inventory.filter(i=>i!==item);
+  autoSave();
   equipmentInvenMenu();
 }
 
@@ -1244,7 +1240,7 @@ function buyItem(item, cat){
     }
   }
   S.player.gold -= item.price;
-  shopCategory(cat);
+  
   if(cat==="포션"){
     const pName = item.name;
     S.player.inventory[pName] = (S.player.inventory[pName]||0) + 1;
@@ -1255,6 +1251,8 @@ function buyItem(item, cat){
     S.player.equipment_inventory.push(newItem);
     displayText(`▶ [${newItem.name}] 구매 완료! (장비 인벤토리로 이동됨)`);
   }
+  autoSave();
+  shopCategory(cat);
 }
 
 function townFacilityMenu(){
@@ -1287,6 +1285,7 @@ function rest(){
   if(p.gold >= innPrice){
     p.gold -= innPrice; p.inn_use_count += 1;
     p.hp = p.max_hp; p.mp = p.max_mp;
+    autoSave();
     displayText(`▶ 여관에서 푹 쉬었습니다! 체력과 마나가 모두 회복되었습니다. (비용: ${innPrice}G 지불)`);
   } else {
     displayText(`▶ 골드가 부족합니다! (필요 골드: ${innPrice}G)`);
@@ -1391,6 +1390,7 @@ function blacksmith(){
         }
       }
     }
+    autoSave();
     blacksmith();
   };
 
@@ -1416,6 +1416,7 @@ function blacksmith(){
         }
       }
     }
+    autoSave();
     blacksmith();
   };
 
@@ -1468,6 +1469,7 @@ function trySkillUp(sName, sData){
   }
   p.gold -= cost;
   sData.upgrade += 1;
+  autoSave();
   goldFlash();
   const newMult = sData.mult + sData.upgrade*0.2;
   displayText(`🎉 스킬 강화 성공! [${sName}]이(가) +${sData.upgrade} 강화되어 위력이 x${newMult.toFixed(1)}가 되었습니다!`);
@@ -1499,6 +1501,7 @@ async function confirmAdvance(job){
   const ok = await confirmModal(`정말로 [${job}](으)로 전직하시겠습니까?`, "전직한다", "취소");
   if(!ok){ jobAdvanceMenu(); return; }
   advanceJobFn(S.player, job);
+  autoSave();
   goldFlash();
   displayText(`🎉🎉 축하합니다! [${job}](으)로 전직에 성공했습니다! 🎉🎉`, {clear:true});
   displayText("당신의 힘이 한 차원 더 강력해졌습니다!");
@@ -1648,6 +1651,7 @@ async function flee(){
       }
     }
     S.currentMonster = null;
+    autoSave();
     renderScene();
     await wait(1000);
     dungeonMenu();
@@ -1664,7 +1668,6 @@ async function checkBattleState(){
   const m = S.currentMonster, p = S.player;
 
   if(m.hp <= 0){
-    // victory flash
     const inner = document.querySelector("#logFrame .frame-inner");
     for(let i=0;i<2;i++){
       inner.style.background = "#FFD700"; await wait(70);
@@ -1686,6 +1689,8 @@ async function checkBattleState(){
     p.gold += m.gold_reward;
     await levelUp(p);
     p.next_attack_boost = false;
+    
+    autoSave();
     renderScene();
 
     if(S.currentDungeonType==="boss"){
@@ -1695,6 +1700,7 @@ async function checkBattleState(){
       displayText("--------------------------------------------------");
       S.stageIdx += 1;
       S.currentMonster = null;
+      autoSave();
       if(S.stageIdx >= STAGE_DATA.length){
         displayText("🎊🎊 대마왕 카르가스를 물리치고 세상을 구원했습니다! [ 엔딩 ] 🎊🎊");
         setButtons([["메인 메뉴로", mainMenu]]);
@@ -1764,6 +1770,7 @@ async function monsterAttackTurn(isDefending=false){
     S.currentMonster = null;
     renderScene();
     displayText("▶ 눈앞이 캄캄해졌습니다... [ GAME OVER ]");
+    localStorage.removeItem(SAVE_KEY); 
     setButtons([["메인 메뉴로", mainMenu]]);
   } else {
     await animateBattleAction("monster", null);
@@ -1780,7 +1787,23 @@ document.getElementById("fontPlus").onclick = ()=>{ S.fontSize = clamp(S.fontSiz
 document.getElementById("spaceMinus").onclick = ()=>{ S.lineSpacing = clamp(S.lineSpacing-1,0,10); applyTextSettings(); };
 document.getElementById("spacePlus").onclick = ()=>{ S.lineSpacing = clamp(S.lineSpacing+1,0,10); applyTextSettings(); };
 
-mainMenu();
+async function initApp(){
+  if(hasSave()){
+    const data = loadGameData();
+    if(data && data.player){
+      S.player = data.player;
+      S.stageIdx = data.stageIdx;
+      S.currentTownName = data.townName || "루센트 마을";
+      if(!S.player.equipment_inventory) S.player.equipment_inventory = [];
+      toast("자동으로 이전 진행 상황을 불러왔습니다.");
+      town();
+      return;
+    }
+  }
+  mainMenu();
+}
+
+initApp(); 
 </script>
 </body>
 </html>
