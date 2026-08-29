@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>DARK ABYSS : EPIC — PIXEL EDITION</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css">
+<style>
+:root{
+  --bg:#080a12;
+  --bg-grid:#0d1120;
+  --panel:#121a2c;
+  --panel-alt:#0c1120;
+  --panel-soft:#182238;
+  --edge:#3ae0b8;
+  --edge-dim:#1c5c4d;
+  --edge-warn:#ff5468;
+  --text:#e7edff;
+  --text-dim:#8996b3;
+  --red:#ff5468;
+  --gold:#ffd166;
+  --blue:#4ec9ff;
+  --green:#7ef0a5;
+  --purple:#c49bff;
+  --hp:#ff4d6d;
+  --mp:#3aa8ff;
+}
+*{box-sizing:border-box;}
+html,body{
+  margin:0;padding:0;height:100%;
+  background:
+    radial-gradient(ellipse at 50% -10%, #16203a 0%, var(--bg) 55%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+  color:var(--text);
+  font-family:'Galmuri11','Galmuri9',monospace;
+  -webkit-font-smoothing:none;
+  image-rendering:pixelated;
+}
+#app{
+  max-width:820px;
+  margin:0 auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  padding:14px 14px 20px;
+  gap:10px;
+}
+
+/* ---------- title bar ---------- */
+#titlebar{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:2px 4px 6px;
+  border-bottom:2px solid var(--edge-dim);
+}
+#titlebar h1{
+  font-size:22px;margin:0;color:var(--red);
+  letter-spacing:2px;
+  text-shadow:2px 2px 0 #000, 0 0 14px rgba(255,84,104,0.45);
+}
+#titlebar .sub{font-size:9px;color:var(--text-dim);margin-top:2px;letter-spacing:1px;}
+.ctrl-col{display:flex;flex-direction:column;gap:4px;align-items:flex-end;}
+.ctrl-row{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text-dim);}
+.mini-btn{
+  width:20px;height:20px;display:flex;align-items:center;justify-content:center;
+  background:var(--panel-soft);border:2px solid #000;outline:1px solid var(--edge-dim);
+  color:var(--text);cursor:pointer;font-size:11px;user-select:none;
+}
+.mini-btn:hover{outline-color:var(--edge);background:#22314c;}
+.mini-btn:active{transform:translateY(1px);}
+
+/* ---------- pixel frame ---------- */
+.frame{
+  background:var(--edge-dim);
+  padding:2px;
+}
+.frame.hot{background:var(--edge);}
+.frame-inner{
+  background:var(--panel);
+  border:2px solid #000;
+  padding:10px 12px;
+  position:relative;
+}
+.frame-inner.tight{padding:8px 10px;}
+
+/* ---------- scene (non-battle summary) ---------- */
+#scene{font-size:12px;}
+.hud-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;}
+.hud-name{color:var(--text);font-weight:normal;}
+.hud-name b{color:#fff;}
+.hud-gold{color:var(--gold);}
+.bar-line{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:10px;}
+.bar-label{width:26px;flex-shrink:0;}
+.bar-label.hp{color:var(--hp);}
+.bar-label.mp{color:var(--mp);}
+.bar-track{
+  flex:1;height:12px;background:#1b2436;border:1px solid #000;outline:1px solid #060a12;
+  position:relative;overflow:hidden;
+}
+.bar-fill{height:100%;transition:width .35s steps(12);}
+.bar-fill.hp{background:linear-gradient(180deg,#ff8a99,var(--hp) 60%,#c22a44);}
+.bar-fill.mp{background:linear-gradient(180deg,#8fd9ff,var(--mp) 60%,#1c6fbf);}
+.bar-fill::after{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg, transparent 0 9px, rgba(0,0,0,0.35) 9px 10px);
+}
+.bar-num{width:78px;text-align:right;flex-shrink:0;color:var(--text);font-size:9px;}
+.hud-stats{margin-top:6px;font-size:10px;color:#cfd8f5;display:flex;gap:14px;flex-wrap:wrap;}
+.hud-equip{margin-top:4px;font-size:9px;color:var(--gold);}
+
+/* ---------- battle scene ---------- */
+.battle-top{font-size:11px;}
+.vs-wrap{display:flex;align-items:stretch;gap:8px;margin-top:8px;}
+.combatant-card{
+  flex:1;background:var(--panel-alt);border:2px solid #000;outline:2px solid;
+  padding:8px;position:relative;min-width:0;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.combatant-card.player{outline-color:#2f9dff;}
+.combatant-card.enemy{outline-color:var(--red);}
+.combatant-card .tag{font-size:9px;letter-spacing:2px;color:var(--text-dim);align-self:flex-start;}
+.combatant-card.player .tag{color:#4ec9ff;}
+.combatant-card.enemy .tag{color:var(--red);}
+.sprite-box{width:96px;height:96px;display:flex;align-items:center;justify-content:center;margin:2px 0;}
+.sprite-box canvas{image-rendering:pixelated;width:96px;height:96px;}
+.combatant-card .cname{font-size:11px;color:#fff;}
+.combatant-card .cjob{font-size:9px;color:var(--text-dim);margin-bottom:4px;}
+.mini-bar-track{width:100%;height:10px;background:#1b2436;border:1px solid #000;position:relative;overflow:hidden;}
+.mini-bar-fill{height:100%;}
+.mini-bar-fill.hp{background:linear-gradient(180deg,#ff8a99,var(--hp) 60%,#c22a44);}
+.mini-hp-num{font-size:9px;margin-top:3px;color:#ffc9c9;}
+.vs-badge{
+  flex-shrink:0;width:44px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:var(--gold);text-shadow:2px 2px 0 #000;
+}
+.flash-red{animation:flashred .3s steps(2);}
+@keyframes flashred{0%,100%{background:var(--panel-alt);}50%{background:#5a1a22;}}
+.charge-warn{margin-top:8px;font-size:10px;color:var(--edge-warn);text-align:center;}
+.enemy-info{margin-top:8px;font-size:10px;color:#ffbe7a;text-align:center;}
+
+/* shake */
+.shake{animation:shakeit .38s linear;}
+@keyframes shakeit{
+  10%{transform:translate(-6px,3px);}20%{transform:translate(5px,-4px);}
+  30%{transform:translate(-4px,4px);}40%{transform:translate(6px,-3px);}
+  50%{transform:translate(-5px,2px);}60%{transform:translate(4px,-4px);}
+  70%{transform:translate(-3px,3px);}80%{transform:translate(3px,-2px);}
+  90%{transform:translate(-2px,1px);}100%{transform:translate(0,0);}
+}
+.pop{animation:popit .28s ease-out;}
+@keyframes popit{0%{transform:scale(1);}40%{transform:scale(1.03);}100%{transform:scale(1);}}
+.crit-flash{animation:critflash .28s steps(2) 2;}
+@keyframes critflash{0%,100%{filter:none;}50%{filter:brightness(2.4);}}
+.gold-flash{animation:goldflash .3s steps(2) 2;}
+@keyframes goldflash{0%,100%{box-shadow:none;}50%{box-shadow:inset 0 0 0 4px var(--gold);}}
+.cyan-flash{animation:cyanflash .25s steps(2) 1;}
+@keyframes cyanflash{0%,100%{box-shadow:none;}50%{box-shadow:inset 0 0 0 4px #00ffcc;}}
+
+/* ---------- log ---------- */
+#logWrap{flex:1;display:flex;min-height:200px;}
+#logFrame{flex:1;display:flex;}
+#log{
+  flex:1;overflow-y:auto;white-space:pre-wrap;word-break:break-word;
+  padding:4px 2px;line-height:1.7;font-size:12px;max-height:46vh;
+}
+#log::-webkit-scrollbar{width:8px;}
+#log::-webkit-scrollbar-thumb{background:var(--edge-dim);}
+#log::-webkit-scrollbar-track{background:#0a0e18;}
+.ln{display:block;}
+.c-red{color:var(--red);}
+.c-gold{color:var(--gold);}
+.c-blue{color:var(--blue);}
+.c-green{color:var(--green);}
+.c-strong{color:#fff;font-weight:bold;}
+
+/* ---------- action buttons ---------- */
+#actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.action-btn{
+  background:var(--panel-soft);border:2px solid #000;outline:2px solid var(--edge-dim);
+  color:var(--text);padding:11px 6px;font-family:inherit;font-size:11px;cursor:pointer;
+  text-align:center;min-height:46px;display:flex;align-items:center;justify-content:center;
+  line-height:1.3;
+}
+.action-btn:hover{outline-color:var(--edge);background:#20304a;}
+.action-btn:active{transform:translateY(2px);}
+.action-btn.empty{visibility:hidden;pointer-events:none;}
+.action-btn.danger{outline-color:var(--edge-warn);}
+.action-btn.danger:hover{background:#3a1c22;}
+@media (max-width:520px){
+  #actions{grid-template-columns:repeat(2,1fr);}
+  .sprite-box{width:72px;height:72px;}
+  .sprite-box canvas{width:72px;height:72px;}
+}
+
+/* ---------- modal ---------- */
+#modalRoot{
+  position:fixed;inset:0;background:rgba(4,6,12,0.78);
+  display:none;align-items:center;justify-content:center;z-index:50;padding:20px;
+}
+#modalRoot.show{display:flex;}
+.modal-box{width:100%;max-width:360px;}
+.modal-title{font-size:13px;color:var(--gold);margin-bottom:10px;text-align:center;}
+.modal-input{
+  width:100%;background:#0a0e18;border:2px solid #000;outline:1px solid var(--edge-dim);
+  color:#fff;font-family:inherit;font-size:13px;padding:8px;margin-bottom:10px;
+}
+.modal-actions{display:flex;gap:8px;}
+.modal-actions .action-btn{flex:1;min-height:38px;}
+
+/* particles */
+.particle-layer{position:absolute;inset:0;pointer-events:none;overflow:visible;}
+.p-square{position:absolute;width:6px;height:6px;opacity:0.95;}
+@keyframes pfly{
+  0%{transform:translate(0,0) scale(1);opacity:1;}
+  100%{transform:translate(var(--dx),var(--dy)) scale(0.4);opacity:0;}
+}
+.toast{
+  position:fixed;left:50%;top:16px;transform:translateX(-50%);
+  background:var(--panel);border:2px solid #000;outline:2px solid var(--gold);
+  color:#fff;padding:10px 16px;font-size:11px;z-index:80;
+  opacity:0;transition:opacity .25s;pointer-events:none;
+}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="titlebar">
+    <div>
+      <h1>DARK ABYSS</h1>
+      <div class="sub">: EPIC — PIXEL EDITION</div>
+    </div>
+    <div class="ctrl-col">
+      <div class="ctrl-row">글자
+        <div class="mini-btn" id="fontMinus">-</div>
+        <div class="mini-btn" id="fontPlus">+</div>
+      </div>
+      <div class="ctrl-row">간격
+        <div class="mini-btn" id="spaceMinus">-</div>
+        <div class="mini-btn" id="spacePlus">+</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="scene"></div>
+
+  <div id="logWrap">
+    <div class="frame" id="logFrame" style="width:100%;">
+      <!-- 💡 여기에 flex:1; width:100%; 를 추가하여 텍스트 길이에 상관없이 꽉 차게 만듭니다 -->
+      <div class="frame-inner" style="height:100%; display:flex; flex:1; width:100%;">
+        <div id="log"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="actions"></div>
+</div>
+
+<div id="modalRoot"><div class="modal-box"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   DATA
+===================================================================== */
+const BASE_SKILLS = {
+  "전사": {
+    "강타": {rank:5, unlock_lv:5, mp:10, mult:1.5, upgrade:0, type:"slash"},
+    "휩쓸기": {rank:4, unlock_lv:10, mp:20, mult:1.8, upgrade:0, type:"slash"},
+    "돌진": {rank:3, unlock_lv:15, mp:35, mult:2.2, upgrade:0, type:"charge"},
+    "방어구 파괴": {rank:2, unlock_lv:20, mp:50, mult:2.8, upgrade:0, type:"heavy"},
+    "대지 가르기": {rank:1, unlock_lv:25, mp:80, mult:3.5, upgrade:0, type:"earthquake"},
+  },
+  "마법사": {
+    "매직 미사일": {rank:5, unlock_lv:5, mp:15, mult:1.7, upgrade:0, type:"magic_missile"},
+    "파이어볼": {rank:4, unlock_lv:10, mp:30, mult:2.1, upgrade:0, type:"fireball"},
+    "아이스 스피어": {rank:3, unlock_lv:15, mp:45, mult:2.6, upgrade:0, type:"ice_spear"},
+    "체인 라이트닝": {rank:2, unlock_lv:20, mp:70, mult:3.2, upgrade:0, type:"lightning"},
+    "메테오 스트라이크": {rank:1, unlock_lv:25, mp:120, mult:4.5, upgrade:0, type:"meteor"},
+  },
+  "도적": {
+    "찌르기": {rank:5, unlock_lv:5, mp:10, mult:1.6, upgrade:0, type:"stab"},
+    "독 바르기": {rank:4, unlock_lv:10, mp:25, mult:2.0, upgrade:0, type:"poison"},
+    "난무": {rank:3, unlock_lv:15, mp:40, mult:2.5, upgrade:0, type:"flurry"},
+    "그림자 베기": {rank:2, unlock_lv:20, mp:60, mult:3.0, upgrade:0, type:"shadow"},
+    "암살": {rank:1, unlock_lv:25, mp:90, mult:4.0, upgrade:0, type:"assassinate"},
+  }
+};
+
+const ADVANCE_JOBS = {
+  "검투사": {hp:1.2, mp:1.0, atk:1.3, def:1.2, spd:1.1, skills:{"투기장 폭발":{rank:0,mp:50,mult:3.0,upgrade:0,type:"arena_boom"},"검의 춤":{rank:0,mp:80,mult:4.0,upgrade:0,type:"sword_dance"}}},
+  "버서커": {hp:1.5, mp:1.0, atk:1.8, def:0.7, spd:1.2, skills:{"피의 갈증":{rank:0,mp:40,mult:3.5,upgrade:0,type:"blood_thirst"},"광란의 소용돌이":{rank:0,mp:90,mult:5.0,upgrade:0,type:"mad_storm"}}},
+  "사무라이": {hp:1.0, mp:1.2, atk:1.5, def:1.0, spd:1.8, skills:{"일섬":{rank:0,mp:45,mult:3.2,upgrade:0,type:"isshin"},"벚꽃 베기":{rank:0,mp:85,mult:4.5,upgrade:0,type:"sakura_slash"}}},
+  "원소 마법사": {hp:1.1, mp:1.5, atk:1.4, def:1.1, spd:1.0, skills:{"블리자드":{rank:0,mp:100,mult:3.5,upgrade:0,type:"blizzard"},"인페르노":{rank:0,mp:150,mult:5.5,upgrade:0,type:"inferno"}}},
+  "흑 마법사": {hp:0.8, mp:1.8, atk:1.7, def:0.8, spd:1.2, skills:{"영혼 흡수":{rank:0,mp:80,mult:4.0,upgrade:0,type:"soul_steal"},"어둠의 구체":{rank:0,mp:160,mult:6.0,upgrade:0,type:"dark_orb"}}},
+  "크루세이더": {hp:1.8, mp:1.2, atk:1.1, def:1.8, spd:0.9, skills:{"신성한 빛":{rank:0,mp:60,mult:2.5,upgrade:0,type:"holy_light"},"심판의 망치":{rank:0,mp:100,mult:3.8,upgrade:0,type:"judge_hammer"}}},
+  "시프": {hp:1.2, mp:1.2, atk:1.3, def:1.1, spd:1.5, skills:{"약점 포착":{rank:0,mp:40,mult:2.8,upgrade:0,type:"weak_point"},"골드 스내치":{rank:0,mp:70,mult:3.5,upgrade:0,type:"gold_snatch"}}},
+  "어쌔신": {hp:1.0, mp:1.5, atk:1.6, def:0.9, spd:2.0, skills:{"은신 타격":{rank:0,mp:50,mult:3.5,upgrade:0,type:"stealth_strike"},"죽음의 표식":{rank:0,mp:100,mult:5.0,upgrade:0,type:"death_mark"}}}
+};
+const ADVANCE_OPTIONS = {"전사":["검투사","버서커","사무라이"], "마법사":["원소 마법사","흑 마법사","크루세이더"], "도적":["시프","어쌔신"]};
+
+const TOWN_DATA = [
+  {name:"루센트 마을", desc:"아늑하고 평화로운 초원의 거점. 모험을 시작하는 이들이 첫발을 내딛는 따스한 햇살이 가득한 마을입니다."},
+  {name:"그레이브턴", desc:"음산한 안개가 자욱하게 서려 있는 묘지 입구의 마을. 죽음의 기운이 은은하게 감돌고 있습니다."},
+  {name:"미스릴 광산촌", desc:"쉴 새 없이 망치 소리가 울려 퍼지는 거대한 광산 도시. 단단한 광석과 거친 광부들이 모여 있습니다."},
+  {name:"오크 리버", desc:"거친 강줄기 옆에 세워진 야만족들의 요충지. 사방에서 경계의 눈빛이 반짝이는 긴장된 마을입니다."},
+  {name:"베놈 미아즈마", desc:"독안개가 짙게 깔려 숨쉬기조차 찝찝한 늪지대 전초기지. 해독제 거래가 활발합니다."},
+  {name:"블레이즈 볼케이노", desc:"활화산의 뜨거운 열기가 가득한 용암 지대 옆의 대장장이 거점. 불꽃처럼 뜨거운 투지가 넘칩니다."},
+  {name:"프로스트 윈드", desc:"온통 하얀 눈과 얼어붙은 폭풍으로 뒤덮인 설산의 은신처. 살을 깎는 추위가 몰아칩니다."},
+  {name:"미라지 시타델", desc:"시공간이 뒤틀린 신비로운 환영의 탑 아래에 세워진 기괴하고 아름다운 마을입니다."},
+  {name:"쉐도우 아웃포스트", desc:"마족들의 영토로 향하기 전 마지막으로 정비하는 최전방 암흑 군사 기지입니다."},
+  {name:"세인트 캐슬", desc:"마왕성 결전 바로 앞의 최후의 성채. 세상을 구원하기 위해 모인 영웅들의 결연한 의지가 타오릅니다."}
+];
+
+const TOWN_RUMORS = [
+  "🍺 [루센트 마을 - 주점 소식판]\n • \"요즘 초원 너머 고블린들이 묘하게 무리를 지어 움직인단 말이지... 뭔가 큰 계획이 있는 게 분명해.\"\n • \"방랑 상인의 말로는 동쪽 숲 깊은 곳에 오래전 봉인된 고대 유적의 흔적이 발견되었다고 하더군.\"",
+  "🍺 [그레이브턴 - 묘비 주점 소식판]\n • \"크흠, 안개가 이토록 짙게 낀 적은 천 년 만이야. 죽은 자들이 자꾸 땅을 파고 기어오르고 있어.\"\n • \"묘지 구석에서 네크로맨서의 검은 로브 조각이 발견됐다네. 마왕군의 선발대가 확실해.\"",
+  "🍺 [미스릴 광산촌 - 곡괭이 주점 소식판]\n • \"갱도 밑바닥에서 지축을 울리는 괴성이 들렸어. 거대한 지렁이가 깨어났다는 공포가 퍼지는 중이야.\"\n • \"누군가 깊은 갱도 안쪽에서 광휘의 보물을 발견하고는 미쳐서 돌아왔다지? 부디 조심하게.\"",
+  "🍺 [오크 리버 - 거친 물살 주점 소식판]\n • \"야만족들의 대족장 가르바나가 흑마법사의 힘을 빌려 부족들을 하나로 규합하고 있다는 소문이야.\"\n • \"오크들의 투창이 전보다 훨씬 날카로워졌어. 마왕군이 그들에게 새로운 제련술을 거래한 모양이야.\"",
+  "🍺 [베놈 미아즈마 - 썩은 늪 주점 소식판]\n • \"독안개가 코를 찌를 정도로 독해졌어. 해독제 값이 치솟고 구하기가 하늘의 별 따기라니까.\"\n • \"늪지대 중심부에서 거대한 히드라의 눈동자가 번뜩이는 걸 보았다는 순찰병의 증언이 있었어.\"",
+  "🍺 [블레이즈 볼케이노 - 대장간 소식판]\n • \"화산의 열기가 이리 뜨거운데도 바닥에서 한기가 느껴져. 불의 화신이 미쳐 날뛰고 있어!\"\n • \"용암 심층부에서 타오르는 마왕의 불꽃이 온 대지를 태울 태세야. 대비를 서둘러야 해.\"",
+  "🍺 [프로스트 윈드 - 얼어붙은 잔 소식판]\n • \"눈보라 속에 거대한 푸른 눈동자의 용이 날아다니는 걸 봤다는 이가 있어. 폭풍의 전조가 분명해.\"\n • \"설산의 은신처마저 함락당하면 이 대륙엔 더 이상 물러날 곳이 없다네.\"",
+  "🍺 [미라지 시타델 - 환영의 거울 소식판]\n • \"거울을 볼 때마다 내 뒤에 서 있는 누군가의 실루엣이 보여... 환영의 탑이 사람을 미치게 하네.\"\n • \"탑의 주인의 화신을 쓰러트리지 않으면 이 환영의 미로에서 영원히 빠져나가지 못할 거야.\"",
+  "🍺 [쉐도우 아웃포스트 - 어둠의 군사 게시판]\n • \"마족 군단장 발록의 군대가 결전의 성채를 향해 진군 준비를 끝마쳤다는 척후병의 다급한 보고!\"\n • \"이제 남은 것은 최후의 결전뿐. 영웅이여, 모든 힘을 쥐어짜 내어라!\"",
+  "🍺 [세인트 캐슬 - 최후의 성채 대성당 공고]\n • \"심연의 마왕 카르가스가 마왕성 심층부에서 온 세상의 빛을 집어삼키고 있다!\"\n • \"두려워하지 말라! 그대 뒤에는 이 땅의 모든 생명체의 간절한 염원이 함께하고 있다!\""
+];
+
+const SHOP_ITEMS = {
+  "무기": [
+    {name:"수련용 검", type:"검", atk:10, price:200},
+    {name:"헌터의 활", type:"활", atk:18, price:450},
+    {name:"마력의 지팡이", type:"지팡이", atk:28, price:800},
+    {name:"기사의 실버소드", type:"검", atk:42, price:1400},
+    {name:"섀도우 슬레이어", type:"검", atk:65, price:2500},
+  ],
+  "방어구": [
+    {name:"가죽 갑옷", type:"갑옷", def:5, hp:30, price:150},
+    {name:"철제 투구", type:"투구", def:8, hp:50, price:300},
+    {name:"기사의 방패", type:"방패", def:15, hp:100, price:600},
+    {name:"미스릴 아머", type:"갑옷", def:25, hp:200, price:1200},
+    {name:"드래곤 플레이트", type:"갑옷", def:40, hp:350, price:2400},
+  ],
+  "장신구": [
+    {name:"집중의 반지", type:"반지", crit:0.05, price:350},
+    {name:"투지의 목걸이", type:"목걸이", crit:0.10, price:700},
+    {name:"파괴자의 인장", type:"반지", crit:0.18, price:1500},
+  ],
+  "포션": [
+    {name:"힐링포션(소)", type:"포션", heal:50, price:30},
+    {name:"힐링포션(중)", type:"포션", heal:120, price:70},
+    {name:"힐링포션(대)", type:"포션", heal:300, price:150},
+    {name:"마나포션(소)", type:"포션", mp:30, price:30},
+    {name:"마나포션(중)", type:"포션", mp:70, price:70},
+    {name:"마나포션(대)", type:"포션", mp:150, price:150},
+  ]
+};
+
+const STAGE_DATA = [
+  ["고블린 숲", ["작은 슬라임","고블린 정찰병","사나운 숲 늑대","독침 벌레","숲의 요정"], ["거친 오크 전사","고블린 베테랑 헌터","광폭한 트롤 분신"], ["🔥 숲의 지배자 고블린 대장"]],
+  ["언데드 묘지", ["해골 병사","부패한 좀비","굶주린 구울","떠도는 유령","묘지 박쥐"], ["저주받은 기사","영혼 포식자","네크로맨서 수련생"], ["💀 악령 리치 데스로드"]],
+  ["버려진 광산", ["동굴 박쥐","독 거미","광산 스켈레톤","지하 두꺼비","성난 광부 몬스터"], ["거대 바위 골렘","광산 감독관","폭탄마 고블린"], ["⛏️ 심연의 거대 웜 즈곤"]],
+  ["오크 야영지", ["오크 정찰병","오크 투창병","야만족 전사","들개 사냥꾼","오크 척후병"], ["오크 광전사","오크 주술사","거대 쌍두 오크"], ["👑 오크 대족장 가르바나"]],
+  ["저주받은 늪", ["독 두꺼비","늪지대 촉수","리자드맨 전사","끈적한 슬라임","흡혈 모기 떼"], ["맹독 거대 히드라","늪의 주술사","악어 인간 워로드"], ["🐍 늪의 절대군주 바실리스크"]],
+  ["화염의 화산", ["불꽃 정령","용암 슬라임","화염 임프","재의 구울","마그마 박쥐"], ["샐러맨더 로드","화산 거인","용암 수호병"], ["🌋 불꽃의 화신 이프리트 킹"]],
+  ["얼음 협곡", ["서리 늑대","얼음 골렘","눈보라 정령","서리 멧돼지","설원 거미"], ["설인(예티) 전사","얼음 마녀","혹한의 파수꾼"], ["❄️ 폭풍의 아이스 드래곤 펜릴"]],
+  ["환영의 탑", ["떠도는 마법 갑옷","변신 미믹","환영 술사","뒤틀린 정령","거울 유령"], ["탑의 철갑 수호자","차원 도둑","환혹의 서큐버스 퀸"], ["👁️ 환영의 탑 주인의 화신"]],
+  ["마족 전초기지", ["하급 마족","서큐버스","마계 검투사","임프 투사","어둠의 사냥개"], ["마계 백부장","지옥의 파괴자","암흑 사제"], ["🦇 마족 군단장 발록"]],
+  ["마왕성 심층부", ["지옥견 켈베로스","타락한 천사","파멸의 인도자","어둠의 기사","지옥의 척후병"], ["마왕의 오른팔 데스브링어","타락한 수호대장","지옥의 심판관"], ["🔥 대마왕 카르가스 최후의 형태 🔥"]]
+];
+
+/* pixel sprite matrices (16x16, letter-coded) */
+const PLAYER_SHAPES = {
+  "전사": [
+"                ","      OOOO      ","     OAAAAO     ","    OASSSSAO    ",
+"    O S E  O    ","   OO OAAAO OO  ","  OWW AAAAA BBO "," OWWW AAAAA BBO ",
+" OWWW AAAAA BBO ","  OWW AAAAA BBO ","   W  AAAAA OO  ","      AA AA     ",
+"     OAA OAAO   ","     OAA OAAO   ","     OOO OOOO   ","                "],
+  "마법사": [
+"       OO       ","      OMMO      ","     OMMMMO     ","    OMMMMMMO    ",
+"   OOOOOOOOOO   ","     OSSSSO     ","    O S E  O    ","  OO OMMMMO OO  ",
+" OWW MMMMMM MWO "," OW  MMMMMM  WO "," OW  MMMMMM  WO "," OW  MMMMMM  WO ",
+" OW   MMMM   WO ","  O  OMM MMO O  ","     OOO OOO    ","                "],
+  "도적": [
+"                ","      OOOO      ","     ODDDDO     ","    ODDSSSDO    ",
+"    ODS E DO    ","   OO ODDDO OO  ","  OWW DDDDD WWO ","  OW  DDDDD  WO ",
+"  OW  DDDDD  WO ","   O  DDDDD  O  ","      DD DD     ","     ODD ODDO   ",
+"     ODD ODDO   ","     OOO OOOO   ","                ","                "]
+};
+
+const MONSTER_SHAPES = {
+  "슬라임": [
+"                ","                ","                ","                ",
+"       OO       ","      OGGO      ","     OGGGGO     ","    OGGHLGGO    ",
+"   OGGHHLGGGO   ","  OGGKGGLKGGOO  "," OGGGGGGGGGGGGO "," OGGGGGGGGGGGGO ",
+" OGGGGGGGGGGGGO ","  OOOOOOOOOOOO  ","                ","                "],
+  "고블린": [
+"                ","                ","     OOOOOO     ","    OGGGGGOO    ",
+"  OOG R G ROOO  "," OGGG GGG GGGGO ","  OOGGGGGGGGO   ","    OOGGGGOO    ",
+"   OOOAAAAOOO   ","  OWW AAAAA DDO "," OWWW AAAAA DDO "," OWW  AAAAA  DO ",
+"  O   AA AA  O  ","     OAA OAAO   ","     OOO OOOO   ","                "],
+  "벌레": [
+"                ","                ","                ","   O        O   ",
+"    O      O    ","   OOOOOOOOOO   ","  ODDDDDDDDDDO  ","  OD R DD R DO  ",
+"  ODDDDDDDDDDO  ","  ODDDDWWDDDDO  ","  ODDDDDDDDDDO  ","   OOOOOOOOOO   ",
+"   O O O  O O   ","   O O O  O O   ","                ","                "],
+  "해골": [
+"                ","      OOOO      ","     OWWWWO     ","    OWRWWKWO    ",
+"    OWWWWWWO    ","     OWWWWO     ","     O OO O     ","    OOWWWWOO    ",
+"  OOW WWWW WOO  ","  OWO WWWW OWO  ","  OWO WWWW OWO  ","   O   WW   O   ",
+"      OWWO      ","     OWW WWO    ","     OOO OOO    ","                "],
+  "짐승": [
+"                ","                ","                ","   OO      OO   ",
+"  OLLO    OLLO  ","  OLLLOOOOLLLO  ","  OLL R LL R LO ","   OLLLLLLLLLLO ",
+"  OLLLLWWLLLLLO ","  OLLLLLLLLLLLO ","   OLLLLLLLLLO  ","   OLL O O LLO  ",
+"  OOLL O O LLOO ","  OOOO   OOOO   ","                ","                "],
+  "거인": [
+"      OOOO      ","     ORRRRO     ","    OR K  K RO  ","    ORRRWWWRRO  ",
+"     ORRRRRRO   ","  OOOOAAAAOOOO  "," OAAAOAAAAOAAAO "," OA AAOAAAAO AA ",
+" O  AAAAAAA  AO "," O  AAAAAAA  AO "," O  AAAAAAA   O ","  OO  AAAA OO   ",
+"     OAA AAO    ","     OAA OAAO   ","     OOO OOOO   ","                "],
+  "정령": [
+"                ","      OOOO      ","     OPPPPO     ","    OPPPPPPO    ",
+"   OPP K  K PO  ","   OPPPPPPPPO   ","   OPPPPPPPPO   ","   OPPPPPPPPO   ",
+"   OPPPPPPPPO   ","    OPPPPPPO    ","    OPP  PPO    ","     OP  PO     ",
+"      OPPO      ","       OO       ","                ","                "],
+  "드래곤": [
+" O  OO  OO  O   "," OGOGGOOGGOGO   ","  OGGGGGGGGO    ","  OG Y GG YGO   ",
+" OGGGGWGGGGGGO  ","  OGGGGGGGGO    "," OGG OGGGGO GGO "," OGG OGGGGO GGO ",
+" OGG OGGGGO GGO "," OG  OGGGGO  GO ","  O  OGGGGO  O  ","     GG  GG     ",
+"    OGG O GGO   ","    OOO O OOO   ","                ","                "]
+};
+
+const ELEMENT_OF = {
+  slash:"phys", charge:"phys", heavy:"phys", earthquake:"phys",
+  stab:"phys", flurry:"phys", arena_boom:"phys", sword_dance:"phys",
+  isshin:"phys", sakura_slash:"phys", weak_point:"phys", stealth_strike:"dark",
+  blood_thirst:"dark", mad_storm:"phys", gold_snatch:"gold",
+  magic_missile:"arcane", fireball:"fire", meteor:"fire", inferno:"fire",
+  ice_spear:"ice", blizzard:"ice", lightning:"light",
+  poison:"poison", shadow:"dark", assassinate:"dark",
+  soul_steal:"dark", dark_orb:"dark", death_mark:"dark",
+  holy_light:"holy", judge_hammer:"holy"
+};
+const ELEMENT_COLORS = {
+  phys:["#ffffff","#cfd8e8"], arcane:["#c49bff","#8f6bd6"], fire:["#ff8a3d","#ff4d4d"],
+  ice:["#8fe0ff","#3aa8ff"], light:["#fff27a","#ffd166"], poison:["#8be07a","#3c9c4a"],
+  dark:["#b98bff","#5b3a99"], holy:["#fff7d6","#ffd166"], gold:["#ffe082","#c8a24a"]
+};
+
+/* =====================================================================
+   STATE / UTIL
+===================================================================== */
+const S = {
+  player:null, stageIdx:0, currentMonster:null,
+  currentTownName:"루센트 마을", currentDungeonType:"normal",
+  fontSize:13, lineSpacing:1.7,
+};
+
+const $ = (sel)=>document.querySelector(sel);
+const logEl = ()=>document.getElementById("log");
+const sceneEl = ()=>document.getElementById("scene");
+const actionsEl = ()=>document.getElementById("actions");
+
+function wait(ms){ return new Promise(res=>setTimeout(res, ms)); }
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>t.classList.remove("show"), 1800);
+}
+
+/* ---------------- text log with emoji coloring ---------------- */
+const RED_EMOJI = ["⚔️","🗡️","♥","❤️","🩸","🔥","💥","🚪","💀","⚠️"];
+const GOLD_EMOJI = ["💰","👑","💾","🌟","📊","🛡️","⭐","📦","🛒","🛍️"];
+const BLUE_EMOJI = ["♣","💧","✨","🔮"];
+const GREEN_EMOJI = ["🏡","🛌","⛺","🏃","★","🧪","📍","✈️","🗺️","🎒","🌲","⛏️","🐍","🌋","❄️","👁️","🦇","🍺","🎖️","📚"];
+
+function colorSpanFor(ch){
+  if(RED_EMOJI.includes(ch)) return "c-red";
+  if(GOLD_EMOJI.includes(ch)) return "c-gold";
+  if(BLUE_EMOJI.includes(ch)) return "c-blue";
+  if(GREEN_EMOJI.includes(ch)) return "c-green";
+  return null;
+}
+
+function displayText(text, opts={}){
+  const log = logEl();
+  if(opts.clear) log.innerHTML = "";
+  const wrapper = document.createElement("span");
+  wrapper.className = "ln";
+  wrapper.style.marginBottom = (S.lineSpacing) + "px";
+  wrapper.style.fontSize = S.fontSize + "px";
+
+  const chars = Array.from(text);
+  let buf = "";
+  const flush = ()=>{
+    if(buf){ wrapper.appendChild(document.createTextNode(buf)); buf=""; }
+  };
+  for(const ch of chars){
+    const cls = colorSpanFor(ch);
+    if(cls){
+      flush();
+      const sp = document.createElement("span");
+      sp.className = cls;
+      sp.textContent = ch;
+      wrapper.appendChild(sp);
+    } else {
+      buf += ch;
+    }
+  }
+  flush();
+  if(log.childNodes.length>0) log.appendChild(document.createElement("br"));
+  log.appendChild(wrapper);
+  log.scrollTop = log.scrollHeight;
+}
+
+function applyTextSettings(){
+  document.querySelectorAll("#log .ln").forEach(el=>{
+    el.style.fontSize = S.fontSize+"px";
+    el.style.marginBottom = S.lineSpacing+"px";
+  });
+}
+
+/* ---------------- buttons ---------------- */
+function setButtons(list){
+  const box = actionsEl();
+  box.innerHTML = "";
+  for(let i=0;i<6;i++){
+    const b = document.createElement("div");
+    if(i < list.length && list[i] && list[i][0] !== ""){
+      const [text, cmd, opts] = list[i];
+      b.className = "action-btn" + (opts&&opts.danger ? " danger":"");
+      b.textContent = text;
+      b.onclick = ()=>{ cmd(); };
+    } else {
+      b.className = "action-btn empty";
+    }
+    box.appendChild(b);
+  }
+}
+
+function setPaginatedButtons(btnList, page=0){
+  const perPage = 5;
+  const totalPages = Math.max(1, Math.ceil(btnList.length/perPage));
+  page = clamp(page, 0, totalPages-1);
+  const start = page*perPage;
+  const items = btnList.slice(start, start+perPage).slice();
+  if(totalPages>1){
+    items.push(page>0 ? ["◀ 이전 페이지", ()=>setPaginatedButtons(btnList,page-1)] : ["",()=>{}]);
+    items.push(page<totalPages-1 ? ["다음 페이지 ▶", ()=>setPaginatedButtons(btnList,page+1)] : ["",()=>{}]);
+  }
+  setButtons(items);
+}
+
+/* =====================================================================
+   PLAYER / MONSTER
+===================================================================== */
+function createPlayer(name, baseJob){
+  const p = {
+    name, base_job:baseJob, current_job:baseJob, is_advanced:false,
+    level:1, exp:0, gold:400,
+    equipped_weapon:null, equipped_armor:null, equipped_accessory:null,
+    equipment_inventory:[], armor_level:0,
+    inventory:{"힐링포션(소)":2, "마나포션(소)":2},
+    inn_use_count:0, next_attack_boost:false,
+    skills:{}
+  };
+  for(const [k,v] of Object.entries(BASE_SKILLS[baseJob])){
+    p.skills[k] = Object.assign({}, v, {unlocked:false});
+  }
+  if(baseJob==="전사"){ p.max_hp=200; p.max_mp=50; p.atk=25; p.def_stat=15; p.spd=8; }
+  else if(baseJob==="마법사"){ p.max_hp=120; p.max_mp=150; p.atk=35; p.def_stat=8; p.spd=12; }
+  else { p.max_hp=150; p.max_mp=80; p.atk=20; p.def_stat=10; p.spd=20; }
+  p.hp=p.max_hp; p.mp=p.max_mp;
+  return p;
+}
+
+function getAtk(p){
+  const wBonus = p.equipped_weapon ? p.equipped_weapon.atk : 0;
+  const wEnh = p.equipped_weapon ? (p.equipped_weapon.enhance||0) : 0;
+  return Math.floor(p.atk + wBonus + wEnh*8);
+}
+function getDef(p){
+  const aBonus = p.equipped_armor ? (p.equipped_armor.def||0) : 0;
+  return Math.floor(p.def_stat + aBonus + p.armor_level*5);
+}
+function getCrit(p){
+  const accBonus = p.equipped_accessory ? (p.equipped_accessory.crit||0) : 0;
+  const baseCrit = p.base_job.includes("도적") ? 0.2 : 0.1;
+  return baseCrit + accBonus;
+}
+
+async function levelUp(p){
+  let leveled = false;
+  while(p.exp >= p.level*120){
+    p.exp -= p.level*120;
+    p.level += 1;
+    const f = p.is_advanced ? 1.2 : 1.0;
+    p.max_hp += Math.floor(38*f);
+    p.max_mp += Math.floor(18*f);
+    p.atk += Math.floor(7*f);
+    p.def_stat += Math.floor(4*f);
+    const hpHeal = Math.floor(p.max_hp*0.25);
+    const mpHeal = Math.floor(p.max_mp*0.25);
+    p.hp = Math.min(p.max_hp, p.hp+hpHeal);
+    p.mp = Math.min(p.max_mp, p.mp+mpHeal);
+    displayText(`▶ LEVEL UP! 레벨 ${p.level}이(가) 되었습니다! (체력/마나 25% 회복)`);
+    leveled = true;
+    for(const [sName, sData] of Object.entries(p.skills)){
+      if(sData.unlock_lv!==undefined && !sData.unlocked && p.level>=sData.unlock_lv){
+        sData.unlocked = true;
+        displayText(`✨ [새로운 스킬 습득] ${sData.rank}등급 스킬 '${sName}'을(를) 배웠습니다!`);
+      }
+    }
+  }
+  return leveled;
+}
+
+function advanceJobFn(p, newJob){
+  p.is_advanced = true;
+  p.current_job = newJob;
+  const mods = ADVANCE_JOBS[newJob];
+  p.max_hp = Math.floor(p.max_hp*mods.hp);
+  p.max_mp = Math.floor(p.max_mp*mods.mp);
+  p.atk = Math.floor(p.atk*mods.atk);
+  p.def_stat = Math.floor(p.def_stat*mods.def);
+  p.spd = Math.floor(p.spd*mods.spd);
+  p.hp = p.max_hp; p.mp = p.max_mp;
+  for(const [sName, sData] of Object.entries(mods.skills)){
+    p.skills[sName] = Object.assign({}, sData, {unlocked:true});
+  }
+}
+
+function createMonster(name, mType, stage){
+  const scale = 1.15 + (stage-1)*0.65;
+  let hp=90*scale, atk=20*scale, def=8*scale, expR=42*scale, goldR=50*scale;
+  if(mType==="중간보스"){ hp*=2.8; atk*=1.7; expR*=2.6; goldR*=2.4; }
+  else if(mType==="보스"){ hp*=5.8; atk*=2.3; def*=1.6; expR*=5.5; goldR*=6.2; }
+  return {
+    name, m_type:mType,
+    max_hp:Math.floor(hp), hp:Math.floor(hp),
+    atk:Math.floor(atk), def_stat:Math.floor(def),
+    exp_reward:Math.floor(expR), gold_reward:Math.floor(goldR),
+    turn_count:0, is_charging:false
+  };
+}
+
+function playerTitleAndPower(p){
+  const cp = getAtk(p)*3 + getDef(p)*2 + p.level*20;
+  let title;
+  if(cp<120) title="🌱 [F급] 풋내기 모험가";
+  else if(cp<250) title="🛡️ [E급] 수련생 전사";
+  else if(cp<450) title="⚔️ [D급] 베테랑 용병";
+  else if(cp<750) title="🌟 [C급] 숙련된 모험가";
+  else if(cp<1200) title="🔥 [B급] 영웅 후보생";
+  else if(cp<1800) title="👑 [A급] 대륙의 수호자";
+  else title="⚡ [S급] 전설의 초월자";
+  return [title, cp];
+}
+
+function makeBar(current, max, length=15){
+  if(max<=0) return "□".repeat(length);
+  current = clamp(current,0,max);
+  const fill = Math.floor((current/max)*length);
+  return "■".repeat(fill) + "□".repeat(length-fill);
+}
+
+/* =====================================================================
+   SPRITES
+===================================================================== */
+function getPlayerSprite(){
+  if(!S.player) return [PLAYER_SHAPES["전사"], {}];
+  const job = S.player.current_job;
+  let pal = {O:"#0d0d10", K:"#0d0d10", S:"#ffcca6", W:"#ffffff"};
+  let shape;
+  if(job.includes("마법") || job.includes("크루세이더")){
+    shape = PLAYER_SHAPES["마법사"];
+    Object.assign(pal, {B:"#3498db", Y:"#f1c40f", P:"#e74c3c", M:"#7b5fd6"});
+  } else if(job.includes("도적") || job.includes("어쌔신") || job.includes("시프")){
+    shape = PLAYER_SHAPES["도적"];
+    Object.assign(pal, {D:"#37465c"});
+  } else {
+    shape = PLAYER_SHAPES["전사"];
+    Object.assign(pal, {G:"#2ecc71", A:"#3f7fd1", B:"#c0392b"});
+  }
+  return [shape, pal];
+}
+
+function getMonsterSprite(){
+  if(!S.currentMonster) return [MONSTER_SHAPES["슬라임"], {}];
+  const n = S.currentMonster.name;
+  let shape = MONSTER_SHAPES["슬라임"];
+  let pal = {O:"#0d0d10", W:"#ffffff", K:"#0d0d10"};
+  const has = (...ks)=>ks.some(k=>n.includes(k));
+
+  if(has("벌레","거미")){ shape=MONSTER_SHAPES["벌레"]; Object.assign(pal,{A:"#ecf0f1",D:"#bdc3c7",K:"#2ecc71"}); }
+  else if(has("고블린","요정","서큐버스")){ shape=MONSTER_SHAPES["고블린"]; Object.assign(pal,{G:"#2ecc71",R:"#e74c3c",A:"#8d6e63",D:"#5d4037"}); }
+  else if(has("리자드맨","악어")){ shape=MONSTER_SHAPES["고블린"]; Object.assign(pal,{G:"#3498db",R:"#f1c40f",A:"#34495e",D:"#2c3e50"}); }
+  else if(has("정령","유령","영혼")){ shape=MONSTER_SHAPES["정령"]; Object.assign(pal,{P:"#9b59b6"}); }
+  else if(has("오크","거인","수호자","골렘","트롤")){ shape=MONSTER_SHAPES["거인"]; Object.assign(pal,{R:"#16a085",A:"#7f8c8d"}); }
+  else if(has("드래곤","마왕","발록","히드라","바실리스크","카르가스")){ shape=MONSTER_SHAPES["드래곤"]; Object.assign(pal,{G:"#c0392b",Y:"#f1c40f"}); }
+  else if(has("해골","스켈레톤","좀비","구울","기사")){ shape=MONSTER_SHAPES["해골"]; Object.assign(pal,{W:"#ecf0f1"}); }
+  else if(has("늑대","개","지옥견","멧돼지","켈베로스")){ shape=MONSTER_SHAPES["짐승"]; Object.assign(pal,{L:"#7f8c8d",R:"#e74c3c"}); }
+  else { shape=MONSTER_SHAPES["슬라임"]; Object.assign(pal,{G:"#2ecc71",H:"#a9dfbf",L:"#27ae60"}); }
+
+  if(has("불꽃","용암","화염","이프리트","마그마","지옥")) Object.assign(pal,{G:"#e74c3c",P:"#e74c3c",R:"#c0392b",L:"#e74c3c",D:"#c0392b"});
+  else if(has("얼음","서리","눈보라","펜릴","혹한")) Object.assign(pal,{G:"#3498db",P:"#3498db",R:"#2980b9",L:"#bdc3c7",D:"#3498db"});
+  else if(has("어둠","암흑","마계","저주","그림자","타락","데스")) Object.assign(pal,{G:"#8e44ad",P:"#8e44ad",R:"#2c3e50",L:"#2c3e50",D:"#8e44ad",A:"#2c3e50"});
+  else if(has("광산","바위","돌")) Object.assign(pal,{G:"#7f8c8d",P:"#7f8c8d",R:"#95a5a6",L:"#7f8c8d",D:"#95a5a6"});
+
+  return [shape, pal];
+}
+
+function drawSprite(canvas, matrix, palette){
+  const rows = matrix.length, cols = matrix[0].length;
+  canvas.width = cols; canvas.height = rows;
+  const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0,0,cols,rows);
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const ch = matrix[r][c];
+      if(ch===" ") continue;
+      ctx.fillStyle = palette[ch] || "#ffffff";
+      ctx.fillRect(c,r,1,1);
+    }
+  }
+}
+
+/* particle burst for skill elements */
+function particleBurst(hostEl, element){
+  const colors = ELEMENT_COLORS[element] || ELEMENT_COLORS.phys;
+  const layer = document.createElement("div");
+  layer.className = "particle-layer";
+  hostEl.style.position = "relative";
+  hostEl.appendChild(layer);
+  const n = 14;
+  for(let i=0;i<n;i++){
+    const sq = document.createElement("div");
+    sq.className = "p-square";
+    sq.style.background = pick(colors);
+    sq.style.left = "50%"; sq.style.top = "50%";
+    const ang = Math.random()*Math.PI*2;
+    const dist = 30+Math.random()*40;
+    sq.style.setProperty("--dx", Math.cos(ang)*dist+"px");
+    sq.style.setProperty("--dy", Math.sin(ang)*dist+"px");
+    sq.style.animation = `pfly ${0.35+Math.random()*0.25}s ease-out forwards`;
+    layer.appendChild(sq);
+  }
+  setTimeout(()=>layer.remove(), 700);
+}
+
+/* =====================================================================
+   EFFECTS
+===================================================================== */
+function shakeApp(){
+  const app = document.getElementById("app");
+  app.classList.remove("shake"); void app.offsetWidth;
+  app.classList.add("shake");
+}
+function flashLogRed(){
+  const inner = document.querySelector("#logFrame .frame-inner");
+  inner.classList.remove("flash-red"); void inner.offsetWidth;
+  inner.classList.add("flash-red");
+}
+function critFlash(){
+  const app = document.getElementById("app");
+  app.classList.remove("crit-flash"); void app.offsetWidth;
+  app.classList.add("crit-flash");
+}
+function goldFlash(){
+  const inner = document.querySelector("#logFrame .frame-inner");
+  inner.classList.remove("gold-flash"); void inner.offsetWidth;
+  inner.classList.add("gold-flash");
+}
+function cyanFlash(){
+  const inner = document.querySelector("#logFrame .frame-inner");
+  inner.classList.remove("cyan-flash"); void inner.offsetWidth;
+  inner.classList.add("cyan-flash");
+}
+
+/* =====================================================================
+   RENDER SCENE (status / battle panel)
+===================================================================== */
+let battleAnim = {playerFlash:false, monsterFlash:false, effectEl:null};
+
+function renderScene(){
+  const scene = sceneEl();
+  const p = S.player;
+  if(!p){ scene.innerHTML=""; return; }
+
+  if(S.currentMonster){
+    const m = S.currentMonster;
+    const hpR = p.max_hp>0 ? clamp(p.hp/p.max_hp,0,1) : 0;
+    const mpR = p.max_mp>0 ? clamp(p.mp/p.max_mp,0,1) : 0;
+    const mHpR = m.max_hp>0 ? clamp(m.hp/m.max_hp,0,1) : 0;
+    const wName = p.equipped_weapon ? `${p.equipped_weapon.name}[+${p.equipped_weapon.enhance||0}]` : "없음";
+    const aName = p.equipped_armor ? p.equipped_armor.name : "없음";
+    const accName = p.equipped_accessory ? p.equipped_accessory.name : "없음";
+
+    scene.innerHTML = `
+      <div class="frame"><div class="frame-inner tight battle-top">
+        <div class="hud-row">
+          <span class="hud-name">👤 <b>${p.name}</b> [${p.current_job}]</span>
+          <span class="hud-gold">⭐ Lv.${p.level} &nbsp;|&nbsp; 💰 ${p.gold} G</span>
+        </div>
+        <div class="bar-line"><span class="bar-label hp">HP</span><div class="bar-track"><div class="bar-fill hp" style="width:${hpR*100}%"></div></div><span class="bar-num">${p.hp}/${p.max_hp}</span></div>
+        <div class="bar-line"><span class="bar-label mp">MP</span><div class="bar-track"><div class="bar-fill mp" style="width:${mpR*100}%"></div></div><span class="bar-num">${p.mp}/${p.max_mp}</span></div>
+        <div class="hud-equip">🗡️ 무기: ${wName} | 👕 갑옷: ${aName} | 💍 장신구: ${accName}</div>
+      </div></div>
+      <div class="frame hot"><div class="frame-inner tight">
+        <div style="text-align:center;font-size:11px;color:var(--red);letter-spacing:3px;">BATTLE</div>
+        <div class="vs-wrap">
+          <div class="combatant-card player" id="pcard">
+            <span class="tag">PLAYER</span>
+            <div class="sprite-box"><canvas id="pcanvas"></canvas></div>
+            <div class="cname">${p.name}</div>
+            <div class="cjob">Lv.${p.level} ${p.current_job}</div>
+            <div class="mini-bar-track"><div class="mini-bar-fill hp" style="width:${hpR*100}%"></div></div>
+            <div class="mini-hp-num">HP ${p.hp}/${p.max_hp}</div>
+          </div>
+          <div class="vs-badge">VS</div>
+          <div class="combatant-card enemy" id="ecard">
+            <span class="tag">ENEMY</span>
+            <div class="sprite-box"><canvas id="ecanvas"></canvas></div>
+            <div class="cname">${m.name}</div>
+            <div class="cjob">${m.m_type}</div>
+            <div class="mini-bar-track"><div class="mini-bar-fill hp" style="width:${mHpR*100}%"></div></div>
+            <div class="mini-hp-num">HP ${m.hp}/${m.max_hp}</div>
+          </div>
+        </div>
+        ${m.is_charging
+          ? `<div class="charge-warn">⚠️ ${m.name}이(가) 치명적인 강공격을 준비하고 있습니다!! (방어 필요)</div>`
+          : `<div class="enemy-info">▶ 적군 상세 정보 | 공격력: ${m.atk} | 방어력: ${m.def_stat}</div>`}
+      </div></div>
+    `;
+    const [pShape, pPal] = getPlayerSprite();
+    drawSprite(document.getElementById("pcanvas"), pShape, pPal);
+    const [mShape, mPal] = getMonsterSprite();
+    drawSprite(document.getElementById("ecanvas"), mShape, mPal);
+
+    if(battleAnim.playerFlash) document.getElementById("pcard").classList.add("flash-red");
+    if(battleAnim.monsterFlash) document.getElementById("ecard").classList.add("flash-red");
+  } else {
+    const hpR = p.max_hp>0 ? clamp(p.hp/p.max_hp,0,1) : 0;
+    const mpR = p.max_mp>0 ? clamp(p.mp/p.max_mp,0,1) : 0;
+    scene.innerHTML = `
+      <div class="frame"><div class="frame-inner tight">
+        <div class="hud-row">
+          <span class="hud-name">👤 <b>${p.name}</b> [${p.current_job}]</span>
+          <span class="hud-gold">⭐ Lv.${p.level} &nbsp;|&nbsp; 💰 ${p.gold} G</span>
+        </div>
+        <div class="bar-line"><span class="bar-label hp">HP</span><div class="bar-track"><div class="bar-fill hp" style="width:${hpR*100}%"></div></div><span class="bar-num">${p.hp}/${p.max_hp}</span></div>
+        <div class="bar-line"><span class="bar-label mp">MP</span><div class="bar-track"><div class="bar-fill mp" style="width:${mpR*100}%"></div></div><span class="bar-num">${p.mp}/${p.max_mp}</span></div>
+        <div class="hud-stats"><span>⚔️ ${getAtk(p)}</span><span>🛡️ ${getDef(p)}</span><span>⚡ ${Math.floor(getCrit(p)*100)}%</span></div>
+      </div></div>
+    `;
+  }
+}
+
+async function animateBattleAction(attacker, elementType){
+  battleAnim = {playerFlash: attacker==="player" ? false : true, monsterFlash: attacker==="player" ? true : false};
+  renderScene();
+  const hostId = attacker==="player" ? "ecard" : "pcard";
+  const host = document.getElementById(hostId);
+  if(host){
+    host.classList.add("pop");
+    if(elementType) particleBurst(host, ELEMENT_OF[elementType] || "phys");
+  }
+  await wait(260);
+  battleAnim = {playerFlash:false, monsterFlash:false};
+  renderScene();
+}
+
+/* =====================================================================
+   MODAL (name input)
+===================================================================== */
+function askName(){
+  return new Promise(resolve=>{
+    const root = document.getElementById("modalRoot");
+    const box = root.querySelector(".modal-box");
+    box.innerHTML = `
+      <div class="frame hot"><div class="frame-inner">
+        <div class="modal-title">✨ 영웅의 이름을 입력하세요</div>
+        <input class="modal-input" id="nameInput" maxlength="10" placeholder="용사" autocomplete="off">
+        <div class="modal-actions">
+          <div class="action-btn" id="nameOk">확인</div>
+        </div>
+      </div></div>
+    `;
+    root.classList.add("show");
+    const input = document.getElementById("nameInput");
+    input.focus();
+    const finish = ()=>{
+      const val = input.value.trim() || "용사";
+      root.classList.remove("show");
+      resolve(val);
+    };
+    document.getElementById("nameOk").onclick = finish;
+    input.addEventListener("keydown", e=>{ if(e.key==="Enter") finish(); });
+  });
+}
+
+function confirmModal(title, okLabel="확인", cancelLabel="취소"){
+  return new Promise(resolve=>{
+    const root = document.getElementById("modalRoot");
+    const box = root.querySelector(".modal-box");
+    box.innerHTML = `
+      <div class="frame hot"><div class="frame-inner">
+        <div class="modal-title">${title}</div>
+        <div class="modal-actions">
+          <div class="action-btn" id="mOk">${okLabel}</div>
+          <div class="action-btn" id="mCancel">${cancelLabel}</div>
+        </div>
+      </div></div>
+    `;
+    root.classList.add("show");
+    document.getElementById("mOk").onclick = ()=>{ root.classList.remove("show"); resolve(true); };
+    document.getElementById("mCancel").onclick = ()=>{ root.classList.remove("show"); resolve(false); };
+  });
+}
+
+/* =====================================================================
+   SAVE / LOAD
+===================================================================== */
+const SAVE_KEY = "dark_abyss_epic_save_v1";
+function saveGame(){
+  const data = {player:S.player, stageIdx:S.stageIdx, townName:S.currentTownName};
+  localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  toast("💾 게임이 저장되었습니다!");
+}
+function hasSave(){ return !!localStorage.getItem(SAVE_KEY); }
+function loadGameData(){
+  const raw = localStorage.getItem(SAVE_KEY);
+  if(!raw) return null;
+  try{ return JSON.parse(raw); }catch(e){ return null; }
+}
+
+/* =====================================================================
+   MENU FLOW
+===================================================================== */
+function mainMenu(){
+  setButtons([]);
+  S.currentMonster = null;
+  sceneEl().innerHTML = "";
+  const story =
+`===========================================
+         ⚔️ 다크 어비스 : EPIC ⚔️
+===========================================
+
+빛의 가디언들이 봉인했던 '심연의 마왕 카르가스'가
+천 년의 잠을 깨고 암흑의 성채에서 부활했습니다.
+
+세계는 순식간에 짙은 안개와 마물들에 의해 짓밟혔고,
+마지막 남은 생존의 거점마저 무너질 위기에 처했습니다.
+
+이 절망의 끝에서 세상을 구원할 단 하나의 불씨,
+이름 없는 영웅이여... 당신의 위대한 여정을 시작하십시오.`;
+  displayText(story, {clear:true});
+
+  const opts = [["⚔️ 새 모험 시작", newGame]];
+  if(hasSave()) opts.push(["💾 여정 이어하기", loadGame]);
+  opts.push(["🚪 게임 종료", ()=>{ document.body.innerHTML = "<div style=\"padding:40px;text-align:center;font-family:sans-serif;color:#888\">게임을 종료했습니다. 탭을 닫아주세요.</div>"; }]);
+  setButtons(opts);
+}
+
+async function newGame(){
+  setButtons([]);
+  const name = await askName();
+  displayText(`==================================================\n           🌟 직업 선택\n==================================================\n`, {clear:true});
+  displayText(`환영합니다, '${name}' 용사님. 전직할 클래스를 선택해주세요.`);
+  displayText("  1. ⚔️ 전사 (높은 체력과 밸런스형, 2차: 검투사/버서커/사무라이)");
+  displayText("  2. 🔮 마법사 (강력한 스킬 화력형, 2차: 원소/흑마법사/크루세이더)");
+  displayText("  3. 🗡️ 도적 (빠른 스피드와 치명타형, 2차: 시프/어쌔신)");
+
+  const selectJob = async (job)=>{
+    setButtons([]);
+    S.player = createPlayer(name, job);
+    S.stageIdx = 0;
+    S.currentTownName = "루센트 마을";
+    displayText(`▶ 클래스 [${job}] '${name}' 님의 기나긴 여정이 시작됩니다!`, {clear:true});
+    await wait(1200);
+    town();
+  };
+
+  setButtons([
+    ["⚔️ 전사 선택", ()=>selectJob("전사")],
+    ["🔮 마법사 선택", ()=>selectJob("마법사")],
+    ["🗡️ 도적 선택", ()=>selectJob("도적")],
+    ["처음으로", mainMenu]
+  ]);
+}
+
+async function loadGame(){
+  setButtons([]);
+  const data = loadGameData();
+  if(!data){ toast("세이브 파일을 불러올 수 없습니다."); mainMenu(); return; }
+  S.player = data.player;
+  S.stageIdx = data.stageIdx;
+  S.currentTownName = data.townName || "루센트 마을";
+  if(!S.player.equipment_inventory) S.player.equipment_inventory = [];
+  displayText(`▶ 저장된 데이터를 불러왔습니다.\n(STAGE ${S.stageIdx+1}부터 시작)`, {clear:true});
+  await wait(1000);
+  town();
+}
+
+async function saveAndExit(){
+  saveGame();
+  await wait(500);
+  mainMenu();
+}
+
+function town(){
+  setButtons([]);
+  S.currentMonster = null;
+  renderScene();
+  const currentTown = TOWN_DATA[S.stageIdx];
+  const [heroTitle, cPower] = playerTitleAndPower(S.player);
+  const rumorIdx = Math.min(S.stageIdx, TOWN_RUMORS.length-1);
+
+  displayText(`==================================================\n           🏡 ${currentTown.name} (STAGE ${S.stageIdx+1})\n==================================================\n`, {clear:true});
+  displayText(`📜 [마을 소개]\n${currentTown.desc}\n`);
+  displayText("==========================================");
+  displayText(`🎖️ 현재 모험가 칭호: ${heroTitle} (종합 전투력: ${cPower})`);
+  displayText("==========================================");
+  displayText(TOWN_RUMORS[rumorIdx]);
+  displayText("==========================================");
+
+  setButtons([
+    ["⚔️ 모험 떠나기", dungeonMenu],
+    ["🛒 잡화/장비 상점", shopMenu],
+    ["🎒 장비 인벤토리", equipmentInvenMenu],
+    ["🏨 여관 및 시설", townFacilityMenu],
+    ["🗺️ 해금된 마을 이동", travelTown],
+    ["📊 상태창 / 💾 저장", statusOrSaveMenu]
+  ]);
+}
+
+function statusOrSaveMenu(){
+  setButtons([]);
+  renderScene();
+  displayText("=== [ 시스템 선택 ] ===", {clear:true});
+  setButtons([
+    ["📊 상태창 확인", showStatus],
+    ["💾 게임 저장하기", ()=>{ saveGame(); }],
+    ["🚪 저장 후 종료", saveAndExit],
+    ["마을로 돌아가기", town]
+  ]);
+}
+
+function travelTown(){
+  setButtons([]);
+  renderScene();
+  displayText("==================================================\n           🗺️ 다른 마을로 이동\n==================================================", {clear:true});
+  displayText("지금까지 도달하거나 해금된 안전한 거점들입니다.");
+
+  const unlocked = TOWN_DATA.slice(0, S.stageIdx+1);
+  const btnData = [];
+  unlocked.forEach((t, idx)=>{
+    if(idx===S.stageIdx){
+      btnData.push([`📍 ${t.name} (현재)`, ()=>displayText(`이미 ${t.name}에 머물고 있습니다.`)]);
+    } else {
+      btnData.push([`✈️ S${idx+1}. ${t.name}`, ()=>moveToTownIdx(idx)]);
+    }
+  });
+  btnData.push(["마을로 돌아가기", town]);
+  setPaginatedButtons(btnData);
+}
+
+async function moveToTownIdx(sNum){
+  setButtons([]);
+  S.stageIdx = sNum;
+  const tName = TOWN_DATA[sNum].name;
+  displayText(`▶ 안전하게 ${tName}로 이동했습니다! (스테이지 거점 변경)`);
+  await wait(700);
+  town();
+}
+
+function dungeonMenu(){
+  setButtons([]);
+  S.currentMonster = null;
+  renderScene();
+  if(S.stageIdx >= STAGE_DATA.length){
+    displayText("▶ 모든 스테이지의 마왕을 토벌하셨습니다! 평화가 찾아왔습니다.", {clear:true});
+    setButtons([["마을로 돌아가기", town]]);
+    return;
+  }
+  const [stageName, normalList, eliteList, bossList] = STAGE_DATA[S.stageIdx];
+  displayText(`==================================================\n       🗺️ [ STAGE ${S.stageIdx+1} : ${stageName} ] 던전 선택\n==================================================`, {clear:true});
+  displayText("진입할 던전을 선택하세요:\n");
+  displayText(`  1. 🌲 일반 던전 (무한 파밍 / 기본 보상)`);
+  displayText(`     └ 출현 몬스터 (${normalList.length}종): ${normalList.join(", ")}\n`);
+  displayText(`  2. 💀 정예 던전 (무한 파밍 / ★높은 경험치 & 골드★)`);
+  displayText(`     └ 출현 몬스터 (${eliteList.length}종): ${eliteList.join(", ")}\n`);
+  displayText(`  3. 🔥 보스 던전 (★승리 시 다음 스테이지 해금★)`);
+  displayText(`     └ 최종 보스: ${bossList[0]}\n`);
+
+  setButtons([
+    ["🌲 일반 던전", ()=>enterDungeon("normal")],
+    ["💀 정예 던전", ()=>enterDungeon("elite")],
+    ["🔥 보스 던전 (클리어)", ()=>enterDungeon("boss")],
+    ["마을로 돌아가기", town]
+  ]);
+}
+
+async function enterDungeon(dungeonType){
+  setButtons([]);
+  S.currentDungeonType = dungeonType;
+  const [stageName, normalList, eliteList, bossList] = STAGE_DATA[S.stageIdx];
+  let mName, mType, desc;
+  if(dungeonType==="normal"){ mName=pick(normalList); mType="일반"; desc=`🌲 [일반 던전] 야생의 [${mName}]이(가) 나타났습니다!`; }
+  else if(dungeonType==="elite"){ mName=pick(eliteList); mType="중간보스"; desc=`💀 [정예 던전] 강력한 정예 몬스터 [${mName}]이(가) 포효합니다!`; }
+  else { mName=bossList[0]; mType="보스"; desc=`🔥 [보스 던전] 스테이지의 지배자 [${mName}]이(가) 모습을 드러냈습니다!!`; }
+
+  S.currentMonster = createMonster(mName, mType, S.stageIdx+1);
+  S.player.next_attack_boost = false;
+  renderScene();
+
+  displayText(`▩▩▩ [ STAGE ${S.stageIdx+1} : ${stageName} ] ▩▩▩`, {clear:true});
+  displayText(desc);
+  await wait(700);
+  battleUI();
+}
+
+function equipmentInvenMenu(){
+  setButtons([]);
+  S.currentMonster = null;
+  renderScene();
+  const p = S.player;
+  displayText("==================================================\n           🎒 장비 인벤토리 및 장착 관리\n==================================================", {clear:true});
+  const wEnh = p.equipped_weapon ? (p.equipped_weapon.enhance||0) : 0;
+  const wName = p.equipped_weapon ? `${p.equipped_weapon.name}[+${wEnh}]` : "없음";
+  const aName = p.equipped_armor ? p.equipped_armor.name : "없음";
+  const accName = p.equipped_accessory ? p.equipped_accessory.name : "없음";
+  displayText(`현재 착용 중인 장비:`);
+  displayText(`  - 무기: ${wName}`);
+  displayText(`  - 방어구: ${aName}`);
+  displayText(`  - 장신구: ${accName}\n`);
+
+  if(p.equipment_inventory.length===0){
+    displayText("보유 중인 여분의 장비가 없습니다. (상점에서 구매하세요)");
+    setButtons([["마을로 돌아가기", town]]);
+    return;
+  }
+
+  displayText("보유 중인 장비 목록 (클릭하여 장착):");
+  p.equipment_inventory.forEach((item,idx)=>{
+    const enh = item.enhance||0;
+    const dispName = ["검","활","지팡이"].includes(item.type) ? `${item.name}[+${enh}]` : item.name;
+    let statDesc;
+    if(item.atk!==undefined) statDesc = `공격력 +${item.atk}`;
+    else if(item.def!==undefined) statDesc = `방어력 +${item.def}`;
+    else statDesc = `크리티컬 +${Math.floor(item.crit*100)}%`;
+    displayText(`  ${idx+1}. [${item.type}] ${dispName} (${statDesc})`);
+  });
+
+  const btnData = p.equipment_inventory.map(item=>{
+    const enh = item.enhance||0;
+    const btnName = ["검","활","지팡이"].includes(item.type) ? `${item.name}[+${enh}]` : item.name;
+    return [`장착: ${btnName}`, ()=>equipItem(item)];
+  });
+  btnData.push(["마을로 돌아가기", town]);
+  setPaginatedButtons(btnData);
+}
+
+function equipItem(item){
+  setButtons([]);
+  const p = S.player;
+  const t = item.type;
+  if(["검","활","지팡이"].includes(t)){
+    if(p.equipped_weapon) p.equipment_inventory.push(p.equipped_weapon);
+    p.equipped_weapon = item;
+    displayText(`▶ [${item.name}[+${item.enhance||0}]] 무기를 장착했습니다!`);
+  } else if(["갑옷","투구","방패"].includes(t)){
+    if(p.equipped_armor){ p.max_hp -= (p.equipped_armor.hp||0); p.equipment_inventory.push(p.equipped_armor); }
+    p.equipped_armor = item;
+    p.max_hp += (item.hp||0);
+    p.hp = Math.min(p.max_hp, p.hp);
+    displayText(`▶ [${item.name}] 방어구를 장착했습니다!`);
+  } else {
+    if(p.equipped_accessory) p.equipment_inventory.push(p.equipped_accessory);
+    p.equipped_accessory = item;
+    displayText(`▶ [${item.name}] 장신구를 장착했습니다!`);
+  }
+  p.equipment_inventory = p.equipment_inventory.filter(i=>i!==item);
+  equipmentInvenMenu();
+}
+
+function shopMenu(){
+  setButtons([]);
+  S.currentMonster = null;
+  renderScene();
+  const townName = TOWN_DATA[S.stageIdx].name;
+  displayText(`==================================================\n           🛒 ${townName} 상점\n==================================================`, {clear:true});
+  displayText(`보유 골드: ${S.player.gold} G\n`);
+  displayText("환영합니다! 필요한 장비나 포션을 구매하세요.");
+  setButtons([
+    ["⚔️ 무기 상점", ()=>shopCategory("무기")],
+    ["🛡️ 방어구 상점", ()=>shopCategory("방어구")],
+    ["💍 장신구 상점", ()=>shopCategory("장신구")],
+    ["🧪 포션 상점", ()=>shopCategory("포션")],
+    ["마을로 돌아가기", town]
+  ]);
+}
+
+function shopCategory(cat){
+  setButtons([]);
+  renderScene();
+  displayText(`==================================================\n           🛍️ [ ${cat} 상점 ]\n==================================================`, {clear:true});
+  displayText(`보유 골드: ${S.player.gold} G\n`);
+  displayText("📋 판매 중인 상품 목록:");
+
+  const items = SHOP_ITEMS[cat];
+  items.forEach((item,idx)=>{
+    let info;
+    if(cat==="무기") info = `공격력 +${item.atk}`;
+    else if(cat==="방어구") info = `방어력 +${item.def} / 스테이터스 보정`;
+    else if(cat==="장신구") info = `크리티컬 확률 +${Math.floor(item.crit*100)}%`;
+    else info = item.name.includes("힐링") ? `체력 ${item.heal} 회복` : `마나 ${item.mp} 회복`;
+    displayText(`  ${idx+1}. ${item.name} | ${info} | 가격: ${item.price}G`);
+  });
+
+  const btnData = items.map(item=>[`${item.name} (${item.price}G)`, ()=>buyItem(item, cat)]);
+  btnData.push(["상점 메인으로", shopMenu]);
+  setButtons(btnData);
+}
+
+function buyItem(item, cat){
+  if(S.player.gold < item.price){ displayText("▶ 골드가 부족합니다!"); return; }
+  if(cat!=="포션"){
+    const p = S.player;
+    const equippedNames = [];
+    if(p.equipped_weapon) equippedNames.push(p.equipped_weapon.name);
+    if(p.equipped_armor) equippedNames.push(p.equipped_armor.name);
+    if(p.equipped_accessory) equippedNames.push(p.equipped_accessory.name);
+    const invenNames = p.equipment_inventory.map(e=>e.name);
+    if(equippedNames.includes(item.name) || invenNames.includes(item.name)){
+      displayText("▶ 이미 보유 중이거나 장착하고 있는 장비입니다! 중복 구매할 수 없습니다.");
+      return;
+    }
+  }
+  S.player.gold -= item.price;
+  shopCategory(cat);
+  if(cat==="포션"){
+    const pName = item.name;
+    S.player.inventory[pName] = (S.player.inventory[pName]||0) + 1;
+    displayText(`▶ [${pName}]을(를) 구매하여 인벤토리에 넣었습니다.`);
+  } else {
+    const newItem = Object.assign({}, item);
+    if(cat==="무기") newItem.enhance = 0;
+    S.player.equipment_inventory.push(newItem);
+    displayText(`▶ [${newItem.name}] 구매 완료! (장비 인벤토리로 이동됨)`);
+  }
+}
+
+function townFacilityMenu(){
+  setButtons([]);
+  S.currentMonster = null;
+  renderScene();
+  const p = S.player;
+  const innPrice = 50 + p.inn_use_count*30;
+  displayText("==================================================\n           🏨 마을 편의시설\n==================================================", {clear:true});
+  displayText("마을의 편의시설을 이용합니다. 무엇을 하시겠습니까?");
+  displayText(`💰 보유 골드: ${p.gold} G &nbsp;|&nbsp; ♥ HP: ${p.hp}/${p.max_hp} | ♣ MP: ${p.mp}/${p.max_mp}\n`);
+  displayText(` - 여관 휴식: ${innPrice} 골드를 소모하여 체력과 마나를 모두 회복합니다.`);
+  displayText(" - 대장간: 장착 중인 무기나 방어구를 강화합니다.");
+  displayText(" - 마법 연구소: 골드를 소모하여 보유 스킬의 위력을 영구적으로 강화합니다.");
+  if(p.level>=25 && !p.is_advanced) displayText(" - ⭐ 전직의 제단: 2차 전직으로 각성할 수 있습니다!");
+
+  const btns = [
+    [`🛏️ 여관 휴식 (${innPrice}G)`, rest],
+    ["🔨 대장간 방문하기", blacksmith],
+    ["📚 마법 연구소 (스킬 강화)", skillUpgradeMenu],
+  ];
+  if(p.level>=25 && !p.is_advanced) btns.push(["⭐ 전직의 제단", jobAdvanceMenu]);
+  btns.push(["마을로 돌아가기", town]);
+  setButtons(btns);
+}
+
+function rest(){
+  const p = S.player;
+  const innPrice = 50 + p.inn_use_count*30;
+  if(p.gold >= innPrice){
+    p.gold -= innPrice; p.inn_use_count += 1;
+    p.hp = p.max_hp; p.mp = p.max_mp;
+    displayText(`▶ 여관에서 푹 쉬었습니다! 체력과 마나가 모두 회복되었습니다. (비용: ${innPrice}G 지불)`);
+  } else {
+    displayText(`▶ 골드가 부족합니다! (필요 골드: ${innPrice}G)`);
+  }
+  displayText(`(현재 골드: ${p.gold}G | HP: ${p.hp}/${p.max_hp})`);
+  renderScene();
+  townFacilityMenu();
+}
+
+function showStatus(){
+  setButtons([]);
+  S.currentMonster = null;
+  renderScene();
+  const p = S.player;
+  const wEnh = p.equipped_weapon ? (p.equipped_weapon.enhance||0) : 0;
+  const wName = p.equipped_weapon ? `${p.equipped_weapon.name}[+${wEnh}]` : "없음";
+  const aName = p.equipped_armor ? p.equipped_armor.name : "없음";
+  const accName = p.equipped_accessory ? p.equipped_accessory.name : "없음";
+
+  displayText(`=== [ ${p.name} 의 상태창 ] ===`, {clear:true});
+  displayText(`▪ 직업: ${p.current_job} | 레벨: ${p.level} (EXP: ${p.exp}/${p.level*100})`);
+  displayText(`♥ HP: ${makeBar(p.hp,p.max_hp)} ${p.hp}/${p.max_hp}`);
+  displayText(`♣ MP: ${makeBar(p.mp,p.max_mp)} ${p.mp}/${p.max_mp}`);
+  displayText(`⚔️ 공격력: ${getAtk(p)} (무기강화 +${wEnh*8})`);
+  displayText(`🛡️ 방어력: ${getDef(p)} (방어구강화 +${p.armor_level*5})`);
+  displayText(`💥 크리티컬 확률: ${Math.floor(getCrit(p)*100)}%`);
+  displayText(`💰 골드: ${p.gold} G`);
+  displayText(`🛡️ [장착 장비] 무기: ${wName} | 갑옷: ${aName} | 장신구: ${accName}`);
+
+  const invStr = Object.entries(p.inventory).filter(([,v])=>v>0).map(([k,v])=>`${k} ${v}개`).join(", ") || "없음";
+  displayText(`🧪 [인벤토리 포션] ${invStr}`);
+
+  const unlocked = Object.entries(p.skills).filter(([,v])=>v.unlocked);
+  if(unlocked.length){
+    displayText("\n[ 보유 스킬 ]");
+    unlocked.sort((a,b)=>b[1].rank-a[1].rank).forEach(([k,v])=>{
+      const r = v.rank>0 ? `[${v.rank}등급]` : "[전직전용]";
+      const u = v.upgrade>0 ? `+${v.upgrade}` : "";
+      displayText(` - ${r} ${k} ${u} (MP:${v.mp}) : x${(v.mult+v.upgrade*0.2).toFixed(1)}`);
+    });
+  }
+  setButtons([["마을로 돌아가기", town]]);
+}
+
+function blacksmith(){
+  setButtons([]);
+  S.currentMonster = null;
+  renderScene();
+  const p = S.player;
+
+  if(!p.equipped_weapon){
+    displayText("==================================================\n           🔨 대장간\n==================================================", {clear:true});
+    displayText(`보유 골드: ${p.gold} G\n`);
+    displayText("❌ 현재 장착 중인 무기가 없습니다! 무기를 먼저 장착해주세요.");
+    setButtons([["편의시설로", townFacilityMenu], ["마을로", town]]);
+    return;
+  }
+  if(p.equipped_weapon.enhance===undefined) p.equipped_weapon.enhance = 0;
+  const wItem = p.equipped_weapon;
+  const wEnh = wItem.enhance;
+  const wCostBase = Math.floor((wItem.price||200)*0.15);
+  const wCost = wCostBase + wEnh*120;
+  const wProb = Math.max(5, 95 - wEnh*7);
+  const wDestroy = wEnh>0 ? wEnh*1 : 0;
+
+  const aItem = p.equipped_armor;
+  const aEnh = p.armor_level;
+  const aCostBase = Math.floor((aItem ? aItem.price : 150)*0.15) || (aItem? 0 : 100);
+  const aCost = (aItem ? aCostBase : 100) + aEnh*100;
+  const aProb = Math.max(5, 95 - aEnh*7);
+  const aDestroy = aEnh>0 ? aEnh*1 : 0;
+
+  const wDisp = `${wItem.name}[+${wEnh}]`;
+  const aDisp = aItem ? `${aItem.name}[+${aEnh}]` : `기본 방어구[+${aEnh}]`;
+
+  displayText("==================================================\n           🔨 대장간 (위험한 장비 강화)\n==================================================", {clear:true});
+  displayText(`보유 골드: ${p.gold} G\n`);
+  displayText(` ⚔️ 장착 무기 [${wDisp}]`);
+  displayText(`    └ 성공: ${wProb}% | 파괴: ${wDestroy}% | 비용: ${wCost}G`);
+  displayText(` 🛡️ 방어구 [${aDisp}]`);
+  displayText(`    └ 성공: ${aProb}% | 파괴: ${aDestroy}% | 비용: ${aCost}G`);
+
+  const tryWeaponUp = ()=>{
+    setButtons([]);
+    if(!p.equipped_weapon){ displayText("▶ 장착된 무기가 없습니다."); blacksmith(); return; }
+    if(p.gold < wCost){ displayText(`▶ 골드가 부족합니다! (필요 골드: ${wCost}G)`); blacksmith(); return; }
+    p.gold -= wCost;
+    if(randInt(1,100) <= wProb){
+      p.equipped_weapon.enhance += 1;
+      goldFlash();
+      displayText(`🎉 [${p.equipped_weapon.name}] 강화 성공! (현재 +${p.equipped_weapon.enhance})`);
+    } else {
+      if(wDestroy>0 && randInt(1,100)<=wDestroy){
+        shakeApp();
+        displayText(`💥 앗! 강화 실패 여파로 [${p.equipped_weapon.name}[+${wEnh}]] 장비가 완전히 파괴되어 소멸했습니다... 😭`);
+        p.equipped_weapon = null;
+      } else {
+        displayText("❌ 무기 강화 실패...");
+        if(Math.random()<0.35 && p.equipped_weapon && p.equipped_weapon.enhance>0){
+          p.equipped_weapon.enhance -= 1;
+          displayText(`💔 장비 손상으로 강화 수치가 -1 하락했습니다... (+${p.equipped_weapon.enhance})`);
+        }
+      }
+    }
+    blacksmith();
+  };
+
+  const tryArmorUp = ()=>{
+    setButtons([]);
+    if(p.gold < aCost){ displayText(`▶ 골드가 부족합니다! (필요 골드: ${aCost}G)`); blacksmith(); return; }
+    p.gold -= aCost;
+    if(randInt(1,100) <= aProb){
+      p.armor_level += 1;
+      goldFlash();
+      displayText(`🎉 방어구 강화 성공! (현재 +${p.armor_level})`);
+    } else {
+      if(aDestroy>0 && randInt(1,100)<=aDestroy){
+        shakeApp();
+        const armorDisp = aItem ? aItem.name : "기본 방어구";
+        displayText(`💥 앗! 강화 실패 여파로 [${armorDisp}] 방어구가 완전히 파괴되었습니다... 😭`);
+        if(aItem) p.equipped_armor = null;
+      } else {
+        displayText("❌ 방어구 강화 실패...");
+        if(Math.random()<0.35 && p.armor_level>0){
+          p.armor_level -= 1;
+          displayText(`💔 장비 손상으로 방어구 강화 수치가 -1 하락했습니다... (+${p.armor_level})`);
+        }
+      }
+    }
+    blacksmith();
+  };
+
+  setButtons([
+    ["무기 강화 시도", tryWeaponUp],
+    ["방어구 강화 시도", tryArmorUp],
+    ["편의시설로", townFacilityMenu],
+    ["마을로 돌아가기", town]
+  ]);
+}
+
+function skillUpgradeMenu(){
+  setButtons([]);
+  S.currentMonster = null;
+  renderScene();
+  const p = S.player;
+  displayText("==================================================\n           📚 마법 연구소 (스킬 강화)\n==================================================", {clear:true});
+  displayText(`보유 골드: ${p.gold} G\n`);
+  displayText("골드를 지불하여 보유한 스킬의 위력을 영구적으로 강화합니다.");
+  displayText("(스킬 강화는 파괴 위험이 없지만 비용이 비쌉니다)\n");
+
+  const unlocked = Object.entries(p.skills).filter(([,v])=>v.unlocked);
+  if(!unlocked.length){
+    displayText("▶ 아직 배운 스킬이 없습니다!");
+    setButtons([["편의시설로", townFacilityMenu]]);
+    return;
+  }
+  unlocked.sort((a,b)=>b[1].rank-a[1].rank);
+  unlocked.forEach(([sName,sData])=>{
+    const up = sData.upgrade;
+    const cost = 300 + up*400;
+    const cur = sData.mult + up*0.2;
+    displayText(` - [${sName} +${up}] : 위력 x${cur.toFixed(1)} ▶ 다음 x${(cur+0.2).toFixed(1)} (비용: ${cost}G)`);
+  });
+
+  const btnData = unlocked.map(([sName,sData])=>[`강화: ${sName}`, ()=>trySkillUp(sName,sData)]);
+  btnData.push(["편의시설로", townFacilityMenu]);
+  setPaginatedButtons(btnData);
+}
+
+function trySkillUp(sName, sData){
+  setButtons([]);
+  const p = S.player;
+  const up = sData.upgrade;
+  const cost = 300 + up*400;
+  if(p.gold < cost){
+    displayText(`▶ 골드가 부족합니다! (필요 골드: ${cost}G)`);
+    setTimeout(skillUpgradeMenu, 700);
+    return;
+  }
+  p.gold -= cost;
+  sData.upgrade += 1;
+  goldFlash();
+  const newMult = sData.mult + sData.upgrade*0.2;
+  displayText(`🎉 스킬 강화 성공! [${sName}]이(가) +${sData.upgrade} 강화되어 위력이 x${newMult.toFixed(1)}가 되었습니다!`);
+  renderScene();
+  setTimeout(skillUpgradeMenu, 900);
+}
+
+function jobAdvanceMenu(){
+  setButtons([]);
+  S.currentMonster = null;
+  renderScene();
+  const p = S.player;
+  const options = ADVANCE_OPTIONS[p.base_job];
+  displayText("==================================================\n           ⭐ 전직의 제단\n==================================================", {clear:true});
+  displayText(`레벨 25를 달성하여 2차 전직의 자격을 얻었습니다, ${p.name}!`);
+  displayText("한 번 전직하면 되돌릴 수 없습니다. 신중히 선택하세요.\n");
+  options.forEach(job=>{
+    const m = ADVANCE_JOBS[job];
+    const skillNames = Object.keys(m.skills).join(", ");
+    displayText(`▶ ${job} (HP x${m.hp} / ATK x${m.atk} / DEF x${m.def} / SPD x${m.spd})`);
+    displayText(`   신규 스킬: ${skillNames}\n`);
+  });
+  const btns = options.map(job=>[`${job}(으)로 전직`, ()=>confirmAdvance(job)]);
+  btns.push(["나중에 하기", townFacilityMenu]);
+  setButtons(btns);
+}
+
+async function confirmAdvance(job){
+  const ok = await confirmModal(`정말로 [${job}](으)로 전직하시겠습니까?`, "전직한다", "취소");
+  if(!ok){ jobAdvanceMenu(); return; }
+  advanceJobFn(S.player, job);
+  goldFlash();
+  displayText(`🎉🎉 축하합니다! [${job}](으)로 전직에 성공했습니다! 🎉🎉`, {clear:true});
+  displayText("당신의 힘이 한 차원 더 강력해졌습니다!");
+  renderScene();
+  await wait(1200);
+  townFacilityMenu();
+}
+
+/* =====================================================================
+   BATTLE
+===================================================================== */
+function battleUI(){
+  setButtons([]);
+  renderScene();
+  displayText("--------------------------------------------------");
+  setButtons([
+    ["🗡️ 일반 공격", attackNormal],
+    ["✨ 스킬 사용", useSkillMenu],
+    ["🛡️ 방어 태세", defendTurn],
+    ["🧪 포션 사용", usePotionMenu],
+    ["🏃 도망가기", flee]
+  ]);
+}
+
+async function attackNormal(){
+  setButtons([]);
+  const m = S.currentMonster, p = S.player;
+  let baseDmg = getAtk(p);
+  if(p.next_attack_boost){
+    baseDmg = Math.floor(baseDmg*1.5);
+    displayText("🔥 [카운터 태세] 공격력이 1.5배 증폭되어 들어갑니다!");
+    p.next_attack_boost = false;
+  }
+  let dmg = Math.max(1, baseDmg - m.def_stat + randInt(-5,5));
+  const isCrit = Math.random() < getCrit(p);
+  if(isCrit) dmg = Math.floor(dmg*1.5);
+
+  if(isCrit){ critFlash(); displayText(`💥 크리티컬! ${m.name}에게 ${dmg} 데미지!`); }
+  else { displayText(`▶ ${m.name}에게 ${dmg} 데미지!`); }
+
+  m.hp -= dmg;
+  await animateBattleAction("player", "slash");
+  await checkBattleState();
+}
+
+async function defendTurn(){
+  setButtons([]);
+  const p = S.player;
+  displayText(`🛡️ [${p.name}]이(가) 견고한 방어 태세를 취했습니다!`);
+  displayText(`✨ 집중력 회복: MP가 소량 회복되며, 다음 공격이 [카운터(1.5배)]로 발동됩니다!`);
+  p.mp = Math.min(p.max_mp, p.mp+15);
+  p.next_attack_boost = true;
+  renderScene();
+  await wait(900);
+  await monsterAttackTurn(true);
+}
+
+function useSkillMenu(){
+  setButtons([]);
+  renderScene();
+  const unlocked = Object.entries(S.player.skills).filter(([,v])=>v.unlocked);
+  if(!unlocked.length){
+    displayText("▶ 아직 배운 스킬이 없습니다!");
+    setTimeout(battleUI, 700);
+    return;
+  }
+  const btnData = unlocked.map(([sName,sData])=>[`${sName} (MP:${sData.mp})`, ()=>executeSkill(sName,sData)]);
+  btnData.push(["뒤로 가기", battleUI]);
+  setPaginatedButtons(btnData);
+}
+
+async function executeSkill(sName, sData){
+  setButtons([]);
+  const p = S.player, m = S.currentMonster;
+  if(p.mp < sData.mp){
+    displayText("▶ 마나가 부족합니다! 턴을 날렸습니다.");
+    await wait(500);
+    await checkBattleState();
+    return;
+  }
+  p.mp -= sData.mp;
+  let baseAtk = getAtk(p);
+  if(p.next_attack_boost){
+    baseAtk = Math.floor(baseAtk*1.5);
+    displayText("🔥 [카운터 태세] 스킬의 위력이 1.5배 증폭되어 꽂힙니다!");
+    p.next_attack_boost = false;
+  }
+  const totalMult = sData.mult + sData.upgrade*0.2;
+  const dmg = Math.max(1, Math.floor(baseAtk*totalMult) - m.def_stat);
+  critFlash();
+  m.hp -= dmg;
+  displayText(`✨ 스킬 발동! [${sName}] ${m.name}에게 ${dmg} 데미지!`);
+  await animateBattleAction("player", sData.type);
+  await checkBattleState();
+}
+
+function usePotionMenu(){
+  setButtons([]);
+  renderScene();
+  const potions = Object.entries(S.player.inventory).filter(([,v])=>v>0);
+  if(!potions.length){
+    displayText("▶ 인벤토리에 남은 포션이 없습니다! (상점에서 구매 가능)");
+    return;
+  }
+  const btnData = potions.map(([pName,count])=>[`${pName} (${count}개)`, ()=>drinkPotion(pName)]);
+  btnData.push(["뒤로 가기", battleUI]);
+  setPaginatedButtons(btnData);
+}
+
+async function drinkPotion(pName){
+  setButtons([]);
+  const p = S.player;
+  p.inventory[pName] -= 1;
+  if(pName.includes("힐링")){
+    const amt = pName.includes("소") ? 50 : (pName.includes("중") ? 120 : 300);
+    p.hp = Math.min(p.max_hp, p.hp+amt);
+    displayText(`🧪 [${pName}]을(를) 마셨습니다! 체력이 ${amt} 회복되었습니다.`);
+  } else {
+    const amt = pName.includes("소") ? 30 : (pName.includes("중") ? 70 : 150);
+    p.mp = Math.min(p.max_mp, p.mp+amt);
+    displayText(`🧪 [${pName}]을(를) 마셨습니다! 마나가 ${amt} 회복되었습니다.`);
+  }
+  renderScene();
+  await wait(600);
+  await monsterAttackTurn(false);
+}
+
+async function flee(){
+  setButtons([]);
+  const m = S.currentMonster, p = S.player;
+  if(m.m_type==="보스"){
+    displayText("▶ 보스전에서는 절대 도망칠 수 없습니다!");
+    await wait(600);
+    battleUI();
+    return;
+  }
+  const fleeChance = 0.35 + Math.min(0.45, p.spd/80.0);
+  if(Math.random() < fleeChance){
+    displayText("▶ 무사히 도망쳤습니다! (전술적 후퇴 성공)");
+    if(m.hp < m.max_hp){
+      const ratio = 1.0 - (m.hp/m.max_hp);
+      const expGain = Math.floor(m.exp_reward*ratio*0.4);
+      if(expGain>0){
+        p.exp += expGain;
+        displayText(`★ 깎아둔 체력에 비례하여 ${expGain} EXP를 챙겨 달아났습니다.`);
+        await levelUp(p);
+      }
+    }
+    S.currentMonster = null;
+    renderScene();
+    await wait(1000);
+    dungeonMenu();
+  } else {
+    displayText("▶ 도망치는데 실패했습니다! 적에게 등을 보였습니다!");
+    await wait(600);
+    await monsterAttackTurn(false);
+  }
+}
+
+async function checkBattleState(){
+  setButtons([]);
+  renderScene();
+  const m = S.currentMonster, p = S.player;
+
+  if(m.hp <= 0){
+    // victory flash
+    const inner = document.querySelector("#logFrame .frame-inner");
+    for(let i=0;i<2;i++){
+      inner.style.background = "#FFD700"; await wait(70);
+      inner.style.background = ""; await wait(70);
+    }
+    renderScene();
+
+    const victoryLines = [
+      "==================================================",
+      "              ⭐ V I C T O R Y ! ⭐",
+      "==================================================",
+      `★ 승리! ${m.exp_reward} EXP / ${m.gold_reward}G 획득.`
+    ];
+    displayText(victoryLines[0], {clear:true});
+    await wait(150);
+    for(const line of victoryLines.slice(1)){ displayText(line); await wait(220); }
+
+    p.exp += m.exp_reward;
+    p.gold += m.gold_reward;
+    await levelUp(p);
+    p.next_attack_boost = false;
+    renderScene();
+
+    if(S.currentDungeonType==="boss"){
+      displayText("--------------------------------------------------");
+      displayText(`🎉🎉 [STAGE ${S.stageIdx+1} 클리어!] 🎉🎉`);
+      displayText("스테이지의 보스를 물리치고 다음 거점을 해금했습니다!");
+      displayText("--------------------------------------------------");
+      S.stageIdx += 1;
+      S.currentMonster = null;
+      if(S.stageIdx >= STAGE_DATA.length){
+        displayText("🎊🎊 대마왕 카르가스를 물리치고 세상을 구원했습니다! [ 엔딩 ] 🎊🎊");
+        setButtons([["메인 메뉴로", mainMenu]]);
+      } else {
+        setButtons([["새로운 마을로 전진", town]]);
+      }
+    } else {
+      S.currentMonster = null;
+      setButtons([
+        ["⚔️ 계속 사냥하기", ()=>enterDungeon(S.currentDungeonType)],
+        ["🗺️ 다른 던전 선택", dungeonMenu],
+        ["🏡 마을로 귀환", town]
+      ]);
+    }
+    return;
+  }
+  await wait(700);
+  await monsterAttackTurn(false);
+}
+
+async function monsterAttackTurn(isDefending=false){
+  const m = S.currentMonster, p = S.player;
+  m.turn_count += 1;
+
+  if(!m.is_charging && (m.m_type==="중간보스"||m.m_type==="보스") && m.turn_count%4===0){
+    m.is_charging = true;
+    displayText(`⚠️ [${m.name}]이(가) 엄청난 기운을 끌어모으고 있습니다!! (다음 턴 치명적인 공격)`);
+    renderScene();
+    await wait(1000);
+    battleUI();
+    return;
+  }
+
+  let rawDmg;
+  if(m.is_charging){
+    m.is_charging = false;
+    shakeApp();
+    displayText(`💥 [${m.name}]의 무자비한 강공격이 쏟아집니다!!`);
+    rawDmg = Math.floor(m.atk * (2.2 + Math.random()*0.6));
+  } else {
+    rawDmg = m.atk + randInt(-3,3);
+  }
+
+  let mDmg = Math.max(1, rawDmg - getDef(p));
+
+  if(isDefending){
+    if(randInt(1,100) <= 25){
+      mDmg = 0;
+      renderScene();
+      cyanFlash();
+      displayText(`✨ [퍼펙트 가드!] 운 좋게 [${m.name}]의 공격 타이밍을 완벽히 읽어내어 피해를 [0]으로 무효화했습니다!!`);
+    } else {
+      mDmg = Math.max(1, Math.floor(mDmg/2));
+      displayText(`🛡️ 단단한 방어! [${m.name}]의 공격 피해를 절반으로 줄였습니다.`);
+    }
+  }
+
+  p.hp -= mDmg;
+  renderScene();
+
+  if(mDmg > 0){
+    shakeApp();
+    displayText(`▶ [${m.name}]의 공격! 윽.. ${mDmg} 데미지를 입었습니다.`);
+  }
+
+  if(p.hp <= 0){
+    S.currentMonster = null;
+    renderScene();
+    displayText("▶ 눈앞이 캄캄해졌습니다... [ GAME OVER ]");
+    setButtons([["메인 메뉴로", mainMenu]]);
+  } else {
+    await animateBattleAction("monster", null);
+    await wait(500);
+    battleUI();
+  }
+}
+
+/* =====================================================================
+   UI CONTROLS + INIT
+===================================================================== */
+document.getElementById("fontMinus").onclick = ()=>{ S.fontSize = clamp(S.fontSize-1,10,20); applyTextSettings(); };
+document.getElementById("fontPlus").onclick = ()=>{ S.fontSize = clamp(S.fontSize+1,10,20); applyTextSettings(); };
+document.getElementById("spaceMinus").onclick = ()=>{ S.lineSpacing = clamp(S.lineSpacing-1,0,10); applyTextSettings(); };
+document.getElementById("spacePlus").onclick = ()=>{ S.lineSpacing = clamp(S.lineSpacing+1,0,10); applyTextSettings(); };
+
+mainMenu();
+</script>
+</body>
+</html>
