@@ -314,6 +314,46 @@ html,body{
   .town-card{min-height:auto;}
 }
 
+
+/* ---------- dungeon selection board ---------- */
+.dungeon-board{display:flex;flex-direction:column;gap:14px;color:var(--ink);padding:2px 1px 8px;}
+.dungeon-hero{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:stretch;border-bottom:1px solid rgba(58,40,18,.35);padding:4px 2px 12px;}
+.dungeon-kicker{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:#765018;font-weight:700;}
+.dungeon-title{margin:3px 0 4px;font-size:22px;font-weight:900;color:#241707;letter-spacing:.5px;}
+.dungeon-story{font-size:11px;color:#5b431f;line-height:1.65;}
+.dungeon-power{min-width:145px;padding:10px 12px;border:1px solid rgba(91,67,31,.45);background:rgba(255,250,230,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.65);text-align:right;}
+.dungeon-power .label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:1.5px;color:#765018;}
+.dungeon-power strong{display:block;margin-top:3px;font-family:'Cinzel',serif;font-size:17px;color:#2d1d09;}
+.dungeon-power .current{color:#3d6a3a;}
+.dungeon-intro{font-size:12px;font-weight:800;color:#3a2812;display:flex;align-items:center;gap:7px;}
+.dungeon-intro::before{content:'⚔';font-size:16px;color:#8a5a12;}
+.dungeon-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.dungeon-card{position:relative;overflow:hidden;min-width:0;border:1px solid rgba(91,67,31,.48);background:linear-gradient(150deg,rgba(255,250,229,.94),rgba(215,190,133,.5));box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 3px 7px rgba(58,40,18,.10);padding:10px 10px 11px;display:flex;flex-direction:column;}
+.dungeon-card::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:#718d45;opacity:.9;}
+.dungeon-card.elite::before{background:#72538c;}.dungeon-card.boss::before{background:#9a3d32;}
+.dungeon-card.locked{filter:saturate(.55);opacity:.7;}
+.dungeon-ribbon{display:inline-flex;align-self:flex-start;margin-top:2px;padding:3px 7px;border:1px solid rgba(70,48,18,.35);background:#5d7434;color:#fff8df;font-family:'Cinzel',serif;font-size:8px;font-weight:700;letter-spacing:.7px;box-shadow:0 1px 2px rgba(0,0,0,.2);}
+.elite .dungeon-ribbon{background:#62467a;}.boss .dungeon-ribbon{background:#8e3329;}
+.dungeon-icon{height:58px;display:grid;place-items:center;font-size:40px;text-shadow:0 2px 0 rgba(255,255,255,.45);}
+.dungeon-card h3{margin:2px 0 2px;text-align:center;font-size:14px;color:#281a08;font-weight:900;}
+.dungeon-subtitle{text-align:center;font-family:'Cinzel',serif;font-size:8px;letter-spacing:1px;color:#7b5a26;margin-bottom:8px;}
+.dungeon-desc{min-height:42px;font-size:9px;line-height:1.6;color:#4a361b;text-align:center;}
+.dungeon-block{border-top:1px dashed rgba(91,67,31,.35);margin-top:8px;padding-top:7px;}
+.dungeon-block b{display:block;font-size:9px;color:#3a2812;margin-bottom:4px;}
+.dungeon-monsters{font-size:8px;line-height:1.55;color:#5b431f;min-height:38px;}
+.dungeon-stars{letter-spacing:2px;font-size:12px;color:#b18422;text-align:center;}
+.dungeon-stars.boss-stars{color:#9a302b;}
+.dungeon-rewards{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;}
+.dungeon-reward{padding:3px 5px;border:1px solid rgba(91,67,31,.28);background:rgba(255,255,255,.38);font-size:8px;color:#4a361b;font-weight:700;}
+.dungeon-footer{display:grid;grid-template-columns:1fr 1fr;gap:10px;border:1px solid rgba(91,67,31,.36);background:rgba(255,250,230,.42);padding:10px 12px;}
+.dungeon-info-title{font-weight:900;font-size:10px;color:#3a2812;margin-bottom:4px;}
+.dungeon-info{font-size:9px;line-height:1.7;color:#5b431f;}
+.dungeon-stage-line{display:flex;align-items:center;gap:4px;margin-top:8px;}
+.dungeon-stage-dot{flex:1;height:7px;border:1px solid #8a5a12;background:rgba(138,90,18,.08);}
+.dungeon-stage-dot.done{background:#8a5a12;}.dungeon-stage-dot.current{background:#d9b45c;box-shadow:0 0 0 1px #6e4b18;}
+.dungeon-stage-label{display:flex;justify-content:space-between;margin-top:4px;font-family:'Cinzel',serif;font-size:7px;color:#765018;}
+@media(max-width:650px){.dungeon-cards{grid-template-columns:1fr;}.dungeon-card{min-height:0;}.dungeon-hero{grid-template-columns:1fr;}.dungeon-power{text-align:left;min-width:0;}.dungeon-footer{grid-template-columns:1fr;}}
+
 /* ---------- action buttons ---------- */
 #actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px; flex-shrink: 0;}
 .action-btn{
@@ -1568,21 +1608,100 @@ function dungeonMenu(){
     setButtons([["마을로 돌아가기", town]]);
     return;
   }
+
   const [stageName, normalList, eliteList, bossList] = STAGE_DATA[S.stageIdx];
-  displayText(`==================================================\n       🗺️ [ STAGE ${S.stageIdx+1} : ${stageName} ] 던전 선택\n==================================================`, {clear:true});
-  displayText("진입할 던전을 선택하세요:\n");
-  displayText(`  1. 🌲 일반 던전 (무한 파밍 / 기본 보상)`);
-  displayText(`     └ 출현 몬스터: ${normalList.join(", ")}\n`);
-  displayText(`  2. 💀 정예 던전 (무한 파밍 / ★높은 보상)`);
-  displayText(`     └ 출현 몬스터: ${eliteList.join(", ")}\n`);
-  displayText(`  3. 🔥 보스 던전 (★승리 시 다음 스테이지 해금★)`);
-  displayText(`     └ 최종 보스: ${bossList[0]}\n`);
+  const p = S.player;
+  const [, currentPower] = playerTitleAndPower(p);
+  const stageNo = S.stageIdx + 1;
+  const currentTown = TOWN_DATA[S.stageIdx] ? TOWN_DATA[S.stageIdx].name : "알 수 없는 거점";
+  const recommendations = {
+    normal: 70 + stageNo * 55,
+    elite: 110 + stageNo * 80,
+    boss: 180 + stageNo * 120
+  };
+  const stars = n => '★'.repeat(n) + '☆'.repeat(5-n);
+  const stages = STAGE_DATA.map((_,i)=>{
+    const cls = i < S.stageIdx ? 'dungeon-stage-dot done' : (i === S.stageIdx ? 'dungeon-stage-dot current' : 'dungeon-stage-dot');
+    return `<div class="${cls}" title="STAGE ${i+1}"></div>`;
+  }).join('');
+
+  const normalReward = `${40 + stageNo*15}~${70 + stageNo*25}G · EXP ${45 + stageNo*20}~${80 + stageNo*25}`;
+  const eliteReward = `${90 + stageNo*30}~${150 + stageNo*45}G · EXP ${90 + stageNo*35}~${145 + stageNo*45}`;
+  const bossReward = `${180 + stageNo*55}~${300 + stageNo*80}G · EXP ${180 + stageNo*55}~${300 + stageNo*80}`;
+
+  const log = logEl();
+  log.innerHTML = `
+    <div class="dungeon-board">
+      <section class="dungeon-hero">
+        <div>
+          <div class="dungeon-kicker">DUNGEON SELECTION · STAGE ${String(stageNo).padStart(2,'0')}</div>
+          <h2 class="dungeon-title">🗺️ ${stageName}</h2>
+          <div class="dungeon-story">${currentTown}에서 바라본 ${stageName}.<br>어떤 길을 선택하느냐에 따라 위험과 보상이 달라집니다.</div>
+        </div>
+        <div class="dungeon-power">
+          <div class="label">COMBAT POWER</div>
+          <strong class="current">${currentPower}</strong>
+          <div style="font-size:8px;color:#765018;margin-top:2px;">현재 모험가 전투력</div>
+        </div>
+      </section>
+
+      <div class="dungeon-intro">진입할 던전을 선택하세요</div>
+
+      <section class="dungeon-cards">
+        <article class="dungeon-card">
+          <div class="dungeon-ribbon">01 · SAFE HUNTING</div>
+          <div class="dungeon-icon">🌲</div>
+          <h3>일반 던전</h3>
+          <div class="dungeon-subtitle">NORMAL DUNGEON</div>
+          <div class="dungeon-desc">위험은 낮지만 반복해서 사냥하며<br>꾸준히 성장하기 좋은 장소입니다.</div>
+          <div class="dungeon-block"><b>출현 몬스터</b><div class="dungeon-monsters">${normalList.join(' · ')}</div></div>
+          <div class="dungeon-block"><b>권장 전투력 · 난이도</b><div style="font-size:9px;color:#3d6a3a;font-weight:800;">${recommendations.normal} 이상</div><div class="dungeon-stars">${stars(1)}</div></div>
+          <div class="dungeon-block"><b>주요 보상</b><div class="dungeon-rewards"><span class="dungeon-reward">💰 ${normalReward}</span><span class="dungeon-reward">🧪 포션 획득 가능</span></div></div>
+        </article>
+
+        <article class="dungeon-card elite">
+          <div class="dungeon-ribbon">02 · HIGH RISK</div>
+          <div class="dungeon-icon">💀</div>
+          <h3>정예 던전</h3>
+          <div class="dungeon-subtitle">ELITE DUNGEON</div>
+          <div class="dungeon-desc">강력한 정예들이 지키는 위험 지역.<br>그만큼 더 값진 전리품을 얻습니다.</div>
+          <div class="dungeon-block"><b>출현 몬스터</b><div class="dungeon-monsters">${eliteList.join(' · ')}</div></div>
+          <div class="dungeon-block"><b>권장 전투력 · 난이도</b><div style="font-size:9px;color:#765018;font-weight:800;">${recommendations.elite} 이상</div><div class="dungeon-stars">${stars(3)}</div></div>
+          <div class="dungeon-block"><b>주요 보상</b><div class="dungeon-rewards"><span class="dungeon-reward">💰 ${eliteReward}</span><span class="dungeon-reward">🧪 포션 획득 가능</span></div></div>
+        </article>
+
+        <article class="dungeon-card boss">
+          <div class="dungeon-ribbon">03 · STAGE BOSS</div>
+          <div class="dungeon-icon">🔥</div>
+          <h3>보스 던전</h3>
+          <div class="dungeon-subtitle">BOSS DUNGEON</div>
+          <div class="dungeon-desc">이 지역의 지배자가 기다리고 있습니다.<br>승리하면 다음 스테이지가 해금됩니다.</div>
+          <div class="dungeon-block"><b>최종 보스</b><div class="dungeon-monsters" style="font-weight:800;color:#7d3029;">${bossList[0]}</div></div>
+          <div class="dungeon-block"><b>권장 전투력 · 난이도</b><div style="font-size:9px;color:#8e3329;font-weight:800;">${recommendations.boss} 이상</div><div class="dungeon-stars boss-stars">${stars(5)}</div></div>
+          <div class="dungeon-block"><b>주요 보상</b><div class="dungeon-rewards"><span class="dungeon-reward">💰 ${bossReward}</span><span class="dungeon-reward">🎁 스테이지 해금</span></div></div>
+        </article>
+      </section>
+
+      <section class="dungeon-footer">
+        <div>
+          <div class="dungeon-info-title">📜 던전 정보</div>
+          <div class="dungeon-info">• 일반/정예 던전은 반복 입장이 가능합니다.<br>• 보스 던전 클리어 시 다음 지역으로 진행할 수 있습니다.<br>• 권장 전투력보다 낮아도 도전은 가능하지만 위험합니다.</div>
+        </div>
+        <div>
+          <div class="dungeon-info-title">⚔️ 심연으로 향하는 길</div>
+          <div class="dungeon-stage-line">${stages}</div>
+          <div class="dungeon-stage-label"><span>STAGE 1</span><span>현재 ${stageNo} / ${STAGE_DATA.length}</span><span>STAGE ${STAGE_DATA.length}</span></div>
+        </div>
+      </section>
+    </div>
+  `;
+  log.scrollTop = 0;
 
   setButtons([
     ["🌲 일반 던전", ()=>enterDungeon("normal")],
     ["💀 정예 던전", ()=>enterDungeon("elite")],
-    ["🔥 보스 던전 (클리어)", ()=>enterDungeon("boss")],
-    ["마을로 돌아가기", town]
+    ["🔥 보스 던전", ()=>enterDungeon("boss"), {danger:true}],
+    ["↩ 마을로 돌아가기", town]
   ]);
 }
 
