@@ -315,6 +315,59 @@ html,body{
   .town-card{min-height:auto;}
 }
 
+/* ---------- town hub : single-screen dashboard ---------- */
+/* Keep the whole town lobby visible without scrolling on desktop. */
+#log:has(.town-hub){overflow-y:hidden;}
+.town-hub{
+  height:100%;
+  min-height:0;
+  gap:6px;
+  padding:0 1px 2px;
+}
+.town-hero{
+  flex:0 0 168px;
+  min-height:168px;
+  grid-template-columns:1.55fr .75fr;
+  gap:8px;
+}
+.town-location,
+.town-notice{
+  height:100%;
+  min-height:0;
+  padding:10px 13px;
+}
+.town-kicker{font-size:8px;letter-spacing:2.5px;margin-bottom:2px;}
+.town-title{font-size:19px;margin-bottom:4px;}
+.town-title span{font-size:9px;letter-spacing:1.7px;}
+.town-desc{font-size:10px;line-height:1.5;}
+.town-meta{margin-top:6px;gap:4px;}
+.town-chip{padding:3px 6px;font-size:7px;}
+.town-notice .label{font-size:7px;letter-spacing:1.7px;margin-bottom:5px;}
+.town-notice strong{font-size:11px;line-height:1.4;}
+.town-notice small{margin-top:5px;font-size:8px;line-height:1.4;}
+.town-section{padding-top:6px;}
+.town-section-head{margin-bottom:4px;}
+.town-section-title{font-size:11px;}
+.town-section-sub{font-size:7px;}
+.town-rumor{padding:7px 10px 7px 13px;font-size:9px;line-height:1.45;}
+.town-rumor::before{font-size:19px;}
+.town-rumor-source{margin-top:2px;font-size:7px;}
+.town-grid{gap:6px;}
+.town-card{padding:7px;min-height:55px;}
+.town-card .icon{font-size:14px;margin-right:5px;}
+.town-card b{font-size:9px;}
+.town-card p{margin-top:3px;font-size:7px;line-height:1.4;}
+.town-progress{gap:3px;margin-top:0;}
+.town-stage-dot{height:5px;}
+.town-footer-note{font-size:7px;padding-top:1px;}
+
+@media(max-width:600px){
+  #log:has(.town-hub){overflow-y:auto;}
+  .town-hub{height:auto;min-height:0;}
+  .town-hero{flex:0 0 auto;min-height:0;}
+  .town-location,.town-notice{height:auto;}
+}
+
 
 /* ---------- dungeon selection board ---------- */
 .dungeon-board{display:flex;flex-direction:column;gap:14px;color:var(--ink);padding:2px 1px 8px;}
