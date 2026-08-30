@@ -220,7 +220,6 @@ html,body{
   border:2px solid var(--gold-dim);box-shadow:0 0 0 1px #000, inset 0 0 10px rgba(0,0,0,0.6);
   overflow:hidden;
 }
-.sprite-box canvas{image-rendering:pixelated;width:96px;height:96px;}
 .combatant-card .cname{font-size:11px;color:var(--gold-bright);font-family:'Cinzel',serif;}
 .combatant-card .cjob{font-size:9px;color:var(--text-dim);margin-bottom:4px;}
 .mini-bar-track{width:100%;height:10px;background:#150d06;border:1px solid #000;border-radius:5px;position:relative;overflow:hidden;outline:1px solid var(--gold-dim);}
@@ -428,7 +427,7 @@ html,body{
 @media (max-width:520px){
   #actions{grid-template-columns:repeat(2,1fr);}
   .sprite-box{width:72px;height:72px;}
-  .sprite-box canvas{width:72px;height:72px;}
+  .sprite-box{width:72px;height:72px;} /* 캔버스 관련 제거됨 */
 }
 
 /* ---------- modal ---------- */
@@ -1112,11 +1111,36 @@ function claimQuest(id){
   levelUp(p).then(()=>{autoSave();renderScene();questMenu();});
 }
 
-const PLAYER_SHAPES={"전사":["                ","      OOOO      ","     OAAAAO     ","    OASSSSAO    ","    O S E  O    ","   OO OAAAO OO  ","  OWW AAAAA BBO "," OWWW AAAAA BBO "," OWWW AAAAA BBO ","  OWW AAAAA BBO ","   W  AAAAA OO  ","      AA AA     ","     OAA OAAO   ","     OAA OAAO   ","     OOO OOOO   ","                "],"마법사":["       OO       ","      OMMO      ","     OMMMMO     ","    OMMMMMMO    ","   OOOOOOOOOO   ","     OSSSSO     ","    O S E  O    ","  OO OMMMMO OO  "," OWW MMMMMM MWO "," OW  MMMMMM  WO "," OW  MMMMMM  WO "," OW  MMMMMM  WO "," OW   MMMM   WO ","  O  OMM MMO O  ","     OOO OOO    ","                "],"도적":["                ","      OOOO      ","     ODDDDO     ","    ODDSSSDO    ","    ODS E DO    ","   OO ODDDO OO  ","  OWW DDDDD WWO ","  OW  DDDDD  WO ","  OW  DDDDD  WO ","   O  DDDDD  O  ","      DD DD     ","     ODD ODDO   ","     ODD ODDO   ","     OOO OOOO   ","                ","                "]};
-const MONSTER_SHAPES={"슬라임":["                ","                ","                ","                ","       OO       ","      OGGO      ","     OGGGGO     ","    OGGHLGGO    ","   OGGHHLGGGO   ","  OGGKGGLKGGOO  "," OGGGGGGGGGGGGO "," OGGGGGGGGGGGGO "," OGGGGGGGGGGGGO ","  OOOOOOOOOOOO  ","                ","                "],"고블린":["                ","                ","     OOOOOO     ","    OGGGGGOO    ","  OOG R G ROOO  "," OGGG GGG GGGGO ","  OOGGGGGGGGO   ","    OOGGGGOO    ","   OOOAAAAOOO   ","  OWW AAAAA DDO "," OWWW AAAAA DDO "," OWW  AAAAA  DO ","  O   AA AA  O  ","     OAA OAAO   ","     OOO OOOO   ","                "],"벌레":["                ","                ","                ","   O        O   ","    O      O    ","   OOOOOOOOOO   ","  ODDDDDDDDDDO  ","  OD R DD R DO  ","  ODDDDDDDDDDO  ","  ODDDDWWDDDDO  ","  ODDDDDDDDDDO  ","   OOOOOOOOOO   ","   O O O  O O   ","   O O O  O O   ","                ","                "],"해골":["                ","      OOOO      ","     OWWWWO     ","    OWRWWKWO    ","    OWWWWWWO    ","     OWWWWO     ","     O OO O     ","    OOWWWWOO    ","  OOW WWWW WOO  ","  OWO WWWW OWO  ","  OWO WWWW OWO  ","   O   WW   O   ","      OWWO      ","     OWW WWO    ","     OOO OOO    ","                "],"짐승":["                ","                ","                ","   OO      OO   ","  OLLO    OLLO  ","  OLLLOOOOLLLO  ","  OLL R LL R LO ","   OLLLLLLLLLLO ","  OLLLLWWLLLLLO ","  OLLLLLLLLLLLO ","   OLLLLLLLLLO  ","   OLL O O LLO  ","  OOLL O O LLOO ","  OOOO   OOOO   ","                ","                "],"거인":["      OOOO      ","     ORRRRO     ","    OR K  K RO  ","    ORRRWWWRRO  ","     ORRRRRRO   ","  OOOOAAAAOOOO  "," OAAAOAAAAOAAAO "," OA AAOAAAAO AA "," O  AAAAAAA  AO "," O  AAAAAAA  AO "," O  AAAAAAA   O ","  OO  AAAA OO   ","     OAA AAO    ","     OAA OAAO   ","     OOO OOOO   ","                "],"정령":["                ","      OOOO      ","     OPPPPO     ","    OPPPPPPO    ","   OPP K  K PO  ","   OPPPPPPPPO   ","   OPPPPPPPPO   ","   OPPPPPPPPO   ","   OPPPPPPPPO   ","    OPPPPPPO    ","    OPP  PPO    ","     OP  PO     ","      OPPO      ","       OO       ","                ","                "],"드래곤":[" O  OO  OO  O   "," OGOGGOOGGOGO   ","  OGGGGGGGGO    ","  OG Y GG YGO   "," OGGGGWGGGGGGO  ","  OGGGGGGGGO    "," OGG OGGGGO GGO "," OGG OGGGGO GGO "," OGG OGGGGO GGO "," OG  OGGGGO  GO ","  O  OGGGGO  O  ","     GG  GG     ","    OGG O GGO   ","    OOO O OOO   ","                ","                "]};
-const EFFECT_SHAPES={"slash":["                ","                ","           W    ","          WWW   ","         WW     ","        WW      ","       WW       ","      WW        ","     WW         ","    WW          ","   WWW          ","    W           ","                ","                ","                ","                "],"magic_missile":["                ","                ","                ","                ","                ","       W        ","      WWW       ","     WWWWW      ","      WWW       ","       W        ","                ","                ","                ","                ","                ","                "],"fireball":["                ","                ","                ","       W        ","      WRW       ","     WRRRW      ","    WRRRRRW     ","   WRRRRRRRW    ","   WRRRRRRRW    ","    WRRRRRW     ","     WRRRW      ","      WRW       ","       W        ","                ","                ","                "],"charge":["                ","     WW         ","    WWWW        ","   WW  WW       ","   W    W  W    ","  W      WWW    ","  W     WW W    ","        W       ","       W        ","      W         ","                ","                ","                ","                ","                ","                "]};
-const EFFECT_PALETTES={"W":"#ffffff","R":"#e74c3c","B":"#3498db","Y":"#f1c40f","G":"#2ecc71","P":"#9b59b6","D":"#34495e"};
 
+/* =====================================================================
+   아이콘 반환 로직 추가 (캔버스 도트 렌더링 대체)
+===================================================================== */
+function getPlayerIcon(job) {
+  if (job.includes("전사") || job.includes("검투사") || job.includes("버서커") || job.includes("사무라이")) return "⚔️";
+  if (job.includes("마법") || job.includes("크루세이더")) return "🔮";
+  if (job.includes("도적") || job.includes("어쌔신") || job.includes("시프")) return "🗡️";
+  return "👤";
+}
+
+function getMonsterIcon(name) {
+  if (name.includes("슬라임")) return "💧";
+  if (name.includes("고블린") || name.includes("오크") || name.includes("트롤")) return "👺";
+  if (name.includes("해골") || name.includes("좀비") || name.includes("유령") || name.includes("리치")) return "💀";
+  if (name.includes("늑대") || name.includes("개") || name.includes("짐승") || name.includes("켈베로스")) return "🐺";
+  if (name.includes("거미") || name.includes("벌레") || name.includes("웜")) return "🐛";
+  if (name.includes("골렘") || name.includes("바위")) return "🗿";
+  if (name.includes("정령")) return "🧚";
+  if (name.includes("드래곤") || name.includes("마왕") || name.includes("카르가스")) return "🐉";
+  if (name.includes("불") || name.includes("화염") || name.includes("용암") || name.includes("이프리트")) return "🔥";
+  if (name.includes("얼음") || name.includes("서리") || name.includes("눈보라")) return "❄️";
+  return "👹";
+}
+
+const ELEMENT_COLORS = {
+  phys:["#ffffff","#cfd8e8"], arcane:["#c49bff","#8f6bd6"], fire:["#ff8a3d","#ff4d4d"],
+  ice:["#8fe0ff","#3aa8ff"], light:["#fff27a","#ffd166"], poison:["#8be07a","#3c9c4a"],
+  dark:["#b98bff","#5b3a99"], holy:["#fff7d6","#ffd166"], gold:["#ffe082","#c8a24a"]
+};
 const ELEMENT_OF = {
   slash:"phys", charge:"phys", heavy:"phys", earthquake:"phys",
   stab:"phys", flurry:"phys", arena_boom:"phys", sword_dance:"phys",
@@ -1129,11 +1153,6 @@ const ELEMENT_OF = {
   holy_light:"holy", judge_hammer:"holy"
 };
 
-const ELEMENT_COLORS = {
-  phys:["#ffffff","#cfd8e8"], arcane:["#c49bff","#8f6bd6"], fire:["#ff8a3d","#ff4d4d"],
-  ice:["#8fe0ff","#3aa8ff"], light:["#fff27a","#ffd166"], poison:["#8be07a","#3c9c4a"],
-  dark:["#b98bff","#5b3a99"], holy:["#fff7d6","#ffd166"], gold:["#ffe082","#c8a24a"]
-};
 
 /* =====================================================================
    STATE / UTIL
@@ -1206,16 +1225,9 @@ function applyTextSettings(){
   const log = logEl();
   if(!log) return;
 
-  // 기존에는 스토리 로그(.ln)에만 설정이 적용되어
-  // 마을/던전/퀘스트 같은 HTML UI에서는 상단의 글자·간격 버튼이
-  // 아무 반응도 하지 않는 문제가 있었습니다.
-  // 모든 화면의 텍스트 요소에 최초 기준값을 저장한 뒤 현재 설정값을
-  // 기준으로 다시 계산해 적용합니다.
   const scale = S.fontSize / 13;
   const uiElements = Array.from(log.querySelectorAll('*'));
 
-  // 먼저 모든 기준값을 수집합니다. 부모의 글씨 크기를 먼저 바꿔
-  // 자식 요소의 기준값이 연쇄적으로 변하는 것을 방지합니다.
   uiElements.forEach(el=>{
     if(!el.dataset.baseFontSize){
       const computed = parseFloat(getComputedStyle(el).fontSize);
@@ -1223,7 +1235,6 @@ function applyTextSettings(){
     }
   });
 
-  // 수집한 기준값을 바탕으로 현재 글씨 크기를 일괄 적용합니다.
   uiElements.forEach(el=>{
     if(el.dataset.baseFontSize){
       const base = parseFloat(el.dataset.baseFontSize);
@@ -1231,13 +1242,11 @@ function applyTextSettings(){
     }
   });
 
-  // 스토리 로그는 기존 동작을 그대로 유지합니다.
   log.querySelectorAll('.ln').forEach(el=>{
     el.style.fontSize = S.fontSize + 'px';
     el.style.marginBottom = S.lineSpacing + 'px';
   });
 
-  // 카드형 화면들의 간격을 버튼으로도 조절합니다.
   const gapPx = Math.round(S.lineSpacing * 0.75);
   const town = log.querySelector('.town-hub');
   if(town){
@@ -1324,8 +1333,6 @@ async function resetGameData() {
 
 /* =====================================================================
    AI CONTENT CACHE — ONE API CALL PER STAGE
-   AI creates a small content pack once. The game engine owns rewards,
-   monster stats, quest progress and battle rules.
 ===================================================================== */
 const AI_CONTENT_VERSION = "stage-pack-v1";
 
@@ -1473,7 +1480,6 @@ async function ensureAIStageContent(stageIdx=S.stageIdx, options={}){
     }catch(e){
       console.warn("AI stage pack generation failed",e);
       delete S.aiContent._loading[stageIdx];
-      // Static content remains a full offline fallback. No retry loop.
       return null;
     }finally{
       if(options.showLoader) aiLoader().classList.remove("show");
@@ -1508,8 +1514,6 @@ async function triggerRandomEvent(locationStr, callback) {
 
   let eventData=getCachedEvent();
   if(!eventData){
-    // A stage pack should normally have been generated when entering town.
-    // If it isn't available, fail safely instead of making a second API call.
     return callback();
   }
 
@@ -1680,58 +1684,6 @@ function playerTitleAndPower(p){
 /* =====================================================================
    RENDER SCENE (status / battle panel)
 ===================================================================== */
-function getPlayerSprite(){
-  if(!S.player) return [PLAYER_SHAPES["전사"], {}];
-  const job = S.player.current_job;
-  let pal = {O:"#080b11", K:"#080b11", S:"#ffcca6", W:"#ffffff"};
-  let shape = PLAYER_SHAPES["전사"];
-  if(job.includes("마법") || job.includes("크루세이더")){ shape = PLAYER_SHAPES["마법사"]; Object.assign(pal, {B:"#3498db", Y:"#f1c40f", P:"#e74c3c", M:"#7b5fd6"}); } 
-  else if(job.includes("도적") || job.includes("어쌔신") || job.includes("시프")){ shape = PLAYER_SHAPES["도적"]; Object.assign(pal, {D:"#2c3e50"}); } 
-  else { Object.assign(pal, {G:"#2ecc71", A:"#95a5a6", B:"#c0392b"}); }
-  return [shape, pal];
-}
-
-function getMonsterSprite(){
-  if(!S.currentMonster) return [MONSTER_SHAPES["슬라임"], {}];
-  const n = S.currentMonster.name;
-  let shape = MONSTER_SHAPES["슬라임"];
-  let pal = {O:"#080b11", W:"#ffffff", K:"#080b11"};
-  const has = (...ks)=>ks.some(k=>n.includes(k));
-
-  if(has("벌레","거미")){ shape=MONSTER_SHAPES["벌레"]; Object.assign(pal, {A:"#ecf0f1",D:"#bdc3c7",K:"#2ecc71"}); }
-  else if(has("고블린","요정","서큐버스")){ shape=MONSTER_SHAPES["고블린"]; Object.assign(pal, {G:"#2ecc71",R:"#e74c3c",A:"#8d6e63",D:"#5d4037"}); }
-  else if(has("리자드맨","악어")){ shape=MONSTER_SHAPES["고블린"]; Object.assign(pal, {G:"#3498db",R:"#f1c40f",A:"#34495e",D:"#2c3e50"}); }
-  else if(has("정령","유령","영혼")){ shape=MONSTER_SHAPES["정령"]; Object.assign(pal, {P:"#9b59b6"}); }
-  else if(has("오크","거인","수호자","골렘","트롤")){ shape=MONSTER_SHAPES["거인"]; Object.assign(pal, {R:"#16a085",A:"#7f8c8d"}); }
-  else if(has("드래곤","마왕","발록","히드라","바실리스크","카르가스")){ shape=MONSTER_SHAPES["드래곤"]; Object.assign(pal, {G:"#c0392b",Y:"#f1c40f"}); }
-  else if(has("해골","스켈레톤","좀비","구울","기사")){ shape=MONSTER_SHAPES["해골"]; Object.assign(pal, {W:"#ecf0f1"}); }
-  else if(has("늑대","개","지옥견","멧돼지","켈베로스")){ shape=MONSTER_SHAPES["짐승"]; Object.assign(pal, {L:"#7f8c8d",R:"#e74c3c"}); }
-  else { Object.assign(pal, {G:"#2ecc71",H:"#a9dfbf",L:"#27ae60"}); }
-
-  if(has("불꽃","용암","화염","이프리트","마그마","지옥")) Object.assign(pal, {G:"#e74c3c",P:"#e74c3c",R:"#c0392b",L:"#e74c3c",D:"#c0392b"});
-  else if(has("얼음","서리","눈보라","펜릴","혹한")) Object.assign(pal, {G:"#3498db",P:"#3498db",R:"#2980b9",L:"#bdc3c7",D:"#3498db"});
-  else if(has("어둠","암흑","마계","저주","그림자","타락","데스")) Object.assign(pal, {G:"#8e44ad",P:"#8e44ad",R:"#2c3e50",L:"#2c3e50",D:"#8e44ad",A:"#2c3e50"});
-  else if(has("광산","바위","돌")) Object.assign(pal, {G:"#7f8c8d",P:"#7f8c8d",R:"#95a5a6",L:"#7f8c8d",D:"#95a5a6"});
-
-  return [shape, pal];
-}
-
-function drawSprite(canvas, matrix, palette){
-  const rows = matrix.length, cols = matrix[0].length;
-  canvas.width = cols; canvas.height = rows;
-  const ctx = canvas.getContext("2d");
-  ctx.imageSmoothingEnabled = false;
-  ctx.clearRect(0,0,cols,rows);
-  for(let r=0;r<rows;r++){
-    for(let c=0;c<cols;c++){
-      const ch = matrix[r][c];
-      if(ch===" ") continue;
-      ctx.fillStyle = palette[ch] || "#ffffff";
-      ctx.fillRect(c,r,1,1);
-    }
-  }
-}
-
 let battleAnim = {playerFlash:false, monsterFlash:false, effectType:null};
 
 function renderScene(){
@@ -1769,7 +1721,9 @@ function renderScene(){
         <div class="vs-wrap">
           <div class="combatant-card player" id="pcard">
             <span class="tag">PLAYER</span>
-            <div class="sprite-box"><canvas id="pcanvas"></canvas></div>
+            <div class="sprite-box" style="font-size: 50px; text-shadow: 0 0 10px rgba(0,0,0,0.8); line-height: 1;">
+              ${getPlayerIcon(p.current_job)}
+            </div>
             <div class="cname">${p.name}</div>
             <div class="cjob">Lv.${p.level} ${p.current_job}</div>
             <div class="mini-bar-track"><div class="mini-bar-fill hp" style="width:${hpR*100}%"></div></div>
@@ -1777,9 +1731,8 @@ function renderScene(){
           <div class="vs-badge">VS</div>
           <div class="combatant-card enemy" id="ecard">
             <span class="tag">ENEMY</span>
-            <div class="sprite-box" style="position:relative;">
-              <canvas id="ecanvas"></canvas>
-              <canvas id="effectcanvas" style="position:absolute;inset:0;"></canvas>
+            <div class="sprite-box" style="font-size: 50px; text-shadow: 0 0 10px rgba(0,0,0,0.8); line-height: 1;">
+              ${getMonsterIcon(m.name)}
             </div>
             <div class="cname">${m.name}</div>
             <div class="cjob">${m.m_type}</div>
@@ -1791,12 +1744,6 @@ function renderScene(){
           : `<div class="enemy-info">적군 속도: ${m.spd} | 공격: ${m.atk} | 방어: ${m.def_stat}</div>`}
       </div></div>
     `;
-    drawSprite(document.getElementById("pcanvas"), getPlayerSprite()[0], getPlayerSprite()[1]);
-    drawSprite(document.getElementById("ecanvas"), getMonsterSprite()[0], getMonsterSprite()[1]);
-    
-    if(battleAnim.effectType && EFFECT_SHAPES[battleAnim.effectType]){
-      drawSprite(document.getElementById("effectcanvas"), EFFECT_SHAPES[battleAnim.effectType], EFFECT_PALETTES);
-    }
 
     if(battleAnim.playerFlash) document.getElementById("pcard").classList.add("flash-red");
     if(battleAnim.monsterFlash) document.getElementById("ecard").classList.add("flash-red");
@@ -1824,63 +1771,35 @@ function renderScene(){
 
 function shakeApp(){
   const app = document.getElementById("app");
-
   if(!app) return;
-
   app.classList.remove("shake");
-
   void app.offsetWidth;
-
   app.classList.add("shake");
-
-  setTimeout(() => {
-    app.classList.remove("shake");
-  }, 400);
+  setTimeout(() => { app.classList.remove("shake"); }, 400);
 }
 function critFlash(){
   const app = document.getElementById("app");
-
   if(!app) return;
-
   app.classList.remove("crit-flash");
-
   void app.offsetWidth;
-
   app.classList.add("crit-flash");
-
-  setTimeout(() => {
-    app.classList.remove("crit-flash");
-  }, 600);
+  setTimeout(() => { app.classList.remove("crit-flash"); }, 600);
 }
 function goldFlash(){
   const scene = sceneEl();
-
   if(!scene) return;
-
   scene.classList.remove("gold-flash");
-
   void scene.offsetWidth;
-
   scene.classList.add("gold-flash");
-
-  setTimeout(() => {
-    scene.classList.remove("gold-flash");
-  }, 600);
+  setTimeout(() => { scene.classList.remove("gold-flash"); }, 600);
 }
 function cyanFlash(){
   const scene = sceneEl();
-
   if(!scene) return;
-
   scene.classList.remove("cyan-flash");
-
   void scene.offsetWidth;
-
   scene.classList.add("cyan-flash");
-
-  setTimeout(() => {
-    scene.classList.remove("cyan-flash");
-  }, 400);
+  setTimeout(() => { scene.classList.remove("cyan-flash"); }, 400);
 }
 function particleBurst(hostEl, element){
   const colors = ELEMENT_COLORS[element] || ELEMENT_COLORS.phys;
@@ -2317,7 +2236,7 @@ function equipmentInvenMenu(){
 
   if(p.equipment_inventory.length===0){
     displayText("보유 중인 여분의 장비가 없습니다. (상점에서 구매하세요)");
-    setButtons([["마을로 돌아가기", town]]);
+    setButtons([["마 마을로 돌아가기", town]]);
     return;
   }
 
@@ -2464,6 +2383,11 @@ function rest(){
   displayText(`(현재 골드: ${p.gold}G | HP: ${p.hp}/${p.max_hp})`);
   renderScene();
   townFacilityMenu();
+}
+
+function makeBar(current, max) {
+    const fill = Math.round((current / max) * 10);
+    return `[${'■'.repeat(fill)}${'□'.repeat(10-fill)}]`;
 }
 
 function showStatus(){
