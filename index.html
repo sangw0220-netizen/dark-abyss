@@ -342,6 +342,35 @@ html,body{
   animation:spin 1s linear infinite;margin-right:10px;
 }
 @keyframes spin { 100%{transform:rotate(360deg);} }
+
+/* =====================================================================
+   QUEST BOARD UI — parchment / high-contrast version
+   The quest board lives inside #log, whose background is parchment.
+===================================================================== */
+.quest-board{display:flex;flex-direction:column;gap:12px;color:#2f2110;}
+.quest-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid rgba(58,40,18,.32);padding:4px 2px 10px;}
+.quest-kicker{font-size:10px;letter-spacing:2.5px;color:#765018;font-family:'Cinzel',serif;font-weight:700;}
+.quest-title{margin:3px 0 0;font-size:22px;letter-spacing:1px;color:#241707;font-weight:900;text-shadow:0 1px 0 rgba(255,255,255,.35);}
+.quest-count{font-size:11px;color:#5b431f;font-weight:700;white-space:nowrap;}
+.quest-card{border:1px solid rgba(91,67,31,.42);background:linear-gradient(135deg,rgba(255,249,226,.88),rgba(218,194,139,.38));padding:13px 14px;position:relative;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 2px 5px rgba(58,40,18,.08);}
+.quest-card.active{border-color:rgba(42,79,117,.55);background:linear-gradient(135deg,rgba(246,250,255,.92),rgba(214,224,235,.48));}
+.quest-card.complete{border-color:rgba(138,90,18,.68);background:linear-gradient(135deg,rgba(255,250,222,.96),rgba(231,208,145,.55));box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 2px 8px rgba(138,90,18,.12);}
+.quest-row{display:flex;gap:12px;align-items:flex-start;}
+.quest-icon{width:40px;height:40px;display:grid;place-items:center;border:1px solid rgba(91,67,31,.38);font-size:21px;background:rgba(255,255,255,.48);box-shadow:inset 0 1px 0 rgba(255,255,255,.7);flex:0 0 auto;}
+.quest-main{flex:1;min-width:0;}
+.quest-name{font-weight:900;font-size:14px;color:#281a08;line-height:1.4;}
+.quest-desc{font-size:11px;line-height:1.65;color:#4a361b;margin-top:5px;font-weight:500;}
+.quest-status{font-size:10px;letter-spacing:.7px;padding:3px 7px;border:1px solid rgba(91,67,31,.34);color:#5b431f;background:rgba(255,255,255,.42);font-weight:800;white-space:nowrap;}
+.quest-status.active{color:#244d75;border-color:rgba(36,77,117,.42);background:rgba(220,237,251,.72);}
+.quest-status.complete{color:#704b0e;border-color:rgba(138,90,18,.45);background:rgba(255,239,177,.76);}
+.quest-progress{margin-top:10px;height:8px;background:#c8b17d;border:1px solid rgba(58,40,18,.25);overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.15);}
+.quest-progress>span{display:block;height:100%;background:linear-gradient(90deg,#486f9b,#9b6b1d);transition:width .25s ease;}
+.quest-progress-text{display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:#5b431f;}
+.quest-progress-text b{color:#2d1d09;font-weight:900;}
+.quest-reward{margin-top:9px;padding-top:8px;border-top:1px dashed rgba(91,67,31,.32);font-size:10px;color:#3d2a12;font-weight:700;}
+.quest-empty{padding:22px;text-align:center;color:#5b431f;border:1px dashed rgba(91,67,31,.38);background:rgba(255,250,230,.38);}
+.quest-board > div[style*="color:#9ca8b8"]{color:#5b431f !important;font-weight:700;}
+
 </style>
 </head>
 <body>
@@ -472,6 +501,170 @@ const TOWN_RUMORS = [
   "🍺 [얼어붙은 협곡 - 얼어붙은 잔 소식판]\n • \"눈보라 속에 거대한 푸른 눈동자의 용이 날아다니는 걸 봤다는 이가 있어. 폭풍의 전조가 분명해.\"",
   "🍺 [세인트 캐슬 - 최후의 성채 대성당 공고]\n • \"심연의 마왕 카르가스가 마왕성 심층부에서 온 세상의 빛을 집어삼키고 있다! 준비하라!\""
 ];
+
+/* =====================================================================
+   QUEST SYSTEM
+===================================================================== */
+const QUEST_TEMPLATES = [
+  {key:"hunt", icon:"⚔️", title:"주변의 위협", type:"normal", need:3,
+   desc:(stageName)=>`${stageName} 주변에 출몰하는 몬스터를 처치하세요.`},
+  {key:"elite", icon:"💀", title:"위험한 사냥감", type:"elite", need:1,
+   desc:(stageName)=>`${stageName}의 정예 몬스터를 처치하고 주민들을 안심시키세요.`},
+  {key:"boss", icon:"🔥", title:"지역의 지배자", type:"boss", need:1,
+   desc:(stageName)=>`${stageName}을(를) 지배하는 보스를 쓰러뜨려 다음 지역의 길을 여세요.`}
+];
+
+function questDefs(stageIdx=S.stageIdx){
+  const [stageName,, ,bossList] = STAGE_DATA[stageIdx] || ["미지의 지역",[],[],["미지의 보스"]];
+  const s=stageIdx+1;
+  return QUEST_TEMPLATES.map((t,i)=>({
+    id:`S${s}_${t.key}`,
+    stage:stageIdx,
+    icon:t.icon,
+    title:`${t.title} · ${stageName}`,
+    desc:t.desc(stageName),
+    type:t.type,
+    target:t.type==="boss" ? bossList[0] : null,
+    need:t.need,
+    reward:{
+      exp: t.type==="normal" ? 90+s*35 : t.type==="elite" ? 150+s*55 : 300+s*110,
+      gold: t.type==="normal" ? 120+s*55 : t.type==="elite" ? 220+s*85 : 420+s*170,
+      potions: t.type==="normal" ? 1 : t.type==="elite" ? 1 : 2
+    }
+  }));
+}
+
+function ensureQuestState(){
+  const p=S.player;
+  if(!p) return;
+  if(!p.quests) p.quests={};
+  questDefs().forEach(q=>{
+    if(!p.quests[q.id]) p.quests[q.id]={status:"available",progress:0};
+  });
+}
+
+function allQuestDefs(){
+  const list=[];
+  for(let i=0;i<STAGE_DATA.length;i++) list.push(...questDefs(i));
+  return list;
+}
+
+function getQuestState(q){
+  ensureQuestState();
+  return S.player.quests[q.id] || {status:"available",progress:0};
+}
+
+function questRewardText(r){
+  return `✨ ${r.exp} EXP  ·  💰 ${r.gold}G  ·  🧪 소형 포션 ${r.potions}개`;
+}
+
+function questMenu(){
+  setButtons([]);
+  S.currentMonster=null;
+  renderScene();
+  ensureQuestState();
+  const p=S.player;
+  const defs=allQuestDefs().filter(q=>q.stage<=S.stageIdx);
+  const active=defs.filter(q=>getQuestState(q).status==="active").length;
+  const current=defs.filter(q=>q.stage===S.stageIdx);
+
+  let html=`<div class="quest-board">
+    <div class="quest-head">
+      <div><div class="quest-kicker">ADVENTURER'S GUILD · QUEST BOARD</div><div class="quest-title">📜 의뢰 게시판</div></div>
+      <div class="quest-count">진행 중 ${active}/3</div>
+    </div>`;
+
+  if(current.length){
+    html += `<div style="font-size:11px;color:#9ca8b8;margin-top:2px;">현재 지역 의뢰</div>`;
+    current.forEach(q=>{ html+=renderQuestCard(q); });
+  }
+
+  const pastCompleted=defs.filter(q=>q.stage<S.stageIdx && getQuestState(q).status==="claimed");
+  if(pastCompleted.length){
+    html += `<div style="font-size:11px;color:#9ca8b8;margin-top:5px;">완료한 의뢰 ${pastCompleted.length}건</div>`;
+  }
+  html += `</div>`;
+  logEl().innerHTML=html;
+  logEl().scrollTop=0;
+
+  const btns=[];
+  current.forEach(q=>{
+    const st=getQuestState(q);
+    if(st.status==="available") btns.push([`📜 수주: ${q.title.split(" · ")[0]}`,()=>acceptQuest(q.id)]);
+    else if(st.status==="complete") btns.push([`🎁 보상 수령: ${q.title.split(" · ")[0]}`,()=>claimQuest(q.id)]);
+  });
+  btns.push(["🏡 마을로 돌아가기",town]);
+  setPaginatedButtons(btns);
+}
+
+function renderQuestCard(q){
+  const st=getQuestState(q);
+  const progress=Math.min(q.need,st.progress||0);
+  const pct=Math.floor(progress/q.need*100);
+  let status="미수주", cls="";
+  if(st.status==="active"){status="진행 중";cls="active";}
+  if(st.status==="complete"){status="보상 대기";cls="complete";}
+  if(st.status==="claimed"){status="완료";cls="complete";}
+  return `<div class="quest-card ${cls}">
+    <div class="quest-row"><div class="quest-icon">${q.icon}</div><div class="quest-main">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;"><div class="quest-name">${q.title}</div><span class="quest-status ${cls}">${status}</span></div>
+      <div class="quest-desc">${q.desc}</div>
+      <div class="quest-progress"><span style="width:${pct}%"></span></div>
+      <div class="quest-progress-text"><span>진행도</span><b>${progress} / ${q.need}</b></div>
+      <div class="quest-reward">보상 · ${questRewardText(q.reward)}</div>
+    </div></div></div>`;
+}
+
+function acceptQuest(id){
+  ensureQuestState();
+  const p=S.player;
+  const active=Object.values(p.quests).filter(q=>q.status==="active").length;
+  if(active>=3){ displayText("⚠️ 동시에 진행할 수 있는 의뢰는 최대 3개입니다."); return; }
+  const q=allQuestDefs().find(x=>x.id===id);
+  if(!q) return;
+  p.quests[id]={status:"active",progress:0};
+  autoSave();
+  displayText(`📜 [${q.title}] 의뢰를 수주했습니다.`,{highlight:true});
+  questMenu();
+}
+
+function updateQuestProgress(m){
+  ensureQuestState();
+  const defs=allQuestDefs();
+  const p=S.player;
+  let changed=false;
+  defs.forEach(q=>{
+    const st=p.quests[q.id];
+    if(!st || st.status!=="active" || q.stage!==S.stageIdx) return;
+    let match=false;
+    if(q.type==="normal") match=m.m_type==="일반";
+    else if(q.type==="elite") match=m.m_type==="중간보스";
+    else if(q.type==="boss") match=m.m_type==="보스" && m.name===q.target;
+    if(match){
+      st.progress=Math.min(q.need,(st.progress||0)+1);
+      changed=true;
+      if(st.progress>=q.need){ st.status="complete"; }
+    }
+  });
+  if(changed) autoSave();
+  return changed;
+}
+
+function claimQuest(id){
+  ensureQuestState();
+  const q=allQuestDefs().find(x=>x.id===id), st=S.player.quests[id];
+  if(!q || !st || st.status!=="complete") return;
+  const p=S.player, r=q.reward;
+  p.exp += r.exp;
+  p.gold += r.gold;
+  p.inventory["힐링포션(소)"]=(p.inventory["힐링포션(소)"]||0)+r.potions;
+  st.status="claimed";
+  autoSave();
+  goldFlash();
+  displayText(`🎉 퀘스트 완료! [${q.title}]`,{highlight:true});
+  displayText(`보상 획득: ${questRewardText(r)}`);
+  levelUp(p).then(()=>{autoSave();renderScene();questMenu();});
+}
 
 const PLAYER_SHAPES={"전사":["                ","      OOOO      ","     OAAAAO     ","    OASSSSAO    ","    O S E  O    ","   OO OAAAO OO  ","  OWW AAAAA BBO "," OWWW AAAAA BBO "," OWWW AAAAA BBO ","  OWW AAAAA BBO ","   W  AAAAA OO  ","      AA AA     ","     OAA OAAO   ","     OAA OAAO   ","     OOO OOOO   ","                "],"마법사":["       OO       ","      OMMO      ","     OMMMMO     ","    OMMMMMMO    ","   OOOOOOOOOO   ","     OSSSSO     ","    O S E  O    ","  OO OMMMMO OO  "," OWW MMMMMM MWO "," OW  MMMMMM  WO "," OW  MMMMMM  WO "," OW  MMMMMM  WO "," OW   MMMM   WO ","  O  OMM MMO O  ","     OOO OOO    ","                "],"도적":["                ","      OOOO      ","     ODDDDO     ","    ODDSSSDO    ","    ODS E DO    ","   OO ODDDO OO  ","  OWW DDDDD WWO ","  OW  DDDDD  WO ","  OW  DDDDD  WO ","   O  DDDDD  O  ","      DD DD     ","     ODD ODDO   ","     ODD ODDO   ","     OOO OOOO   ","                ","                "]};
 const MONSTER_SHAPES={"슬라임":["                ","                ","                ","                ","       OO       ","      OGGO      ","     OGGGGO     ","    OGGHLGGO    ","   OGGHHLGGGO   ","  OGGKGGLKGGOO  "," OGGGGGGGGGGGGO "," OGGGGGGGGGGGGO "," OGGGGGGGGGGGGO ","  OOOOOOOOOOOO  ","                ","                "],"고블린":["                ","                ","     OOOOOO     ","    OGGGGGOO    ","  OOG R G ROOO  "," OGGG GGG GGGGO ","  OOGGGGGGGGO   ","    OOGGGGOO    ","   OOOAAAAOOO   ","  OWW AAAAA DDO "," OWWW AAAAA DDO "," OWW  AAAAA  DO ","  O   AA AA  O  ","     OAA OAAO   ","     OOO OOOO   ","                "],"벌레":["                ","                ","                ","   O        O   ","    O      O    ","   OOOOOOOOOO   ","  ODDDDDDDDDDO  ","  OD R DD R DO  ","  ODDDDDDDDDDO  ","  ODDDDWWDDDDO  ","  ODDDDDDDDDDO  ","   OOOOOOOOOO   ","   O O O  O O   ","   O O O  O O   ","                ","                "],"해골":["                ","      OOOO      ","     OWWWWO     ","    OWRWWKWO    ","    OWWWWWWO    ","     OWWWWO     ","     O OO O     ","    OOWWWWOO    ","  OOW WWWW WOO  ","  OWO WWWW OWO  ","  OWO WWWW OWO  ","   O   WW   O   ","      OWWO      ","     OWW WWO    ","     OOO OOO    ","                "],"짐승":["                ","                ","                ","   OO      OO   ","  OLLO    OLLO  ","  OLLLOOOOLLLO  ","  OLL R LL R LO ","   OLLLLLLLLLLO ","  OLLLLWWLLLLLO ","  OLLLLLLLLLLLO ","   OLLLLLLLLLO  ","   OLL O O LLO  ","  OOLL O O LLOO ","  OOOO   OOOO   ","                ","                "],"거인":["      OOOO      ","     ORRRRO     ","    OR K  K RO  ","    ORRRWWWRRO  ","     ORRRRRRO   ","  OOOOAAAAOOOO  "," OAAAOAAAAOAAAO "," OA AAOAAAAO AA "," O  AAAAAAA  AO "," O  AAAAAAA  AO "," O  AAAAAAA   O ","  OO  AAAA OO   ","     OAA AAO    ","     OAA OAAO   ","     OOO OOOO   ","                "],"정령":["                ","      OOOO      ","     OPPPPO     ","    OPPPPPPO    ","   OPP K  K PO  ","   OPPPPPPPPO   ","   OPPPPPPPPO   ","   OPPPPPPPPO   ","   OPPPPPPPPO   ","    OPPPPPPO    ","    OPP  PPO    ","     OP  PO     ","      OPPO      ","       OO       ","                ","                "],"드래곤":[" O  OO  OO  O   "," OGOGGOOGGOGO   ","  OGGGGGGGGO    ","  OG Y GG YGO   "," OGGGGWGGGGGGO  ","  OGGGGGGGGO    "," OGG OGGGGO GGO "," OGG OGGGGO GGO "," OGG OGGGGO GGO "," OG  OGGGGO  GO ","  O  OGGGGO  O  ","     GG  GG     ","    OGG O GGO   ","    OOO O OOO   ","                ","                "]};
@@ -605,6 +798,7 @@ const SAVE_KEY = "dark_abyss_epic_save_v2";
 
 function autoSave() {
   if (S.player && !S.isEvent) {
+    ensureQuestState();
     const data = { player: S.player, stageIdx: S.stageIdx, townName: S.currentTownName };
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   }
@@ -740,6 +934,7 @@ function createPlayer(name, baseJob){
     equipped_weapon:null, equipped_armor:null, equipped_accessory:null,
     equipment_inventory:[], armor_level:0,
     inventory:{"힐링포션(소)":2, "마나포션(소)":2},
+    quests:{},
     inn_use_count:0, next_attack_boost:false,
     skills:{}
   };
@@ -1265,8 +1460,9 @@ function town(){
   `;
   log.scrollTop = 0;
 
-  setButtons([
+  setPaginatedButtons([
     ["⚔️ 모험 떠나기", dungeonMenu],
+    ["📜 퀘스트 게시판", questMenu],
     ["🛒 상점 가기", shopMenu],
     ["🎒 장비 관리", equipmentInvenMenu],
     ["🏨 여관 / 대장간", townFacilityMenu],
@@ -1976,7 +2172,12 @@ async function checkBattleState(){
 
     p.exp += m.exp_reward;
     p.gold += m.gold_reward;
+    const questChanged = updateQuestProgress(m);
     await levelUp(p);
+    if(questChanged){
+      const completedNow = Object.entries(p.quests||{}).filter(([id,st])=>st.status==="complete" && id.startsWith(`S${S.stageIdx+1}_`));
+      if(completedNow.length) displayText(`📜 새로운 퀘스트 보상이 준비되었습니다! [퀘스트 게시판]에서 수령하세요.`, {highlight:true});
+    }
     p.next_attack_boost = false;
     
     autoSave();
@@ -2092,6 +2293,7 @@ async function initApp(){
       S.currentTownName = data.townName || "루센트 마을";
       if(S.player.karma === undefined) S.player.karma = 50; 
       if(!S.player.equipment_inventory) S.player.equipment_inventory = [];
+      ensureQuestState();
       toast("자동으로 이전 진행 상황을 불러왔습니다.");
       town();
       return;
