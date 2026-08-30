@@ -157,6 +157,44 @@ html,body{
 }
 .hud-equip{margin-top:6px;font-size:9px;color:var(--text-dim);letter-spacing:0.5px;}
 
+/* ---------- lobby HUD spacing / equipment ---------- */
+.lobby-hud{
+  padding:12px 10px 13px !important;
+}
+.lobby-hud .hud-row{
+  margin-bottom:9px;
+}
+.lobby-hud .bar-line{
+  margin-top:8px;
+}
+.lobby-hud .hud-stats{
+  margin-top:10px;
+  gap:7px;
+}
+.lobby-hud .hud-stats span{
+  padding:3px 7px;
+}
+.lobby-hud .hud-equip{
+  margin-top:10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  color:var(--text);
+  letter-spacing:0;
+}
+.lobby-hud .hud-equip span{
+  display:inline-flex;
+  align-items:center;
+  min-height:22px;
+  padding:3px 8px;
+  background:var(--panel-soft);
+  border:1px solid var(--gold-dim);
+  border-radius:3px;
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  color:var(--gold);
+}
+
 /* ---------- battle scene ---------- */
 .battle-top{font-size:11px;}
 .vs-wrap{display:flex;align-items:stretch;gap:8px;margin-top:8px;}
@@ -1169,7 +1207,7 @@ function renderScene(){
     const hpR = p.max_hp>0 ? clamp(p.hp/p.max_hp,0,1) : 0;
     const mpR = p.max_mp>0 ? clamp(p.mp/p.max_mp,0,1) : 0;
     scene.innerHTML = `
-      <div class="frame"><div class="frame-inner tight">
+      <div class="frame"><div class="frame-inner tight lobby-hud">
         <div class="hud-row">
           <span class="hud-name">👤 <b>${p.name}</b> [${p.current_job}]</span>
           <span class="hud-gold">⭐ Lv.${p.level} &nbsp;|&nbsp; 👼 ${p.karma}(${getKarmaTitle(p.karma)}) &nbsp;|&nbsp; 💰 ${p.gold} G</span>
@@ -1177,6 +1215,11 @@ function renderScene(){
         <div class="bar-line"><span class="bar-label hp"></span><div class="bar-track"><div class="bar-fill hp" style="width:${hpR*100}%"></div></div><span class="bar-num">${p.hp}/${p.max_hp}</span></div>
         <div class="bar-line"><span class="bar-label mp"></span><div class="bar-track"><div class="bar-fill mp" style="width:${mpR*100}%"></div></div><span class="bar-num">${p.mp}/${p.max_mp}</span></div>
         <div class="hud-stats"><span>⚔️ ATK ${getAtk(p)}</span><span>🛡️ DEF ${getDef(p)}</span><span>⚡ SPD ${getSpd(p)}</span><span>💥 CRT ${Math.floor(getCrit(p)*100)}%</span></div>
+        <div class="hud-equip">
+          <span>🗡️ 무기: ${wName}</span>
+          <span>🛡️ 방어구: ${aName}</span>
+          <span>💍 장신구: ${accName}</span>
+        </div>
       </div></div>
     `;
   }
