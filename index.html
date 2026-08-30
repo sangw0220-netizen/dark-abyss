@@ -1158,14 +1158,19 @@ function renderScene(){
     const mHpR = m.max_hp>0 ? clamp(m.hp/m.max_hp,0,1) : 0;
 
     scene.innerHTML = `
-      <div class="frame"><div class="frame-inner tight battle-top">
+      <div class="frame"><div class="frame-inner tight battle-top lobby-hud">
         <div class="hud-row">
           <span class="hud-name">👤 <b>${p.name}</b> [${p.current_job}]</span>
           <span class="hud-gold">⭐ Lv.${p.level} &nbsp;|&nbsp; 👼 ${p.karma}(${getKarmaTitle(p.karma)}) &nbsp;|&nbsp; 💰 ${p.gold} G</span>
         </div>
         <div class="bar-line"><span class="bar-label hp"></span><div class="bar-track"><div class="bar-fill hp" style="width:${hpR*100}%"></div></div><span class="bar-num">${p.hp}/${p.max_hp}</span></div>
         <div class="bar-line"><span class="bar-label mp"></span><div class="bar-track"><div class="bar-fill mp" style="width:${mpR*100}%"></div></div><span class="bar-num">${p.mp}/${p.max_mp}</span></div>
-        <div class="hud-equip">🗡️ 무기: ${wName} | 👕 갑옷: ${aName} | 💍 장신구: ${accName}</div>
+        <div class="hud-stats"><span>⚔️ ATK ${getAtk(p)}</span><span>🛡️ DEF ${getDef(p)}</span><span>⚡ SPD ${getSpd(p)}</span><span>💥 CRT ${Math.floor(getCrit(p)*100)}%</span></div>
+        <div class="hud-equip">
+          <span>🗡️ 무기: ${wName}</span>
+          <span>🛡️ 방어구: ${aName}</span>
+          <span>💍 장신구: ${accName}</span>
+        </div>
       </div></div>
       <div class="frame hot"><div class="frame-inner tight">
         <div style="text-align:center;font-size:12px;color:var(--red-bright);letter-spacing:3px;font-family:'Cinzel',serif;font-weight:bold;text-shadow:0 1px 0 #000;">BATTLE</div>
