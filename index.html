@@ -20,6 +20,7 @@
   --parchment:#ecd9ab;
   --parchment-dim:#dcc48c;
   --ink:#3a2812;
+  --ink-soft:#6e5732;
   --gold:#d9b45c;
   --gold-bright:#f4dd97;
   --gold-dim:#7a5c26;
@@ -28,6 +29,10 @@
   --text-dim:#a4906a;
   --red:#b5323f;
   --red-bright:#e0616c;
+  --gold-alt:#e0b83e;
+  --blue:#3f6f9e;
+  --green:#4f7a45;
+  --purple:#8c6fae;
   --hp:#8f2430;
   --mp:#2d5478;
 }
@@ -1100,13 +1105,23 @@ function mainMenu(){
              ⚔️ 다크 어비스 : AI CHRONICLES ⚔️
 ■━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━■
 
-빛의 가디언들이 봉인했던 심연의 마왕이 부활했습니다.
-안개 속에서 매번 새로운 운명이 엮이는 기이한 세계.
-선과 악의 경계에서, 당신만의 여정을 개척하십시오...`;
+📜 [ 심연의 개척자 서약서 ] 📜
+
+제 1 조. [미지의 세계]
+이곳은 당신의 발걸음에 맞춰 AI가 실시간으로 새로운 사건과 인물들을 창조해 내는 무한한 세계입니다.
+
+제 2 조. [운명의 무게]
+당신의 모든 행동은 '선(善)'과 '악(惡)'의 카르마로 기록됩니다. 누구를 돕고 누구를 짓밟을지에 따라 앞으로 겪게 될 운명이 완전히 뒤바뀝니다.
+
+제 3 조. [영구적인 죽음]
+심연은 자비가 없습니다. 전투에서 패배하여 생명력이 다한다면, 당신이 모은 장비와 골드, 세계의 기억은 영구히 삭제되며 처음부터 다시 시작해야 합니다.
+
+
+"위의 내용들에 대해 동의한다면, 모험을 시작하셔도 좋습니다."`;
   displayText(story, {clear:true});
 
-  const opts = [["⚔️ 새 모험 시작", newGame]];
-  opts.push(["🚪 게임 종료", ()=>{ document.body.innerHTML = "<div style=\"padding:40px;text-align:center;color:#a4906a;font-family:'Cinzel',serif;\">게임을 종료했습니다.</div>"; }]);
+  const opts = [["✍️ 서명 (모험 시작)", newGame]];
+  opts.push(["🚪 거부 (게임 종료)", ()=>{ document.body.innerHTML = "<div style=\"padding:40px;text-align:center;color:#a4906a;font-family:'Cinzel',serif;\">게임을 종료했습니다.</div>"; }]);
   setButtons(opts);
 }
 
