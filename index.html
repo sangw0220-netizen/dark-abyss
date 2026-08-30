@@ -95,6 +95,8 @@ html,body{
 }
 .mini-btn:hover{border-color:var(--gold);background:linear-gradient(180deg,#7a5228,#4a3018);}
 .mini-btn:active{transform:translateY(1px);}
+.mini-btn.active{border-color:var(--gold);box-shadow:0 0 0 1px rgba(217,180,92,.28), inset 0 1px 0 rgba(255,255,255,.12);}
+
 
 /* ---------- ornate frame ---------- */
 .frame{
@@ -503,8 +505,91 @@ html,body{
 .quest-empty{padding:22px;text-align:center;color:#5b431f;border:1px dashed rgba(91,67,31,.38);background:rgba(255,250,230,.38);}
 .quest-board > div[style*="color:#9ca8b8"]{color:#5b431f !important;font-weight:700;}
 
+/* =====================================================================
+   READABILITY PASS — default text is intentionally larger / darker.
+   Keep the compact single-screen layout while improving identification.
+===================================================================== */
+html,body{font-size:14px;}
+#scene{font-size:14px;}
+.hud-name{font-size:14px;}
+.hud-gold{font-size:13px;}
+.bar-line{font-size:12px;margin-top:5px;}
+.bar-label{letter-spacing:.7px;}
+.bar-num{font-size:11px;}
+.hud-stats{font-size:12px;gap:6px;margin-top:7px;}
+.hud-stats span{padding:3px 7px;}
+.hud-equip{font-size:11px;letter-spacing:.2px;margin-top:7px;}
+.ctrl-row{font-size:10px;}
+.mini-btn{font-size:12px;}
+
+/* Lobby: larger, darker typography without bringing back the large vertical gaps. */
+.town-hub{gap:5px;}
+.town-hero{flex-basis:154px;min-height:154px;}
+.town-location,.town-notice{padding:9px 12px;}
+.town-kicker{font-size:9px;letter-spacing:2.2px;}
+.town-title{font-size:21px;line-height:1.2;margin-bottom:3px;}
+.town-title span{font-size:10px;letter-spacing:1.4px;}
+.town-desc{font-size:12px;line-height:1.45;color:#402d16;}
+.town-meta{margin-top:5px;gap:4px;}
+.town-chip{font-size:9px;padding:3px 6px;color:#5a3d12;font-weight:700;}
+.town-notice .label{font-size:8px;letter-spacing:1.5px;margin-bottom:4px;}
+.town-notice strong{font-size:13px;line-height:1.35;}
+.town-notice small{font-size:10px;line-height:1.35;margin-top:4px;}
+.town-section{padding-top:5px;}
+.town-section-head{margin-bottom:3px;}
+.town-section-title{font-size:13px;}
+.town-section-sub{font-size:8px;}
+.town-rumor{padding:6px 10px 6px 13px;font-size:11px;line-height:1.4;color:#402d16;}
+.town-rumor-source{font-size:9px;margin-top:1px;}
+.town-card{padding:6px;min-height:50px;}
+.town-card .icon{font-size:15px;margin-right:5px;}
+.town-card b{font-size:11px;}
+.town-card p{font-size:9px;line-height:1.35;margin-top:2px;color:#57401f;}
+.town-stage-dot{height:5px;}
+.town-footer-note{font-size:8px;}
+
+/* Dungeon / menu typography: no tiny 7–9px body text. */
+.dungeon-kicker{font-size:10px;letter-spacing:2.5px;}
+.dungeon-title{font-size:22px;}
+.dungeon-story{font-size:12px;line-height:1.5;}
+.dungeon-power .label{font-size:9px;}
+.dungeon-power strong{font-size:18px;}
+.dungeon-intro{font-size:13px;}
+.dungeon-ribbon{font-size:9px;}
+.dungeon-card h3{font-size:15px;}
+.dungeon-subtitle{font-size:9px;}
+.dungeon-desc{font-size:10px;line-height:1.5;}
+.dungeon-block b{font-size:10px;}
+.dungeon-monsters{font-size:9px;}
+.dungeon-stars{font-size:13px;}
+.dungeon-reward{font-size:9px;}
+.dungeon-info-title{font-size:11px;}
+.dungeon-info{font-size:10px;line-height:1.55;}
+.dungeon-stage-label{font-size:8px;}
+
+/* Buttons should be immediately identifiable and readable. */
+.action-btn{font-size:13px;}
+
 </style>
-</head>
+<style id="dungeon-compact-fix">
+/* Dungeon hero: remove excessive vertical whitespace and keep the header readable. */
+#log:has(.dungeon-board){overflow-y:auto;}
+.dungeon-board{display:flex!important;flex-direction:column!important;gap:9px!important;padding:0 1px 4px!important;height:auto!important;min-height:0!important;align-content:flex-start!important;}
+.dungeon-hero{display:grid!important;grid-template-columns:minmax(0,1fr) 190px!important;grid-template-rows:auto!important;align-items:start!important;gap:12px!important;height:auto!important;min-height:0!important;max-height:none!important;padding:2px 2px 8px!important;}
+.dungeon-hero > div{height:auto!important;min-height:0!important;}
+.dungeon-kicker{margin:0 0 3px!important;line-height:1.2!important;}
+.dungeon-title{margin:0 0 5px!important;line-height:1.2!important;}
+.dungeon-story{margin:0!important;line-height:1.5!important;}
+.dungeon-power{display:flex!important;flex-direction:column!important;justify-content:center!important;align-self:start!important;width:190px!important;min-width:0!important;height:auto!important;min-height:0!important;max-height:105px!important;padding:9px 12px!important;box-sizing:border-box!important;}
+.dungeon-power .label{margin:0!important;line-height:1.2!important;}
+.dungeon-power strong{margin:3px 0 2px!important;line-height:1.1!important;}
+.dungeon-power > div:last-child{margin-top:0!important;font-size:9px!important;line-height:1.3!important;}
+.dungeon-intro{margin:0!important;line-height:1.3!important;}
+@media(max-width:650px){
+  .dungeon-hero{grid-template-columns:1fr!important;}
+  .dungeon-power{width:100%!important;max-height:none!important;}
+}
+</style></head>
 <body>
 <div id="app">
   <div id="titlebar">
@@ -889,7 +974,60 @@ function displayText(text, opts={}){
 }
 
 function applyTextSettings(){
-  document.querySelectorAll("#log .ln").forEach(el=>{ el.style.fontSize = S.fontSize+"px"; el.style.marginBottom = S.lineSpacing+"px"; });
+  const log = logEl();
+  if(!log) return;
+
+  // 기존에는 스토리 로그(.ln)에만 설정이 적용되어
+  // 마을/던전/퀘스트 같은 HTML UI에서는 상단의 글자·간격 버튼이
+  // 아무 반응도 하지 않는 문제가 있었습니다.
+  // 모든 화면의 텍스트 요소에 최초 기준값을 저장한 뒤 현재 설정값을
+  // 기준으로 다시 계산해 적용합니다.
+  const scale = S.fontSize / 13;
+  const uiElements = Array.from(log.querySelectorAll('*'));
+
+  // 먼저 모든 기준값을 수집합니다. 부모의 글씨 크기를 먼저 바꿔
+  // 자식 요소의 기준값이 연쇄적으로 변하는 것을 방지합니다.
+  uiElements.forEach(el=>{
+    if(!el.dataset.baseFontSize){
+      const computed = parseFloat(getComputedStyle(el).fontSize);
+      if(Number.isFinite(computed)) el.dataset.baseFontSize = String(computed);
+    }
+  });
+
+  // 수집한 기준값을 바탕으로 현재 글씨 크기를 일괄 적용합니다.
+  uiElements.forEach(el=>{
+    if(el.dataset.baseFontSize){
+      const base = parseFloat(el.dataset.baseFontSize);
+      if(Number.isFinite(base)) el.style.fontSize = (base * scale).toFixed(2) + 'px';
+    }
+  });
+
+  // 스토리 로그는 기존 동작을 그대로 유지합니다.
+  log.querySelectorAll('.ln').forEach(el=>{
+    el.style.fontSize = S.fontSize + 'px';
+    el.style.marginBottom = S.lineSpacing + 'px';
+  });
+
+  // 카드형 화면들의 간격을 버튼으로도 조절합니다.
+  const gapPx = Math.round(S.lineSpacing * 0.75);
+  const town = log.querySelector('.town-hub');
+  if(town){
+    town.style.gap = Math.max(3, 6 + (S.lineSpacing - 1.7) * 0.8) + 'px';
+    town.querySelectorAll('.town-section').forEach(el=>{
+      el.style.marginBottom = gapPx + 'px';
+    });
+  }
+  const dungeon = log.querySelector('.dungeon-board');
+  if(dungeon){
+    dungeon.style.gap = Math.max(7, 10 + (S.lineSpacing - 1.7) * 1.2) + 'px';
+  }
+  const quest = log.querySelector('.quest-board');
+  if(quest){
+    quest.style.gap = Math.max(6, 10 + (S.lineSpacing - 1.7) * 1.1) + 'px';
+    quest.querySelectorAll('.quest-card').forEach(el=>{
+      el.style.marginBottom = gapPx + 'px';
+    });
+  }
 }
 
 function setButtons(list){
@@ -2500,10 +2638,24 @@ async function monsterAttackTurn(isDefending=false){
 /* =====================================================================
    INIT
 ===================================================================== */
-document.getElementById("fontMinus").onclick = ()=>{ S.fontSize = clamp(S.fontSize-1,10,20); applyTextSettings(); };
-document.getElementById("fontPlus").onclick = ()=>{ S.fontSize = clamp(S.fontSize+1,10,20); applyTextSettings(); };
-document.getElementById("spaceMinus").onclick = ()=>{ S.lineSpacing = clamp(S.lineSpacing-1,0,10); applyTextSettings(); };
-document.getElementById("spacePlus").onclick = ()=>{ S.lineSpacing = clamp(S.lineSpacing+1,0,10); applyTextSettings(); };
+function refreshControlState(){
+  const fontMinus = document.getElementById("fontMinus");
+  const fontPlus = document.getElementById("fontPlus");
+  const spaceMinus = document.getElementById("spaceMinus");
+  const spacePlus = document.getElementById("spacePlus");
+  if(fontMinus) fontMinus.classList.toggle("active", S.fontSize < 13);
+  if(fontPlus) fontPlus.classList.toggle("active", S.fontSize > 13);
+  if(spaceMinus) spaceMinus.classList.toggle("active", S.lineSpacing < 1.7);
+  if(spacePlus) spacePlus.classList.toggle("active", S.lineSpacing > 1.7);
+}
+function updateTextSettings(){
+  applyTextSettings();
+  refreshControlState();
+}
+document.getElementById("fontMinus").onclick = ()=>{ S.fontSize = clamp(S.fontSize-1,10,20); updateTextSettings(); };
+document.getElementById("fontPlus").onclick = ()=>{ S.fontSize = clamp(S.fontSize+1,10,20); updateTextSettings(); };
+document.getElementById("spaceMinus").onclick = ()=>{ S.lineSpacing = clamp(S.lineSpacing-1,0,10); updateTextSettings(); };
+document.getElementById("spacePlus").onclick = ()=>{ S.lineSpacing = clamp(S.lineSpacing+1,0,10); updateTextSettings(); };
 
 async function initApp(){
   if(hasSave()){
