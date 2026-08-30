@@ -798,6 +798,95 @@ html,body{font-size:14px;}
   }
 }
 </style>
+
+<style id="mobile-responsive-fix">
+/* =========================================================
+   MOBILE RESPONSIVE FIX
+   Desktop card rules were declared later than the original
+   mobile rules, so the hero's fixed second column survived.
+   ========================================================= */
+@media (max-width: 700px){
+  html,body{width:100%;min-width:0;height:100%;overflow-x:hidden;}
+  #app{width:100%;max-width:none;min-width:0;padding:8px 8px 12px;gap:6px;}
+  #titlebar{padding:2px 4px 9px;gap:8px;}
+  #titlebar h1{font-size:24px;letter-spacing:2px;}
+  #titlebar .sub{font-size:8px;letter-spacing:2.5px;}
+  .ctrl-col{gap:3px;}
+  .ctrl-row{font-size:9px;gap:3px;}
+  .mini-btn{width:22px;height:22px;font-size:12px;}
+
+  #logWrap,#logFrame{width:100%;min-width:0;}
+  #logFrame .frame-inner{width:100%;min-width:0;padding:7px;}
+  #log{width:100%;min-width:0;padding:2px 2px 8px;overflow-x:hidden!important;}
+
+  .town-hub{
+    width:100%!important;min-width:0!important;height:auto!important;
+    display:flex!important;flex-direction:column!important;gap:8px!important;
+    padding:0 1px 5px!important;position:static!important;margin:0!important;
+  }
+
+  /* Prevent the town title from being squeezed into vertical text. */
+  .town-hero{
+    width:100%!important;min-width:0!important;display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    grid-template-rows:auto!important;gap:8px!important;
+    flex:none!important;margin:0 0 2px!important;
+  }
+  .town-location,.town-notice{
+    width:100%!important;min-width:0!important;min-height:0!important;height:auto!important;
+    box-sizing:border-box!important;padding:13px 14px!important;
+  }
+  .town-location{min-height:0!important;}
+  .town-notice{min-height:0!important;}
+  .town-kicker{font-size:8px!important;letter-spacing:2.5px!important;margin-bottom:6px!important;}
+  .town-title{
+    width:100%!important;min-width:0!important;font-size:22px!important;line-height:1.2!important;
+    margin:0 0 6px!important;display:flex!important;flex-wrap:wrap!important;
+    align-items:baseline!important;gap:4px 7px!important;
+  }
+  .town-title span{font-size:9px!important;letter-spacing:1.5px!important;white-space:nowrap!important;}
+  .town-desc{font-size:11px!important;line-height:1.5!important;max-width:100%!important;}
+  .town-meta{margin-top:8px!important;gap:5px!important;}
+  .town-chip{font-size:8px!important;padding:4px 7px!important;}
+  .town-notice .label{font-size:8px!important;margin-bottom:6px!important;}
+  .town-notice strong{font-size:12px!important;line-height:1.45!important;}
+  .town-notice small{font-size:9px!important;line-height:1.45!important;margin-top:7px!important;padding-top:7px!important;}
+
+  .town-hub>.town-section,
+  .town-hub>.town-section:nth-of-type(2),
+  .town-hub>.town-section:nth-of-type(3){
+    width:100%!important;min-width:0!important;margin:0!important;padding:0!important;
+  }
+  .town-section-head{margin:0 0 5px!important;padding:0 2px 4px!important;}
+  .town-section-title{font-size:13px!important;}
+  .town-section-sub{font-size:7px!important;letter-spacing:1.4px!important;}
+
+  .town-rumor{width:100%!important;min-width:0!important;min-height:0!important;padding:10px 11px 9px 16px!important;font-size:10px!important;line-height:1.45!important;}
+  .town-rumor-source{font-size:8px!important;margin-top:4px!important;}
+  .rumor-action-hint{margin-top:6px!important;padding-top:6px!important;gap:7px!important;font-size:8px!important;}
+  .rumor-action-hint b{padding:5px 8px!important;font-size:8px!important;}
+
+  /* Two columns for the three area cards keeps the mobile lobby compact. */
+  .town-grid{width:100%!important;min-width:0!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;}
+  .town-card{min-width:0!important;min-height:64px!important;padding:8px!important;}
+  .town-card .icon{width:28px!important;height:28px!important;font-size:17px!important;margin-right:5px!important;}
+  .town-card b{font-size:10px!important;}
+  .town-card p{font-size:8px!important;line-height:1.35!important;margin-top:5px!important;}
+  .town-progress-card{width:100%!important;min-width:0!important;padding:9px 10px!important;}
+  .town-progress{gap:3px!important;}
+  .town-stage-dot{height:7px!important;}
+  .town-footer-note{font-size:8px!important;margin-top:6px!important;}
+}
+@media (max-width:380px){
+  #app{padding-left:6px;padding-right:6px;}
+  #titlebar h1{font-size:21px;letter-spacing:1.5px;}
+  .town-title{font-size:20px!important;}
+  .town-card{padding:7px 6px!important;}
+  .town-card .icon{width:25px!important;height:25px!important;font-size:15px!important;}
+  .town-card b{font-size:9px!important;}
+  .town-card p{font-size:7px!important;}
+}
+</style>
 </head>
 <body>
 <div id="app">
