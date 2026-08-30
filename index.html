@@ -851,6 +851,10 @@ const RUMOR_EVENTS = [
 ];
 
 function getRumorEvent(stageIdx=S.stageIdx){
+  const pack=aiStagePack(stageIdx);
+  if(pack?.rumor){
+    return {...pack.rumor, type:"normal", need:3, questKey:"hunt"};
+  }
   return RUMOR_EVENTS[stageIdx] || null;
 }
 function ensureRumorState(){
@@ -885,27 +889,34 @@ const QUEST_TEMPLATES = [
 ];
 
 function questDefs(stageIdx=S.stageIdx){
-  const [stageName,, ,bossList] = STAGE_DATA[stageIdx] || ["미지의 지역",[],[],["미지의 보스"]];
+  const [stageName,,,bossList]=STAGE_DATA[stageIdx]||["미지의 지역",[],[],["미지의 보스"]];
   const s=stageIdx+1;
+  const pack=aiStagePack(stageIdx);
+  if(pack?.quests?.length){
+    return pack.quests.map(q=>({
+      id:`S${s}_${q.type}`,
+      stage:stageIdx,
+      icon:q.type==="normal"?"⚔️":q.type==="elite"?"💀":"🔥",
+      title:`${q.title} · ${stageName}`,
+      desc:q.desc,
+      type:q.type,
+      target:q.target || (q.type==="boss"?bossList[0]:null),
+      need:q.need,
+      rumorLinked:!!q.rumorLinked,
+      reward:q.reward || rewardForQuestType(stageIdx,q.type)
+    }));
+  }
   const rumor=getRumorEvent(stageIdx);
-  return QUEST_TEMPLATES.map((t,i)=>{
-    const linked = rumor && rumor.questKey===t.key ? rumor : null;
+  return QUEST_TEMPLATES.map(t=>{
+    const linked=rumor&&rumor.questKey===t.key?rumor:null;
     return {
-    id:`S${s}_${t.key}`,
-    stage:stageIdx,
-    icon:t.icon,
-    title:linked ? `${linked.title} · ${stageName}` : `${t.title} · ${stageName}`,
-    desc:linked ? linked.objective : t.desc(stageName),
-    type:t.type,
-    target:linked ? linked.target : (t.type==="boss" ? bossList[0] : null),
-    need:linked ? linked.need : t.need,
-    rumorLinked:!!linked,
-    reward:{
-      exp: t.type==="normal" ? 90+s*35 : t.type==="elite" ? 150+s*55 : 300+s*110,
-      gold: t.type==="normal" ? 120+s*55 : t.type==="elite" ? 220+s*85 : 420+s*170,
-      potions: t.type==="normal" ? 1 : t.type==="elite" ? 1 : 2
-    }
-  };
+      id:`S${s}_${t.key}`,stage:stageIdx,icon:t.icon,
+      title:linked?`${linked.title} · ${stageName}`:`${t.title} · ${stageName}`,
+      desc:linked?linked.objective:t.desc(stageName),type:t.type,
+      target:linked?linked.target:(t.type==="boss"?bossList[0]:null),
+      need:linked?linked.need:t.need,rumorLinked:!!linked,
+      reward:rewardForQuestType(stageIdx,t.type)
+    };
   });
 }
 
@@ -1130,7 +1141,7 @@ const ELEMENT_COLORS = {
 const S = {
   player:null, stageIdx:0, currentMonster:null,
   currentTownName:"루센트 마을", currentDungeonType:"normal",
-  fontSize:13, lineSpacing:1.7, isEvent:false
+  fontSize:13, lineSpacing:1.7, isEvent:false, aiContent:{stages:{}}
 };
 
 const $ = (sel)=>document.querySelector(sel);
@@ -1288,7 +1299,14 @@ function autoSave() {
   if (S.player && !S.isEvent) {
     ensureQuestState();
     ensureRumorState();
-    const data = { player: S.player, stageIdx: S.stageIdx, townName: S.currentTownName };
+    const safeStages={};
+    Object.entries(S.aiContent?.stages||{}).forEach(([k,v])=>{
+      if(!v) return;
+      const copy=JSON.parse(JSON.stringify(v));
+      delete copy._eventQueue;
+      safeStages[k]=copy;
+    });
+    const data = { player: S.player, stageIdx: S.stageIdx, townName: S.currentTownName, aiContent: {version:AI_CONTENT_VERSION,stages:safeStages} };
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   }
 }
@@ -1305,112 +1323,235 @@ async function resetGameData() {
 }
 
 /* =====================================================================
-   AI RANDOM EVENT GENERATOR (VERCEL BACKEND)
+   AI CONTENT CACHE — ONE API CALL PER STAGE
+   AI creates a small content pack once. The game engine owns rewards,
+   monster stats, quest progress and battle rules.
+===================================================================== */
+const AI_CONTENT_VERSION = "stage-pack-v1";
+
+function aiStagePack(stageIdx=S.stageIdx){
+  return S.aiContent?.stages?.[stageIdx] || null;
+}
+
+function cleanAIJson(text){
+  return String(text||"").replace(/```json/gi,"").replace(/```/g,"").trim();
+}
+
+function safeChoiceType(v){
+  return ["reward","battle","none"].includes(v) ? v : "none";
+}
+
+function safeKarma(v){
+  const n=Number(v);
+  if(!Number.isFinite(n)) return 0;
+  return n>0 ? 10 : n<0 ? -10 : 0;
+}
+
+function stageAllowedMonsters(stageIdx){
+  const [stageName, normalList, eliteList, bossList] = STAGE_DATA[stageIdx] || ["미지의 지역",[],[],["미지의 보스"]];
+  return {stageName, normalList:[...normalList], eliteList:[...eliteList], bossList:[...bossList]};
+}
+
+function rewardForQuestType(stageIdx,type){
+  const s=stageIdx+1;
+  if(type==="elite") return {exp:150+s*55,gold:220+s*85,potions:1};
+  if(type==="boss") return {exp:300+s*110,gold:420+s*170,potions:2};
+  return {exp:90+s*35,gold:120+s*55,potions:1};
+}
+
+function validateAIStagePack(raw, stageIdx){
+  const allowed=stageAllowedMonsters(stageIdx);
+  const allNormal=allowed.normalList;
+  const allElite=allowed.eliteList;
+  const boss=allowed.bossList[0];
+  const source=raw && typeof raw==="object" ? raw : {};
+
+  const rumor=source.rumor && typeof source.rumor==="object" ? source.rumor : {};
+  const quests=Array.isArray(source.quests) ? source.quests : [];
+  const events=Array.isArray(source.events) ? source.events : [];
+
+  const fallbackRumor=getRumorEvent(stageIdx) || RUMOR_EVENTS[stageIdx] || {title:"수상한 소문",kicker:"FIELD REPORT",story:"주민들 사이에서 수상한 소문이 돌고 있습니다.",objective:"주변을 조사하세요.",target:allNormal[0]||boss,type:"normal",need:3,questKey:"hunt"};
+  const normalizedRumor={
+    title:String(rumor.title||fallbackRumor.title).slice(0,80),
+    kicker:String(rumor.kicker||fallbackRumor.kicker).slice(0,80),
+    story:String(rumor.story||fallbackRumor.story).slice(0,500),
+    objective:String(rumor.objective||fallbackRumor.objective).slice(0,240),
+    target:allNormal.includes(rumor.target) ? rumor.target : (allNormal[0]||boss),
+    type:"normal", need:3, questKey:"hunt"
+  };
+
+  const fallbackQuestByType={
+    normal:{title:"주변의 위협",desc:`${allowed.stageName} 주변에 출몰하는 몬스터를 처치하세요.`,target:allNormal[0]||boss,need:3},
+    elite:{title:"위험한 사냥감",desc:`${allowed.stageName}의 정예 몬스터를 처치하고 주민들을 안심시키세요.`,target:allElite[0]||boss,need:1},
+    boss:{title:"지역의 지배자",desc:`${allowed.stageName}을(를) 지배하는 보스를 쓰러뜨려 다음 지역의 길을 여세요.`,target:boss,need:1}
+  };
+  const byType={};
+  quests.forEach(q=>{ if(q && ["normal","elite","boss"].includes(q.type) && !byType[q.type]) byType[q.type]=q; });
+  byType.normal = byType.normal || {};
+  if(normalizedRumor) byType.normal = {...byType.normal, rumorLinked:true};
+
+  const outQuests=["normal","elite","boss"].map(type=>{
+    const q=byType[type]||{};
+    const fb=fallbackQuestByType[type];
+    const allowedTargets=type==="normal"?allNormal:type==="elite"?allElite:[boss];
+    const target=allowedTargets.includes(q.target) ? q.target : (type==="normal" && normalizedRumor.target ? normalizedRumor.target : fb.target);
+    const linked=type==="normal";
+    const title=linked ? normalizedRumor.title : String(q.title||fb.title).slice(0,80);
+    const desc=linked ? normalizedRumor.objective : String(q.description||q.desc||fb.desc).slice(0,240);
+    const need=type==="normal" ? 3 : type==="elite" ? 1 : 1;
+    return {type,title,desc,target,need,rumorLinked:linked,reward:rewardForQuestType(stageIdx,type)};
+  });
+
+  const normalizedEvents=events.slice(0,5).map((ev,i)=>{
+    const choices=Array.isArray(ev?.choices)?ev.choices:[];
+    const safeChoices=choices.slice(0,3).map((c,j)=>({
+      text:String(c?.text||(["도와준다","상황을 지켜본다","지나쳐 간다"][j]||"선택한다")).slice(0,100),
+      karma_change:safeKarma(c?.karma_change),
+      type:safeChoiceType(c?.type),
+      reward_tier:["small","medium","none"].includes(c?.reward_tier)?c.reward_tier:"none"
+    }));
+    while(safeChoices.length<3) safeChoices.push({text:"지나쳐 간다",karma_change:0,type:"none",reward_tier:"none"});
+    return {story:String(ev?.story||"길을 걷던 중 수상한 기척이 느껴집니다.").slice(0,500),choices:safeChoices};
+  });
+
+  return {version:AI_CONTENT_VERSION,stage:stageIdx,generatedAt:Date.now(),rumor:normalizedRumor,quests:outQuests,events:normalizedEvents};
+}
+
+async function generateAIStagePack(stageIdx=S.stageIdx){
+  const p=S.player;
+  const allowed=stageAllowedMonsters(stageIdx);
+  const karmaDesc=p.karma>=65?"선한 성향":(p.karma<=35?"악한 성향":"중립 성향");
+  const prompt=`당신은 DARK ABYSS 판타지 텍스트 RPG의 지역 콘텐츠 작가입니다.
+이번 호출에서는 STAGE ${stageIdx+1}의 콘텐츠를 한 번에 묶어서 생성합니다.
+중요: 보상 수치, 몬스터 능력치, 전투 결과는 생성하지 마세요. 실제 게임 엔진이 결정합니다.
+플레이어: 레벨 ${p.level}, 직업 ${p.current_job}, Karma ${p.karma} (${karmaDesc})
+지역: ${allowed.stageName}
+일반 몬스터 후보: ${JSON.stringify(allowed.normalList)}
+정예 몬스터 후보: ${JSON.stringify(allowed.eliteList)}
+보스 후보: ${JSON.stringify(allowed.bossList)}
+
+반드시 순수 JSON 하나만 반환하세요.
+형식:
+{
+  "rumor":{"title":"...","kicker":"FIELD REPORT · ...","story":"2~3문장","objective":"...","target":"일반 몬스터 후보 중 1개"},
+  "quests":[
+    {"type":"normal","title":"...","description":"...","target":"일반 몬스터 후보 중 1개"},
+    {"type":"elite","title":"...","description":"...","target":"정예 몬스터 후보 중 1개"},
+    {"type":"boss","title":"...","description":"...","target":"보스 후보의 첫 번째 이름"}
+  ],
+  "events":[
+    {"story":"2~3문장","choices":[
+      {"text":"...","karma_change":10,"type":"reward","reward_tier":"small"},
+      {"text":"...","karma_change":-10,"type":"battle","reward_tier":"none"},
+      {"text":"...","karma_change":0,"type":"none","reward_tier":"none"}
+    ]}
+  ]
+}
+이벤트는 5개 이하로 생성하세요. reward_tier는 small/medium/none 중 하나이며 실제 골드 금액은 절대 쓰지 마세요.`;
+
+  const res=await fetch(`/api/gemini`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
+  if(!res.ok) throw new Error(`AI HTTP ${res.status}`);
+  const data=await res.json();
+  if(!data.candidates?.[0]?.content?.parts?.[0]?.text) throw new Error("API 응답 형식 오류");
+  return validateAIStagePack(JSON.parse(cleanAIJson(data.candidates[0].content.parts[0].text)),stageIdx);
+}
+
+async function ensureAIStageContent(stageIdx=S.stageIdx, options={}){
+  if(aiStagePack(stageIdx)) return aiStagePack(stageIdx);
+  if(!S.aiContent.stages) S.aiContent.stages={};
+  if(S.aiContent._loading?.[stageIdx]) return S.aiContent._loading[stageIdx];
+
+  if(!S.aiContent._loading) S.aiContent._loading={};
+  const run=(async()=>{
+    try{
+      if(options.showLoader){ aiLoader().classList.add("show"); toast("지역 콘텐츠를 준비하는 중..."); }
+      const pack=await generateAIStagePack(stageIdx);
+      S.aiContent.stages[stageIdx]=pack;
+      delete S.aiContent._loading[stageIdx];
+      autoSave();
+      return pack;
+    }catch(e){
+      console.warn("AI stage pack generation failed",e);
+      delete S.aiContent._loading[stageIdx];
+      // Static content remains a full offline fallback. No retry loop.
+      return null;
+    }finally{
+      if(options.showLoader) aiLoader().classList.remove("show");
+    }
+  })();
+  S.aiContent._loading[stageIdx]=run;
+  return run;
+}
+
+function getCachedEvent(){
+  const pack=aiStagePack(S.stageIdx);
+  if(!pack || !Array.isArray(pack.events) || !pack.events.length) return null;
+  if(!pack._eventQueue || !pack._eventQueue.length){
+    pack._eventQueue=pack.events.map((_,i)=>i).sort(()=>Math.random()-0.5);
+  }
+  const idx=pack._eventQueue.shift();
+  return pack.events[idx] || null;
+}
+
+function eventRewardGold(tier,stageIdx=S.stageIdx){
+  const s=stageIdx+1;
+  if(tier==="medium") return randInt(90+s*20,150+s*30);
+  if(tier==="small") return randInt(45+s*10,80+s*15);
+  return 0;
+}
+
+/* =====================================================================
+   CACHED AI RANDOM EVENT — NO API CALL DURING DUNGEON PLAY
 ===================================================================== */
 async function triggerRandomEvent(locationStr, callback) {
-  if(Math.random() > 0.3) {
-      return callback();
+  if(Math.random()>0.3) return callback();
+
+  let eventData=getCachedEvent();
+  if(!eventData){
+    // A stage pack should normally have been generated when entering town.
+    // If it isn't available, fail safely instead of making a second API call.
+    return callback();
   }
 
-  S.isEvent = true;
+  S.isEvent=true;
   setButtons([]);
   displayText(`\n🔮 안개 속에서 미지의 기운이 느껴집니다...`);
-  aiLoader().classList.add("show");
-  
-  try {
-      const p = S.player;
-      let karmaDesc = p.karma >= 65 ? "선한 성향" : (p.karma <= 35 ? "악한 성향" : "중립 성향");
-      const prompt = `당신은 판타지 텍스트 RPG의 랜덤 이벤트 생성기입니다.
-장소: ${locationStr}
-플레이어: 레벨 ${p.level} ${p.current_job}, 선악 수치(Karma): ${p.karma} (${karmaDesc})
-카르마 수치에 맞춰 조우하는 NPC의 태도나 돌발 이벤트 내용을 조절하세요.
-반드시 아래 JSON 형식으로만 응답하세요. (마크다운 백틱 등 추가 텍스트 절대 금지, 순수 JSON만 반환)
-{
-  "story": "상황에 대한 흥미로운 묘사 (3문장 이내). 인간형 NPC, 괴물, 혹은 돌발 상황이 발생함.",
-  "choices": [
-    {
-      "text": "도와주기 / 협력하기 등 선한 선택지",
-      "karma_change": 10,
-      "type": "reward",
-      "reward_text": "도움의 댓가로 골드를 받았다.",
-      "reward_gold": 150
-    },
-    {
-      "text": "공격하기 / 뺏기 등 악한 선택지",
-      "karma_change": -10,
-      "type": "battle",
-      "reward_text": "전투가 시작됩니다!",
-      "reward_gold": 0
-    },
-    {
-      "text": "무시하고 지나가기",
-      "karma_change": 0,
-      "type": "none",
-      "reward_text": "아무 일도 일어나지 않고 지나갑니다.",
-      "reward_gold": 0
-    }
-  ]
-}`;
-      const res = await fetch(`/api/gemini`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ prompt: prompt })
-      });
-      const data = await res.json();
-      if(!data.candidates) throw new Error("API 응답 오류");
-      
-      let text = data.candidates[0].content.parts[0].text;
-      text = text.replace(/```json/g, "").replace(/```/g, "").trim();
-      const eventData = JSON.parse(text);
+  aiLoader().classList.remove("show");
+  displayText(`\n📜 [돌발 이벤트]`,{highlight:true,clear:true});
+  displayText(eventData.story);
 
-      aiLoader().classList.remove("show");
-      displayText(`\n📜 [돌발 이벤트]`, {highlight:true, clear:true});
-      displayText(eventData.story);
-
-      const btns = eventData.choices.map(c => [
-          c.text,
-          () => resolveEvent(c, callback)
-      ]);
-      setPaginatedButtons(btns, 0, true);
-
-  } catch (e) {
-      console.error(e);
-      aiLoader().classList.remove("show");
-      displayText("▶ 기운이 금세 흩어져버렸습니다. 길을 재촉합니다.");
-      await wait(1000);
-      S.isEvent = false;
-      callback();
-  }
+  const btns=eventData.choices.map(c=>[
+    c.text,
+    ()=>resolveEvent(c,callback)
+  ]);
+  setPaginatedButtons(btns,0,true);
 }
 
 async function resolveEvent(choice, callback) {
   setButtons([]);
-  const p = S.player;
-  p.karma = clamp(p.karma + choice.karma_change, 0, 100);
-  
-  displayText(`\n▶ [당신의 선택] ${choice.text}`, {highlight:true});
-  displayText(`▶ ${choice.reward_text}`);
+  const p=S.player;
+  const karmaChange=safeKarma(choice.karma_change);
+  p.karma=clamp(p.karma+karmaChange,0,100);
 
-  if (choice.karma_change > 0) displayText(`👼 선향 수치가 증가했습니다! (현재 ${p.karma})`);
-  else if (choice.karma_change < 0) displayText(`👿 악향 수치가 감소했습니다! (현재 ${p.karma})`);
-
-  if (choice.type === "reward") {
-      const g = choice.reward_gold || randInt(50, 150);
-      p.gold += g;
-      displayText(`💰 골드를 ${g}G 획득했습니다!`);
-      autoSave();
-      await wait(2000);
-      S.isEvent = false;
-      town(); 
-  } else if (choice.type === "battle") {
-      await wait(1500);
-      S.isEvent = false;
-      callback(); 
-  } else {
-      await wait(1500);
-      S.isEvent = false;
-      callback();
+  displayText(`\n▶ [당신의 선택] ${choice.text}`,{highlight:true});
+  if(choice.type==="reward"){
+    const g=eventRewardGold(choice.reward_tier,S.stageIdx);
+    if(g>0){ p.gold+=g; displayText(`▶ 도움의 대가로 💰 ${g}G를 획득했습니다!`); }
+    else displayText("▶ 작은 기회를 얻었지만 특별한 보상은 없습니다.");
+  }else if(choice.type==="battle"){
+    displayText("▶ 전투가 시작됩니다!");
+  }else{
+    displayText("▶ 아무 일도 일어나지 않고 지나갑니다.");
   }
+
+  if(karmaChange>0) displayText(`👼 선향 수치가 증가했습니다! (현재 ${p.karma})`);
+  else if(karmaChange<0) displayText(`👿 악향 수치가 감소했습니다! (현재 ${p.karma})`);
+
+  autoSave();
+  await wait(1200);
+  S.isEvent=false;
+  if(choice.type==="reward") town();
+  else callback();
 }
 
 /* =====================================================================
@@ -1885,8 +2026,10 @@ async function newGame(){
   ]);
 }
 
-function town(){
+async function town(){
   setButtons([]);
+  const aiPack=await ensureAIStageContent(S.stageIdx,{showLoader:true});
+  if(!aiPack) toast("AI 콘텐츠를 불러오지 못해 기본 지역 콘텐츠를 사용합니다.");
   S.currentMonster = null;
   renderScene();
 
@@ -1901,7 +2044,8 @@ function town(){
     return `<div class="${cls}" title="STAGE ${i+1}"></div>`;
   }).join("");
 
-  const rumorText = TOWN_RUMORS[rumorIdx]
+  const rumorSource = aiPack?.rumor?.story || TOWN_RUMORS[rumorIdx];
+  const rumorText = String(rumorSource)
     .replace(/🍺\s*\[[^\]]+\]\s*/, "")
     .replace(/^\s*•\s*/, "")
     .replace(/^\s*[-·]\s*/, "");
@@ -2892,6 +3036,8 @@ async function initApp(){
       S.player = data.player;
       S.stageIdx = data.stageIdx;
       S.currentTownName = data.townName || "루센트 마을";
+      S.aiContent = data.aiContent || {stages:{}};
+      if(!S.aiContent.stages) S.aiContent.stages = {};
       if(S.player.karma === undefined) S.player.karma = 50; 
       if(!S.player.equipment_inventory) S.player.equipment_inventory = [];
       ensureQuestState();
