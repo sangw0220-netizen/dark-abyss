@@ -540,31 +540,56 @@ html,body{font-size:14px;}
 .ctrl-row{font-size:10px;}
 .mini-btn{font-size:12px;}
 
-/* Lobby: larger, darker typography without bringing back the large vertical gaps. */
-.town-hub{gap:5px;}
-.town-hero{flex-basis:154px;min-height:154px;}
-.town-location,.town-notice{padding:9px 12px;}
-.town-kicker{font-size:9px;letter-spacing:2.2px;}
-.town-title{font-size:21px;line-height:1.2;margin-bottom:3px;}
-.town-title span{font-size:10px;letter-spacing:1.4px;}
-.town-desc{font-size:12px;line-height:1.45;color:#402d16;}
-.town-meta{margin-top:5px;gap:4px;}
-.town-chip{font-size:9px;padding:3px 6px;color:#5a3d12;font-weight:700;}
-.town-notice .label{font-size:8px;letter-spacing:1.5px;margin-bottom:4px;}
-.town-notice strong{font-size:13px;line-height:1.35;}
-.town-notice small{font-size:10px;line-height:1.35;margin-top:4px;}
-.town-section{padding-top:5px;}
-.town-section-head{margin-bottom:3px;}
-.town-section-title{font-size:13px;}
-.town-section-sub{font-size:8px;}
-.town-rumor{padding:6px 10px 6px 13px;font-size:11px;line-height:1.4;color:#402d16;}
-.town-rumor-source{font-size:9px;margin-top:1px;}
-.town-card{padding:6px;min-height:50px;}
-.town-card .icon{font-size:15px;margin-right:5px;}
-.town-card b{font-size:11px;}
-.town-card p{font-size:9px;line-height:1.35;margin-top:2px;color:#57401f;}
-.town-stage-dot{height:5px;}
-.town-footer-note{font-size:8px;}
+/* Lobby: card-based frontier dashboard */
+.town-hub{gap:10px;color:var(--ink);padding:0 2px 4px;}
+.town-hero{display:grid;grid-template-columns:1.45fr .75fr;gap:10px;align-items:stretch;min-height:0;}
+.town-location,.town-notice{position:relative;overflow:hidden;border:1px solid rgba(122,86,27,.38);box-shadow:0 2px 0 rgba(74,48,12,.08), inset 0 0 0 1px rgba(255,255,255,.16);background:linear-gradient(145deg,rgba(255,255,255,.30),rgba(122,92,38,.08));}
+.town-location{padding:14px 16px;}
+.town-location::before,.town-notice::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#8a5a12,#d8b15d,#8a5a12);opacity:.85;}
+.town-location::after{content:"✦";position:absolute;right:17px;top:9px;font-size:42px;color:rgba(138,90,18,.13);}
+.town-kicker{font-family:'Cinzel',serif;font-size:9px;letter-spacing:2.8px;color:#806034;margin-bottom:7px;text-transform:uppercase;font-weight:700;}
+.town-title{font-family:'Noto Serif KR',serif;font-size:23px;font-weight:900;color:#2d1e0d;margin:0 0 7px;display:flex;align-items:baseline;gap:8px;}
+.town-title span{font-family:'Cinzel',serif;font-size:10px;font-weight:700;color:#8a5a12;letter-spacing:1.8px;}
+.town-desc{font-size:12px;line-height:1.55;margin:0;color:#463018;max-width:92%;}
+.town-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.town-chip{padding:4px 8px;border:1px solid rgba(138,90,18,.38);background:rgba(255,255,255,.28);font-size:9px;color:#5a3d12;border-radius:2px;font-weight:800;}
+.town-notice{padding:14px 15px;background:linear-gradient(145deg,rgba(255,252,233,.44),rgba(116,83,31,.10));}
+.town-notice .label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:#8a5a12;margin-bottom:7px;font-weight:700;}
+.town-notice strong{font-size:13px;line-height:1.45;color:#2f210f;display:block;}
+.town-notice small{display:block;margin-top:9px;padding-top:8px;border-top:1px dashed rgba(122,86,27,.32);font-size:10px;color:#674d2a;line-height:1.5;}
+.town-section{border:0;padding:0;margin:0;}
+.town-section-head{display:flex;justify-content:space-between;align-items:center;margin:0 2px 6px;padding-bottom:4px;border-bottom:1px solid rgba(122,86,27,.28);}
+.town-section-title{font-weight:900;font-size:13px;color:#30200d;}
+.town-section-sub{font-family:'Cinzel',serif;font-size:8px;letter-spacing:1.5px;color:#8a5a12;font-weight:700;}
+.town-rumor-wrap{position:relative;}
+.town-rumor-action{cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,background .18s ease;}
+.town-rumor{position:relative;padding:12px 13px 11px 18px;border:1px solid rgba(122,86,27,.32)!important;border-left:4px solid #a97a3a!important;background:linear-gradient(90deg,rgba(255,249,225,.46),rgba(169,122,58,.10));font-size:11px;line-height:1.55;color:#3f2b14;font-style:italic;box-shadow:0 2px 0 rgba(74,48,12,.06);min-height:52px;box-sizing:border-box;}
+.town-rumor::before{content:'“';position:absolute;left:6px;top:1px;font-family:Georgia,serif;font-size:25px;color:#a97a3a;opacity:.55;}
+.town-rumor-source{display:block;margin-top:5px;font-style:normal;font-size:9px;color:#8a5a12;text-align:right;font-weight:700;}
+.rumor-action-hint{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;padding-top:7px;border-top:1px dashed rgba(122,86,27,.28);font-size:9px;color:#75511e;font-weight:800;letter-spacing:.2px;}
+.rumor-action-hint b{border:1px solid rgba(122,86,27,.45);background:rgba(255,250,230,.75);padding:4px 9px;color:#4b3414;white-space:nowrap;}
+.town-rumor-action:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(74,48,12,.12);background:rgba(255,248,222,.78)!important;}
+.town-rumor-action.is-done{opacity:.82;}
+.town-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.town-card{position:relative;padding:10px 11px;border:1px solid rgba(122,86,27,.34);background:linear-gradient(145deg,rgba(255,255,255,.27),rgba(122,92,38,.07));min-height:70px;box-shadow:0 2px 0 rgba(74,48,12,.05);}
+.town-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#8a5a12;opacity:.75;}
+.town-card .icon{font-size:18px;float:left;margin-right:7px;line-height:1.05;filter:drop-shadow(0 1px 0 rgba(0,0,0,.12));}
+.town-card b{font-size:11px;color:#30200d;line-height:1.25;}
+.town-card p{clear:both;margin:7px 0 0;font-size:9px;line-height:1.45;color:#5b431f;}
+.town-progress-card{border:1px solid rgba(122,86,27,.34);background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(122,92,38,.07));padding:10px 12px;box-shadow:0 2px 0 rgba(74,48,12,.05);}
+.town-progress{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:2px;}
+.town-stage-dot{height:7px;border:1px solid #8a5a12;background:rgba(138,90,18,.08);}
+.town-stage-dot.done{background:#8a5a12;}
+.town-stage-dot.current{background:#d9b45c;box-shadow:0 0 0 1px #6e4b18,0 0 7px rgba(138,90,18,.22);}
+.town-footer-note{text-align:center;font-size:9px;color:#6e5732;padding-top:7px;letter-spacing:.2px;font-weight:700;}
+@media(max-width:600px){
+  .town-hero{grid-template-columns:1fr;}
+  .town-grid{grid-template-columns:1fr;}
+}
+
+/* ---------- town hub : single-screen dashboard ---------- */
+#log:has(.town-hub){overflow-y:auto;}
+.town-hub{height:auto;min-height:0;}
 
 /* Dungeon / menu typography: no tiny 7–9px body text. */
 .dungeon-kicker{font-size:10px;letter-spacing:2.5px;}
@@ -588,6 +613,58 @@ html,body{font-size:14px;}
 /* Buttons should be immediately identifiable and readable. */
 .action-btn{font-size:13px;}
 
+
+/* =========================================================
+   LOBBY CARD REDESIGN v2
+   Match the visual language of the dungeon selection cards.
+   ========================================================= */
+.town-hub{gap:12px!important;padding:2px 3px 8px!important;color:var(--ink);}
+.town-hero{display:grid!important;grid-template-columns:minmax(0,1.45fr) minmax(260px,.72fr)!important;gap:12px!important;flex:0 0 auto!important;min-height:0!important;}
+.town-location,.town-notice{position:relative!important;overflow:hidden!important;border:1px solid rgba(91,67,31,.42)!important;background:linear-gradient(145deg,rgba(255,252,235,.78),rgba(216,190,133,.30))!important;box-shadow:0 2px 0 rgba(122,92,38,.16), inset 0 1px 0 rgba(255,255,255,.65)!important;}
+.town-location{min-height:185px!important;padding:18px 20px!important;border-top:5px solid #8a5a12!important;display:flex;flex-direction:column;justify-content:center;}
+.town-location:before,.town-notice:before{content:"";position:absolute;inset:7px;border:1px solid rgba(138,90,18,.16);pointer-events:none;}
+.town-location:after{right:18px!important;top:8px!important;font-size:58px!important;color:rgba(138,90,18,.10)!important;}
+.town-kicker{font-size:9px!important;letter-spacing:3.5px!important;margin-bottom:8px!important;font-weight:700!important;}
+.town-title{font-size:25px!important;margin:0 0 9px!important;display:flex;align-items:baseline;gap:9px;position:relative;z-index:1;}
+.town-title span{font-size:10px!important;letter-spacing:2.2px!important;margin-left:0!important;}
+.town-desc{font-size:11px!important;line-height:1.7!important;max-width:88%!important;position:relative;z-index:1;}
+.town-meta{margin-top:12px!important;gap:6px!important;position:relative;z-index:1;}
+.town-chip{padding:5px 9px!important;font-size:8px!important;background:rgba(255,250,232,.52)!important;}
+.town-notice{min-height:185px!important;padding:17px 18px!important;justify-content:center!important;border-top:5px solid #a97a3a!important;}
+.town-notice .label{font-size:8px!important;letter-spacing:2.2px!important;margin-bottom:9px!important;}
+.town-notice strong{font-size:14px!important;line-height:1.55!important;position:relative;z-index:1;}
+.town-notice small{font-size:9px!important;line-height:1.6!important;margin-top:10px!important;position:relative;z-index:1;}
+.town-section{border:0!important;padding:0!important;}
+.town-section-head{margin:0 0 7px!important;padding:0 3px!important;}
+.town-section-title{font-size:13px!important;letter-spacing:.1px;}
+.town-section-sub{font-size:8px!important;letter-spacing:1.8px!important;}
+.town-rumor-wrap{display:block;}
+.town-rumor{min-height:74px!important;box-sizing:border-box;padding:15px 18px 12px 22px!important;border:1px solid rgba(91,67,31,.36)!important;border-left:5px solid #a97a3a!important;background:linear-gradient(100deg,rgba(255,249,224,.66),rgba(201,168,102,.16))!important;box-shadow:0 2px 0 rgba(122,92,38,.10),inset 0 1px 0 rgba(255,255,255,.55)!important;font-size:11px!important;line-height:1.55!important;font-style:italic;transition:transform .16s ease,box-shadow .16s ease,background .16s ease!important;cursor:pointer!important;}
+.town-rumor:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(70,45,12,.12),inset 0 1px 0 rgba(255,255,255,.65)!important;background:linear-gradient(100deg,rgba(255,250,230,.82),rgba(201,168,102,.22))!important;}
+.town-rumor-source{font-size:8px!important;margin-top:5px!important;}
+.rumor-action-hint{display:flex!important;justify-content:space-between;align-items:center;margin-top:8px;padding-top:7px;border-top:1px dashed rgba(91,67,31,.28);font-style:normal!important;font-size:8px;color:#6e5732;}
+.rumor-action-hint b{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border:1px solid rgba(91,67,31,.38);background:rgba(255,250,232,.72);color:#5b431f;font-size:8px;letter-spacing:.2px;box-shadow:0 1px 0 rgba(255,255,255,.6);}
+.town-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;}
+.town-card{position:relative!important;overflow:hidden!important;min-height:88px!important;padding:12px 13px!important;border:1px solid rgba(91,67,31,.38)!important;background:linear-gradient(145deg,rgba(255,252,235,.66),rgba(210,183,122,.20))!important;box-shadow:0 2px 0 rgba(122,92,38,.10),inset 0 1px 0 rgba(255,255,255,.55)!important;}
+.town-card:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:#6d8735;}
+.town-card:nth-child(2):before{background:#74508b;}
+.town-card:nth-child(3):before{background:#a13a2f;}
+.town-card .icon{float:none!important;display:inline-flex!important;width:34px;height:34px;align-items:center;justify-content:center;margin:0 7px 0 0!important;border:1px solid rgba(91,67,31,.28);background:rgba(255,250,230,.62);font-size:20px!important;vertical-align:middle;}
+.town-card b{font-size:12px!important;vertical-align:middle;}
+.town-card p{clear:both!important;margin:9px 0 0!important;font-size:9px!important;line-height:1.55!important;color:#5b431f!important;}
+.town-progress-card{position:relative!important;border:1px solid rgba(91,67,31,.38)!important;background:linear-gradient(145deg,rgba(255,252,235,.66),rgba(210,183,122,.18))!important;box-shadow:0 2px 0 rgba(122,92,38,.10),inset 0 1px 0 rgba(255,255,255,.55)!important;padding:14px 18px 11px!important;}
+.town-progress-card:before{content:"WORLD MAP";position:absolute;right:15px;top:10px;font-family:'Cinzel',serif;font-size:7px;letter-spacing:2px;color:#9a7a43;}
+.town-progress{gap:5px!important;margin-top:4px!important;}
+.town-stage-dot{height:9px!important;background:rgba(138,90,18,.08)!important;}
+.town-stage-dot.done{background:#8a5a12!important;}
+.town-stage-dot.current{background:#d9b45c!important;box-shadow:0 0 0 2px rgba(110,75,24,.25)!important;}
+.town-footer-note{text-align:left!important;margin-top:9px;font-size:8px!important;color:#6e5732!important;}
+@media(max-width:800px){
+  .town-hero{grid-template-columns:1fr!important;}
+  .town-location,.town-notice{min-height:150px!important;}
+  .town-grid{grid-template-columns:1fr!important;}
+}
+
 </style>
 <style id="dungeon-compact-fix">
 /* Dungeon hero: remove excessive vertical whitespace and keep the header readable. */
@@ -607,13 +684,127 @@ html,body{font-size:14px;}
   .dungeon-hero{grid-template-columns:1fr!important;}
   .dungeon-power{width:100%!important;max-height:none!important;}
 }
-</style></head>
+</style><style id="lobby-whitespace-fix-v3">
+/* =========================================================
+   LOBBY WHITESPACE FIX v3
+   Remove the large vertical dead-zones highlighted in the
+   lobby screenshot while preserving the card design.
+   ========================================================= */
+#log:has(.town-hub){
+  overflow-y:auto !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+}
+
+.town-hub{
+  display:block !important;
+  position:relative !important;
+  top:-58px !important;
+  margin-bottom:-58px !important;
+  padding:0 2px 4px !important;
+}
+
+.town-hero{
+  display:grid !important;
+  grid-template-columns:minmax(0,1.45fr) minmax(250px,.72fr) !important;
+  gap:10px !important;
+  margin:0 0 10px !important;
+}
+
+.town-location,
+.town-notice{
+  min-height:145px !important;
+  height:auto !important;
+  padding:14px 17px !important;
+}
+
+.town-kicker{margin-bottom:5px !important;}
+.town-title{font-size:23px !important;margin-bottom:6px !important;}
+.town-desc{font-size:11px !important;line-height:1.5 !important;}
+.town-meta{margin-top:8px !important;}
+
+.town-hub > .town-section{
+  margin:0 0 10px !important;
+  padding:0 !important;
+}
+
+.town-section-head{
+  margin:0 0 5px !important;
+  padding:0 2px 4px !important;
+}
+
+.town-rumor{
+  min-height:0 !important;
+  padding:10px 14px 9px 19px !important;
+  line-height:1.45 !important;
+}
+
+.town-rumor-source{margin-top:3px !important;}
+.rumor-action-hint{
+  margin-top:5px !important;
+  padding-top:5px !important;
+}
+
+.town-hub > .town-section:nth-of-type(2){
+  margin-top:-42px !important;
+}
+
+.town-grid{
+  gap:8px !important;
+}
+
+.town-card{
+  min-height:62px !important;
+  height:auto !important;
+  padding:9px 10px !important;
+}
+
+.town-card .icon{
+  width:30px !important;
+  height:30px !important;
+  font-size:18px !important;
+}
+
+.town-card p{
+  margin-top:5px !important;
+  font-size:8px !important;
+  line-height:1.35 !important;
+}
+
+.town-hub > .town-section:nth-of-type(3){
+  margin-top:-22px !important;
+}
+
+.town-progress-card{
+  padding:9px 12px 8px !important;
+}
+
+.town-footer-note{
+  margin-top:6px !important;
+  font-size:8px !important;
+}
+
+@media(max-width:800px){
+  .town-hub{
+    top:0 !important;
+    margin-bottom:0 !important;
+  }
+  .town-hub > .town-section:nth-of-type(2),
+  .town-hub > .town-section:nth-of-type(3){
+    margin-top:0 !important;
+  }
+  .town-location,.town-notice{
+    min-height:125px !important;
+  }
+}
+</style>
+</head>
 <body>
 <div id="app">
   <div id="titlebar">
     <div>
       <h1>DARK ABYSS</h1>
-      <div class="sub">: AI CHRONICLES</div>
+      <div class="sub">Ver 0.1</div>
     </div>
     <div class="ctrl-col">
       <div class="ctrl-row">글자
@@ -1844,11 +2035,11 @@ function town(){
       <section class="town-section">
         <div class="town-section-head">
           <span class="town-section-title">📜 오늘의 마을 소식</span>
-          <span class="town-section-sub">RUMOR BOARD</span>
+          <span class="town-section-sub">RUMOR BOARD · EVENT</span>
         </div>
         <div class="town-rumor-wrap">
           <div class="town-rumor town-rumor-action ${getRumorState(S.stageIdx).status==="claimed" ? "is-done" : ""}" id="rumorBoardAction" role="button" tabindex="0" title="소문을 조사합니다">${rumorText}<span class="town-rumor-source">— ${currentTown.name} 주민의 제보</span>
-            <span class="rumor-action-hint"><span>${getRumorState(S.stageIdx).status==="claimed" ? "이 소문은 해결되었습니다." : "이 소문에는 숨겨진 의뢰가 있을지도 모릅니다."}</span><b>${getRumorState(S.stageIdx).status==="claimed" ? "조사 완료" : "🔎 소문 조사"}</b></span>
+            <span class="rumor-action-hint"><span>${getRumorState(S.stageIdx).status==="claimed" ? "이 소문은 해결되었습니다." : "소문을 조사하면 숨겨진 의뢰를 발견할 수 있습니다."}</span><b>${getRumorState(S.stageIdx).status==="claimed" ? "✓ 조사 완료" : "🔎 소문 조사"}</b></span>
           </div>
         </div>
       </section>
@@ -1870,8 +2061,10 @@ function town(){
           <span class="town-section-title">⚔️ 심연으로 향하는 길</span>
           <span class="town-section-sub">WORLD PROGRESS</span>
         </div>
-        <div class="town-progress">${stages}</div>
-        <div class="town-footer-note">현재 STAGE ${S.stageIdx+1} · 다음 지역을 개척하려면 보스 던전을 돌파해야 합니다.</div>
+        <div class="town-progress-card">
+          <div class="town-progress">${stages}</div>
+          <div class="town-footer-note">현재 STAGE ${S.stageIdx+1} · 다음 지역을 개척하려면 보스 던전을 돌파해야 합니다.</div>
+        </div>
       </section>
     </div>
   `;
