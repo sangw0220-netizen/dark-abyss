@@ -199,30 +199,93 @@ html,body{
 
 /* ---------- battle scene ---------- */
 .battle-top{font-size:11px;}
-.vs-wrap{display:flex;align-items:stretch;gap:8px;margin-top:8px;}
+.vs-wrap{display:flex;align-items:stretch;gap:10px;margin-top:8px;}
 .combatant-card{
-  flex:1;background:radial-gradient(ellipse at 50% 30%, var(--wood-light) 0%, var(--panel-alt) 75%);
+  flex:1;background:radial-gradient(ellipse at 50% 22%, var(--wood-light) 0%, var(--panel-alt) 72%);
   border:1px solid #000;outline:2px solid;border-radius:4px;
-  padding:9px 8px;position:relative;min-width:0;
+  padding:9px 10px 10px;position:relative;min-width:0;
   display:flex;flex-direction:column;align-items:center;text-align:center;
+  overflow:hidden;
+}
+.combatant-card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.035),transparent 34%,rgba(0,0,0,.10));
 }
 .combatant-card.player{outline-color:var(--mp);}
 .combatant-card.enemy{outline-color:var(--hp);}
 .combatant-card .tag{
   font-size:8px;letter-spacing:2px;color:var(--text-dim);align-self:flex-start;
-  font-family:'Cinzel',serif;text-transform:uppercase;
+  font-family:'Cinzel',serif;text-transform:uppercase;position:relative;z-index:2;
 }
 .combatant-card.player .tag{color:#7ec2f0;}
 .combatant-card.enemy .tag{color:var(--red-bright);}
-.sprite-box{
-  width:96px;height:96px;display:flex;align-items:center;justify-content:center;margin:4px 0;
-  border-radius:50%;background:radial-gradient(circle,#000 0%,var(--panel-alt) 70%);
-  border:2px solid var(--gold-dim);box-shadow:0 0 0 1px #000, inset 0 0 10px rgba(0,0,0,0.6);
-  overflow:hidden;
+/* Portrait-free combat crest + enemy pictogram */
+.combat-crest{
+  width:112px;height:112px;margin:4px 0 7px;position:relative;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;
 }
-.sprite-box canvas{image-rendering:pixelated;width:96px;height:96px;}
-.combatant-card .cname{font-size:11px;color:var(--gold-bright);font-family:'Cinzel',serif;}
-.combatant-card .cjob{font-size:9px;color:var(--text-dim);margin-bottom:4px;}
+.combat-crest::before{
+  content:"";position:absolute;inset:10px;border-radius:50%;
+  background:radial-gradient(circle,rgba(10,7,3,.96) 0 47%,rgba(10,7,3,.68) 48% 58%,transparent 59%),
+             conic-gradient(from 45deg,transparent 0 12%,var(--gold-dim) 12.5% 13.2%,transparent 13.7% 37%,var(--gold-dim) 37.5% 38.2%,transparent 38.7% 62%,var(--gold-dim) 62.5% 63.2%,transparent 63.7% 87%,var(--gold-dim) 87.5% 88.2%,transparent 88.7%);
+  border:1px solid var(--gold-dim);box-shadow:0 0 0 1px #000, inset 0 0 18px rgba(0,0,0,.75);
+  transform:rotate(45deg);
+}
+.combat-crest::after{
+  content:"";position:absolute;inset:20px;border:1px solid rgba(217,180,92,.32);
+  transform:rotate(45deg);box-shadow:0 0 12px rgba(217,180,92,.10);
+}
+.combat-crest.enemy-pictogram{
+  width:112px;height:112px;margin:4px 0 7px;position:relative;display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;
+}
+.combat-crest.enemy-pictogram::before{
+  content:"";position:absolute;inset:9px;border-radius:50%;
+  background:radial-gradient(circle,rgba(10,7,3,.98) 0 48%,rgba(10,7,3,.72) 49% 59%,transparent 60%),
+             conic-gradient(from 45deg,transparent 0 12%,var(--gold-dim) 12.5% 13.2%,transparent 13.7% 37%,var(--gold-dim) 37.5% 38.2%,transparent 38.7% 62%,var(--gold-dim) 62.5% 63.2%,transparent 63.7% 87%,var(--gold-dim) 87.5% 88.2%,transparent 88.7%);
+  border:1px solid var(--gold-dim);box-shadow:0 0 0 1px #000,inset 0 0 20px rgba(0,0,0,.82);
+  transform:rotate(45deg);
+}
+.combat-crest.enemy-pictogram::after{
+  content:"";position:absolute;inset:20px;border:1px solid rgba(217,180,92,.28);
+  transform:rotate(45deg);box-shadow:0 0 14px rgba(217,180,92,.10);
+}
+.enemy-line-icon{
+  position:relative;z-index:2;width:82px;height:82px;display:block;
+  filter:drop-shadow(0 2px 0 #000) drop-shadow(0 0 8px rgba(217,180,92,.18));
+}
+.enemy-line-icon path,.enemy-line-icon ellipse{vector-effect:non-scaling-stroke;}
+.enemy-pictogram .pictogram-kind{
+  position:absolute;z-index:3;bottom:11px;font-size:7px;letter-spacing:2px;
+  color:var(--text-dim);font-family:'Cinzel',serif;text-transform:uppercase;
+  background:rgba(10,7,3,.78);padding:1px 5px;border:1px solid rgba(217,180,92,.18);
+}
+.combatant-card.normal .enemy-line-icon{filter:drop-shadow(0 2px 0 #000) drop-shadow(0 0 8px rgba(217,180,92,.16));}
+.combatant-card.elite .enemy-pictogram::before{box-shadow:0 0 0 1px #000,inset 0 0 20px rgba(0,0,0,.82),0 0 15px rgba(140,90,190,.22);}
+.combatant-card.elite .enemy-line-icon{filter:drop-shadow(0 2px 0 #000) drop-shadow(0 0 12px rgba(160,110,220,.28));}
+.combatant-card.boss .enemy-pictogram{width:122px;height:122px;margin-top:0;}
+.combatant-card.boss .enemy-pictogram::before{inset:7px;box-shadow:0 0 0 1px #000,inset 0 0 24px rgba(0,0,0,.85),0 0 20px rgba(190,45,55,.28);}
+.combatant-card.boss .enemy-line-icon{width:92px;height:92px;filter:drop-shadow(0 2px 0 #000) drop-shadow(0 0 15px rgba(210,70,60,.30));}
+
+.combat-crest .crest-mark{
+  position:relative;z-index:2;font-family:'Cinzel',serif;font-size:28px;line-height:1;
+  color:var(--gold-bright);text-shadow:0 2px 0 #000,0 0 12px rgba(217,180,92,.38);
+}
+.combat-crest .crest-label{
+  position:absolute;z-index:2;bottom:13px;font-size:7px;letter-spacing:2px;
+  color:var(--text-dim);font-family:'Cinzel',serif;text-transform:uppercase;
+}
+.combatant-card.player .combat-crest .crest-mark{color:#9bd6ff;text-shadow:0 2px 0 #000,0 0 12px rgba(70,160,220,.45);}
+.combatant-card.enemy .combat-crest .crest-mark{color:#ffb0a6;text-shadow:0 2px 0 #000,0 0 12px rgba(190,45,55,.42);}
+.combatant-card.elite .combat-crest::before{box-shadow:0 0 0 1px #000,inset 0 0 18px rgba(0,0,0,.75),0 0 12px rgba(140,90,190,.16);}
+.combatant-card.elite .combat-crest .crest-mark{color:#d9b6ff;}
+.combatant-card.boss .combat-crest{width:122px;height:122px;margin-top:0;}
+.combatant-card.boss .combat-crest::before{inset:7px;box-shadow:0 0 0 1px #000,inset 0 0 22px rgba(0,0,0,.8),0 0 18px rgba(190,45,55,.22);}
+.combatant-card.boss .combat-crest .crest-mark{font-size:34px;color:#ff6f64;}
+.combatant-card .cname{font-size:12px;color:var(--gold-bright);font-family:'Cinzel',serif;font-weight:bold;position:relative;z-index:2;}
+.combatant-card .cjob{font-size:9px;color:var(--text-dim);margin-bottom:5px;position:relative;z-index:2;}
+.combatant-card .enemy-meta{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin:3px 0 6px;position:relative;z-index:2;}
+.combatant-card .enemy-meta span{font-size:8px;padding:2px 6px;border:1px solid rgba(217,180,92,.34);background:rgba(0,0,0,.18);color:var(--gold);letter-spacing:.4px;}
 .mini-bar-track{width:100%;height:10px;background:#150d06;border:1px solid #000;border-radius:5px;position:relative;overflow:hidden;outline:1px solid var(--gold-dim);}
 .mini-bar-fill{height:100%;}
 .mini-bar-fill.hp{background:linear-gradient(180deg,var(--red-bright),var(--hp) 55%,#5a1119);}
@@ -427,8 +490,10 @@ html,body{
 .action-btn.danger:hover{background:linear-gradient(180deg,#6b2530,#3a1015 60%,var(--panel-alt) 100%);}
 @media (max-width:520px){
   #actions{grid-template-columns:repeat(2,1fr);}
-  .sprite-box{width:72px;height:72px;}
-  .sprite-box canvas{width:72px;height:72px;}
+  .combat-crest{width:84px;height:84px;}
+  .combat-crest .crest-mark{font-size:23px;}
+  .combat-crest .crest-label{font-size:6px;bottom:10px;}
+  .combatant-card.boss .combat-crest{width:94px;height:94px;}
 }
 
 /* ---------- modal ---------- */
@@ -1356,6 +1421,55 @@ function getMonsterSprite(){
   return [shape, pal];
 }
 
+function enemyIconSvg(name, type){
+  const n = String(name||'');
+  const has = (...ks)=>ks.some(k=>n.includes(k));
+  const stroke = type==='보스' ? '#ffe3a1' : type==='중간보스' ? '#ead6ff' : '#f3dfad';
+  const accent = type==='보스' ? '#c94a45' : type==='중간보스' ? '#9b70c7' : '#b68b42';
+  const common = `fill="none" stroke="${stroke}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"`;
+  const fill = `fill="rgba(243,223,173,.045)" stroke="${stroke}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"`;
+  let label='HOSTILE', body='';
+
+  if(has('슬라임')){
+    label = has('용암') ? 'MAGMA SLIME' : has('얼음') ? 'FROST SLIME' : 'SLIME';
+    body = `<path ${fill} d="M18 92 C20 58 39 37 64 37 C89 37 108 58 110 92 C94 103 34 103 18 92 Z"/><path ${common} d="M47 60v11 M81 60v11"/><path ${common} d="M51 86c8 5 18 5 26 0"/><path stroke="${accent}" stroke-width="6" stroke-linecap="round" d="M91 43l8-10 M101 53l10-3"/>`;
+  } else if(has('골렘','오크','거인','수호자','트롤')){
+    label = has('골렘') ? 'GOLEM' : has('오크') ? 'ORC' : 'TITAN';
+    body = `<path ${fill} d="M40 38h48l10 19-7 31-14 12H51L37 88l-7-31 10-19Z"/><path ${common} d="M51 47v22 M77 47v22 M50 79h28 M43 57L22 67v25 M85 57l21 10v25 M51 100v15 M77 100v15"/><path stroke="${accent}" stroke-width="6" stroke-linecap="round" d="M46 37l8-11 M82 37l-8-11"/>`;
+  } else if(has('고블린')){
+    label='GOBLIN';
+    body = `<path ${fill} d="M45 42c-13 7-19 20-17 36 2 21 16 32 36 32s34-11 36-32c2-16-4-29-17-36"/><path ${common} d="M48 47L25 31l6 28 M80 47l23-16-6 28 M49 66h1 M79 66h1 M55 83c6 4 12 4 18 0"/><path stroke="${accent}" stroke-width="6" stroke-linecap="round" d="M61 93h6"/>`;
+  } else if(has('늑대','들개','지옥견','켈베로스','멧돼지')){
+    label = has('켈베로스') ? 'CERBERUS' : 'BEAST';
+    body = `<path ${fill} d="M27 88c4-20 13-35 29-43l-4-18 17 12 18-12-3 19c15 8 24 22 27 42-9 10-21 15-36 15s-29-5-48-15Z"/><path ${common} d="M45 61l-7 15 M83 61l7 15 M53 80h1 M75 80h1 M57 91c5 4 11 4 16 0"/>`;
+  } else if(has('거미')){
+    label='SPIDER';
+    body = `<ellipse ${fill} cx="64" cy="65" rx="22" ry="29"/><path ${common} d="M43 51L19 34 M40 64L12 55 M41 78L16 82 M85 51l24-17 M88 64l28-9 M87 78l25 4 M56 38l-8-19 M72 38l8-19"/><circle cx="57" cy="60" r="2" fill="${stroke}" stroke="none"/><circle cx="71" cy="60" r="2" fill="${stroke}" stroke="none"/>`;
+  } else if(has('해골','스켈레톤','좀비','구울','리치')){
+    label = has('리치') ? 'LICH' : 'UNDEAD';
+    body = `<path ${fill} d="M35 51c0-22 13-35 29-35s29 13 29 35c0 14-8 22-18 27v16H53V78C43 73 35 65 35 51Z"/><path ${common} d="M49 46h1 M79 46h1 M54 64c7 5 13 5 20 0 M57 80v14 M71 80v14 M47 99h34"/>`;
+  } else if(has('火','불꽃','화염','용암','마그마','이프리트','샐러맨더')){
+    label='FLAME';
+    body = `<path ${fill} d="M65 17c-3 17 11 23 11 37 0 10-5 18-13 18-9 0-15-8-15-18 0-10 7-17 10-29-10 8-18 20-18 34 0 25 14 39 34 39s34-14 34-39c0-16-9-30-22-39 3 14-1 23-8 30 1-15-5-25-13-33Z"/><path ${common} d="M48 91c6 9 12 12 17 12 6 0 12-3 17-12"/>`;
+  } else if(has('얼음','서리','눈보라','설인','펜릴')){
+    label='FROST';
+    body = `<path ${fill} d="M64 18v91 M25 42l78 45 M25 87l78-45 M64 18l-8 11 M64 18l8 11 M25 42l14 2 M25 42l4 13 M103 87l-14-2 M103 87l-4-13 M25 87l14-2 M25 87l4-13 M103 42l-14 2 M103 42l-4 13"/>`;
+  } else if(has('드래곤','마왕','발록','히드라','바실리스크','카르가스')){
+    label='DRAGON';
+    body = `<path ${fill} d="M34 90c2-20 12-35 30-42 18 7 28 22 30 42l-16 14H50L34 90Z"/><path ${common} d="M45 48L29 27l24 10 M83 48l16-21-24 10 M53 67h1 M75 67h1 M56 82c5 4 11 4 16 0 M49 103v10 M79 103v10"/><path stroke="${accent}" stroke-width="6" stroke-linecap="round" d="M64 45v42"/>`;
+  } else if(has('기사','주술사','네크로맨서','마녀','마법사')){
+    label = has('기사') ? 'KNIGHT' : 'MYSTIC';
+    body = `<path ${fill} d="M43 38h42l7 18-7 30-12 16H55L43 86l-7-30 7-18Z"/><path ${common} d="M52 53h24 M49 70h30 M55 86h18 M44 101L25 91 M84 101l19-10"/><path stroke="${accent}" stroke-width="6" stroke-linecap="round" d="M64 38V20 M55 25h18"/>`;
+  } else if(has('광부','광산')){
+    label='MINER';
+    body = `<path ${fill} d="M35 44c7-18 18-27 29-27s22 9 29 27H35Z"/><path ${common} d="M42 44v38c0 17 10 28 22 28s22-11 22-28V44 M51 62h1 M77 62h1 M55 80c6 4 12 4 18 0 M29 109h70"/><path stroke="${accent}" stroke-width="7" stroke-linecap="round" d="M28 91l72-39"/>`;
+  } else {
+    label='HOSTILE';
+    body = `<path ${fill} d="M27 94c2-32 17-52 37-52s35 20 37 52c-18 9-56 9-74 0Z"/><path ${common} d="M49 67h1 M79 67h1 M55 83c6 4 12 4 18 0"/><path stroke="${accent}" stroke-width="6" stroke-linecap="round" d="M42 42l-8-15 M86 42l8-15"/>`;
+  }
+  return `<svg class="enemy-line-icon" viewBox="0 0 128 128" aria-label="${label}" role="img">${body}</svg><span class="pictogram-kind">${label}</span>`;
+}
+
 function drawSprite(canvas, matrix, palette){
   const rows = matrix.length, cols = matrix[0].length;
   canvas.width = cols; canvas.height = rows;
@@ -1405,24 +1519,27 @@ function renderScene(){
         </div>
       </div></div>
       <div class="frame hot"><div class="frame-inner tight">
-        <div style="text-align:center;font-size:12px;color:var(--red-bright);letter-spacing:3px;font-family:'Cinzel',serif;font-weight:bold;text-shadow:0 1px 0 #000;">BATTLE</div>
+        <div style="text-align:center;font-size:13px;color:var(--red-bright);letter-spacing:4px;font-family:'Cinzel',serif;font-weight:bold;text-shadow:0 1px 0 #000;">BATTLE</div>
         <div class="vs-wrap">
           <div class="combatant-card player" id="pcard">
             <span class="tag">PLAYER</span>
-            <div class="sprite-box"><canvas id="pcanvas"></canvas></div>
+            <div class="combat-crest">
+              <span class="crest-mark">⚔</span>
+              <span class="crest-label">ADVENTURER</span>
+            </div>
             <div class="cname">${p.name}</div>
             <div class="cjob">Lv.${p.level} ${p.current_job}</div>
             <div class="mini-bar-track"><div class="mini-bar-fill hp" style="width:${hpR*100}%"></div></div>
           </div>
           <div class="vs-badge">VS</div>
-          <div class="combatant-card enemy" id="ecard">
-            <span class="tag">ENEMY</span>
-            <div class="sprite-box" style="position:relative;">
-              <canvas id="ecanvas"></canvas>
-              <canvas id="effectcanvas" style="position:absolute;inset:0;"></canvas>
+          <div class="combatant-card enemy ${m.m_type==='보스'?'boss':(m.m_type==='중간보스'?'elite':'normal')}" id="ecard">
+            <span class="tag">${m.m_type==='보스'?'BOSS':m.m_type==='중간보스'?'ELITE':'ENEMY'}</span>
+            <div class="combat-crest enemy-pictogram">
+              ${enemyIconSvg(m.name, m.m_type)}
             </div>
             <div class="cname">${m.name}</div>
             <div class="cjob">${m.m_type}</div>
+            <div class="enemy-meta"><span>ATK ${m.atk}</span><span>DEF ${m.def_stat}</span><span>SPD ${m.spd}</span></div>
             <div class="mini-bar-track"><div class="mini-bar-fill hp" style="width:${mHpR*100}%"></div></div>
           </div>
         </div>
@@ -1431,13 +1548,6 @@ function renderScene(){
           : `<div class="enemy-info">적군 속도: ${m.spd} | 공격: ${m.atk} | 방어: ${m.def_stat}</div>`}
       </div></div>
     `;
-    drawSprite(document.getElementById("pcanvas"), getPlayerSprite()[0], getPlayerSprite()[1]);
-    drawSprite(document.getElementById("ecanvas"), getMonsterSprite()[0], getMonsterSprite()[1]);
-    
-    if(battleAnim.effectType && EFFECT_SHAPES[battleAnim.effectType]){
-      drawSprite(document.getElementById("effectcanvas"), EFFECT_SHAPES[battleAnim.effectType], EFFECT_PALETTES);
-    }
-
     if(battleAnim.playerFlash) document.getElementById("pcard").classList.add("flash-red");
     if(battleAnim.monsterFlash) document.getElementById("ecard").classList.add("flash-red");
   } else {
