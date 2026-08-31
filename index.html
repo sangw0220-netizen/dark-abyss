@@ -922,6 +922,54 @@ html,body{font-size:14px;}
    - Compact information density
    - Mobile-first readability
    ================================================================ */
+   /* =====================================================================
+   EQUIPMENT UI (모바일 게임 스타일 장비 관리창)
+===================================================================== */
+.equip-board { display:flex; flex-direction:column; gap:10px; color:#2f2110; padding:4px; }
+.equip-head { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1px solid rgba(58,40,18,.32); padding-bottom:8px; }
+.equip-kicker { font-size:10px; letter-spacing:2.5px; color:#765018; font-family:'Cinzel',serif; font-weight:700; }
+.equip-title { margin:3px 0 0; font-size:22px; letter-spacing:1px; color:#241707; font-weight:900; text-shadow:0 1px 0 rgba(255,255,255,.35); }
+
+.equip-section-title { font-size:12px; font-weight:bold; color:#5b431f; margin-top:8px; border-left:3px solid #8a5a12; padding-left:8px; }
+
+.equip-slots { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+.equip-slot { 
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  background:linear-gradient(135deg,rgba(255,249,226,.88),rgba(218,194,139,.38));
+  border:1px solid rgba(91,67,31,.42); box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 2px 5px rgba(58,40,18,.08);
+  padding:12px 8px; border-radius:4px;
+}
+.equip-slot.empty { filter: grayscale(0.8) opacity(0.7); }
+.equip-slot-icon { font-size:24px; margin-bottom:6px; background:rgba(255,255,255,.48); border:1px solid rgba(91,67,31,.38); width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:50%; box-shadow:inset 0 1px 0 rgba(255,255,255,.7); }
+.equip-slot-type { font-size:9px; color:#765018; font-weight:bold; margin-bottom:2px; font-family:'Cinzel',serif; }
+.equip-slot-name { font-size:12px; color:#281a08; font-weight:900; word-break: keep-all; }
+.equip-slot-desc { font-size:9px; color:#5b431f; margin-top:4px; line-height:1.4; }
+
+.equip-inventory { display:flex; flex-direction:column; gap:6px; }
+.equip-item-card { 
+  display:flex; align-items:center; gap:10px; padding:10px 12px;
+  background:linear-gradient(135deg,rgba(255,255,255,.6),rgba(240,230,200,.4));
+  border:1px solid rgba(91,67,31,.3); border-radius:4px;
+  transition: transform 0.1s, box-shadow 0.1s; cursor:pointer;
+}
+.equip-item-card:hover { transform:translateY(-1px); box-shadow:0 3px 8px rgba(58,40,18,.15); background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(240,230,200,.7)); border-color:rgba(138,90,18,.5); }
+.equip-item-icon { font-size:20px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.5); border:1px solid rgba(91,67,31,.3); border-radius:4px; }
+.equip-item-info { flex:1; }
+.equip-item-name { font-size:13px; font-weight:bold; color:#281a08; }
+.equip-item-desc { font-size:10px; color:#5b431f; margin-top:2px; }
+.equip-item-btn { 
+  padding:6px 12px; background:#4a3018; color:#f4dd97; border:1px solid #241708; border-radius:3px;
+  font-size:11px; font-family:'Cinzel',serif; font-weight:bold; box-shadow:inset 0 1px 0 rgba(255,255,255,.15);
+}
+
+.equip-empty-msg { text-align:center; padding:22px; color:#765018; font-size:12px; background:rgba(255,250,230,.38); border:1px dashed rgba(91,67,31,.38); border-radius:4px; }
+
+@media (max-width:500px){
+  .equip-slots { grid-template-columns:1fr; }
+  .equip-slot { flex-direction:row; text-align:left; padding:8px 12px; }
+  .equip-slot-icon { margin-bottom:0; margin-right:12px; width:38px; height:38px; font-size:20px; flex-shrink:0; }
+  .equip-item-card { padding:8px 10px; }
+}
 .town-hub{
   gap:10px!important;
   padding:0!important;
@@ -2766,41 +2814,109 @@ async function enterDungeon(dungeonType){
   });
 }
 
-function equipmentInvenMenu(){
+function equipmentInvenMenu() {
   setButtons([]);
   S.currentMonster = null;
   renderScene();
   const p = S.player;
-  displayText("==================================================\n           🎒 장비 인벤토리 및 장착 관리\n==================================================", {clear:true});
-  const wEnh = p.equipped_weapon ? (p.equipped_weapon.enhance||0) : 0;
-  const wName = p.equipped_weapon ? `${p.equipped_weapon.name}[+${wEnh}]` : "없음";
-  const aName = p.equipped_armor ? p.equipped_armor.name : "없음";
-  const accName = p.equipped_accessory ? p.equipped_accessory.name : "없음";
-  displayText(`현재 착용 중인 장비:`);
-  displayText(`  - 무기: ${wName}`);
-  displayText(`  - 방어구: ${aName}`);
-  displayText(`  - 장신구: ${accName}\n`);
+  const log = logEl();
+  
+  const wEnh = p.equipped_weapon ? (p.equipped_weapon.enhance || 0) : 0;
+  const wName = p.equipped_weapon ? `${p.equipped_weapon.name} [+${wEnh}]` : "장착 안됨";
+  const wDesc = p.equipped_weapon ? p.equipped_weapon.desc : "무기를 장착하여 공격력을 올리세요.";
+  
+  const aName = p.equipped_armor ? p.equipped_armor.name : "장착 안됨";
+  const aDesc = p.equipped_armor ? p.equipped_armor.desc : "방어구를 장착하여 생존력을 높이세요.";
+  
+  const accName = p.equipped_accessory ? p.equipped_accessory.name : "장착 안됨";
+  const accDesc = p.equipped_accessory ? p.equipped_accessory.desc : "장신구로 특별한 효과를 얻으세요.";
 
-  if(p.equipment_inventory.length===0){
-    displayText("보유 중인 여분의 장비가 없습니다. (상점에서 구매하세요)");
-    setButtons([["마 마을로 돌아가기", town]]);
-    return;
+  let invenHtml = "";
+  if (p.equipment_inventory.length === 0) {
+    invenHtml = `<div class="equip-empty-msg">가방에 남은 장비가 없습니다.<br>상점이나 던전 모험을 통해 새로운 장비를 획득해보세요.</div>`;
+  } else {
+    invenHtml = `<div class="equip-inventory">`;
+    p.equipment_inventory.forEach((item, idx) => {
+      const enh = item.enhance || 0;
+      const dispName = ["검", "활", "지팡이"].includes(item.type) ? `${item.name} [+${enh}]` : item.name;
+      
+      let icon = "🎒";
+      if (["검", "활", "지팡이"].includes(item.type)) icon = "🗡️";
+      else if (["갑옷", "투구", "방패"].includes(item.type)) icon = "🛡️";
+      else if (["목걸이", "반지"].includes(item.type)) icon = "💍";
+
+      invenHtml += `
+        <div class="equip-item-card" data-idx="${idx}">
+          <div class="equip-item-icon">${icon}</div>
+          <div class="equip-item-info">
+            <div class="equip-item-name">${dispName}</div>
+            <div class="equip-item-desc">${item.desc}</div>
+          </div>
+          <div class="equip-item-btn">장착</div>
+        </div>
+      `;
+    });
+    invenHtml += `</div>`;
   }
 
-  displayText("보유 중인 장비 목록 (클릭하여 장착):");
-  p.equipment_inventory.forEach((item,idx)=>{
-    const enh = item.enhance||0;
-    const dispName = ["검","활","지팡이"].includes(item.type) ? `${item.name}[+${enh}]` : item.name;
-    displayText(`  ${idx+1}. [${item.type}] ${dispName} (${item.desc})`);
+  log.innerHTML = `
+    <div class="equip-board">
+      <div class="equip-head">
+        <div>
+          <div class="equip-kicker">INVENTORY & EQUIPMENT</div>
+          <div class="equip-title">🎒 장비 관리</div>
+        </div>
+      </div>
+
+      <div class="equip-section-title">현재 장착 중인 장비</div>
+      <div class="equip-slots">
+        <div class="equip-slot ${!p.equipped_weapon ? 'empty' : ''}">
+          <div class="equip-slot-icon">🗡️</div>
+          <div class="equip-slot-info">
+            <div class="equip-slot-type">무기 (WEAPON)</div>
+            <div class="equip-slot-name">${wName}</div>
+            <div class="equip-slot-desc">${wDesc}</div>
+          </div>
+        </div>
+        <div class="equip-slot ${!p.equipped_armor ? 'empty' : ''}">
+          <div class="equip-slot-icon">🛡️</div>
+          <div class="equip-slot-info">
+            <div class="equip-slot-type">방어구 (ARMOR)</div>
+            <div class="equip-slot-name">${aName}</div>
+            <div class="equip-slot-desc">${aDesc}</div>
+          </div>
+        </div>
+        <div class="equip-slot ${!p.equipped_accessory ? 'empty' : ''}">
+          <div class="equip-slot-icon">💍</div>
+          <div class="equip-slot-info">
+            <div class="equip-slot-type">장신구 (ACCESSORY)</div>
+            <div class="equip-slot-name">${accName}</div>
+            <div class="equip-slot-desc">${accDesc}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="equip-section-title" style="margin-top: 10px;">보유 중인 장비 (인벤토리)</div>
+      ${invenHtml}
+    </div>
+  `;
+  
+  log.scrollTop = 0;
+  
+  // 인벤토리 장착 버튼 클릭 시 이벤트 처리
+  const itemCards = log.querySelectorAll('.equip-item-card');
+  itemCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const idx = parseInt(card.getAttribute('data-idx'));
+      const item = p.equipment_inventory[idx];
+      if (item) {
+        log.innerHTML = ""; // 기존 패널을 지우고 안내 메시지 출력용으로 비웁니다.
+        equipItem(item);
+      }
+    });
   });
 
-  const btnData = p.equipment_inventory.map(item=>{
-    const enh = item.enhance||0;
-    const btnName = ["검","활","지팡이"].includes(item.type) ? `${item.name}[+${enh}]` : item.name;
-    return [`장착: ${btnName}`, ()=>equipItem(item)];
-  });
-  btnData.push(["마을로 돌아가기", town]);
-  setPaginatedButtons(btnData);
+  setButtons([["🏡 마을로 돌아가기", town]]);
 }
 
 function equipItem(item){
