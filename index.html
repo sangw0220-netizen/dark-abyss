@@ -692,6 +692,227 @@ html,body{font-size:14px;}
   .town-notice small{font-size:6px;}
 }
 </style>
+<style id="responsive-density-pass">
+/* ================================================================
+   RESPONSIVE DENSITY PASS
+   - Do not let the lobby/dungeon content inherit a viewport-sized
+     internal canvas.
+   - Desktop keeps the parchment panel tall, but its contents pack
+     naturally from the top.
+   - Mobile switches to readable single-column sections.
+================================================================ */
+#log{
+  display:block;
+  height:100%;
+  min-height:0;
+  overflow-y:auto;
+  padding:6px 4px;
+}
+
+#log:has(.town-hub),
+#log:has(.dungeon-board){
+  overflow-y:auto;
+}
+
+.town-hub{
+  height:auto!important;
+  min-height:0!important;
+  gap:10px!important;
+  padding:0 1px 4px!important;
+}
+.town-hero{
+  flex:none!important;
+  height:auto!important;
+  min-height:0!important;
+  flex-basis:auto!important;
+  grid-template-columns:minmax(0,1.55fr) minmax(220px,.75fr)!important;
+  gap:8px!important;
+}
+.town-location,
+.town-notice{
+  height:auto!important;
+  min-height:0!important;
+}
+.town-section{
+  flex:none!important;
+  margin-bottom:0!important;
+  padding-top:7px!important;
+}
+.town-section-head{margin-bottom:5px!important;}
+.town-rumor{padding:8px 11px 8px 14px!important;}
+.town-grid{gap:7px!important;}
+.town-card{min-height:52px!important;}
+
+.dungeon-board{
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0 1px 6px!important;
+  gap:10px!important;
+}
+.dungeon-hero{
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:2px 2px 8px!important;
+}
+.dungeon-cards{gap:8px!important;}
+.dungeon-card{padding:9px 9px 10px!important;}
+
+@media (min-width:601px){
+  /* Keep desktop compact without making the type microscopic. */
+  .town-location,.town-notice{padding:10px 12px!important;}
+  .town-hero{grid-template-columns:minmax(0,1.55fr) minmax(210px,.75fr)!important;}
+  .town-desc{line-height:1.4!important;}
+  .town-section{padding-top:6px!important;}
+  .town-rumor{padding:8px 11px 8px 14px!important;}
+}
+
+@media (max-width:600px){
+  #log{padding:3px 2px;}
+
+  /* Lobby hero: stack instead of squeezing two panels into tiny columns. */
+  .town-hub{
+    gap:8px!important;
+    padding:0 1px 5px!important;
+  }
+  .town-hero{
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+  }
+  .town-location,
+  .town-notice{
+    padding:9px 10px!important;
+  }
+  .town-kicker{
+    font-size:8px!important;
+    letter-spacing:1.8px!important;
+  }
+  .town-title{
+    font-size:18px!important;
+    line-height:1.2!important;
+    margin:2px 0 4px!important;
+    white-space:normal!important;
+  }
+  .town-title span{
+    display:inline-block!important;
+    font-size:8px!important;
+    letter-spacing:1px!important;
+    margin-left:4px!important;
+  }
+  .town-desc{
+    font-size:10px!important;
+    line-height:1.45!important;
+  }
+  .town-meta{margin-top:5px!important;gap:4px!important;}
+  .town-chip{font-size:8px!important;padding:3px 5px!important;}
+
+  .town-notice{
+    display:grid!important;
+    grid-template-columns:auto 1fr!important;
+    column-gap:9px!important;
+    align-items:center!important;
+  }
+  .town-notice .label{
+    grid-column:1/-1;
+    font-size:7px!important;
+    letter-spacing:1.3px!important;
+    margin-bottom:2px!important;
+  }
+  .town-notice strong{
+    font-size:10px!important;
+    line-height:1.35!important;
+  }
+  .town-notice small{
+    margin:0!important;
+    font-size:8px!important;
+    line-height:1.35!important;
+  }
+
+  .town-section{padding-top:6px!important;}
+  .town-section-head{margin-bottom:4px!important;}
+  .town-section-title{font-size:12px!important;}
+  .town-section-sub{font-size:7px!important;}
+  .town-rumor{
+    padding:7px 8px 7px 11px!important;
+    font-size:10px!important;
+    line-height:1.45!important;
+  }
+  .town-rumor-source{font-size:8px!important;}
+  .rumor-action-hint{font-size:8px!important;margin-top:4px!important;}
+  .rumor-action-hint b{padding:2px 5px!important;}
+
+  /* Two columns are enough to keep the three area cards readable. */
+  .town-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:5px!important;
+  }
+  .town-card{
+    padding:6px!important;
+    min-height:50px!important;
+  }
+  .town-card:last-child{grid-column:1/-1;}
+  .town-card .icon{font-size:14px!important;margin-right:4px!important;}
+  .town-card b{font-size:10px!important;}
+  .town-card p{font-size:8px!important;line-height:1.35!important;}
+  .town-progress{gap:2px!important;}
+  .town-stage-dot{height:4px!important;}
+  .town-footer-note{font-size:7px!important;}
+
+  /* Dungeon: compact header, then readable one-column cards. */
+  .dungeon-board{gap:8px!important;padding-bottom:5px!important;}
+  .dungeon-hero{
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+    padding:0 1px 7px!important;
+  }
+  .dungeon-kicker{font-size:9px!important;letter-spacing:2px!important;}
+  .dungeon-title{font-size:20px!important;margin:2px 0 4px!important;}
+  .dungeon-story{font-size:10px!important;line-height:1.45!important;}
+  .dungeon-power{
+    width:100%!important;
+    max-height:none!important;
+    padding:7px 10px!important;
+    display:grid!important;
+    grid-template-columns:1fr auto!important;
+    align-items:center!important;
+    text-align:right!important;
+  }
+  .dungeon-power .label{font-size:8px!important;}
+  .dungeon-power strong{font-size:17px!important;margin:0!important;}
+  .dungeon-power > div:last-child{font-size:8px!important;grid-column:1/-1;text-align:right;}
+  .dungeon-intro{font-size:12px!important;}
+  .dungeon-cards{grid-template-columns:1fr!important;gap:7px!important;}
+  .dungeon-card{padding:9px 9px 10px!important;}
+  .dungeon-icon{height:48px!important;font-size:34px!important;}
+  .dungeon-card h3{font-size:15px!important;}
+  .dungeon-subtitle{font-size:8px!important;margin-bottom:6px!important;}
+  .dungeon-desc{font-size:10px!important;line-height:1.45!important;min-height:0!important;}
+  .dungeon-block{margin-top:6px!important;padding-top:6px!important;}
+  .dungeon-block b{font-size:10px!important;}
+  .dungeon-monsters{font-size:9px!important;min-height:0!important;}
+  .dungeon-stars{font-size:12px!important;}
+  .dungeon-reward{font-size:8px!important;padding:3px 4px!important;}
+  .dungeon-footer{grid-template-columns:1fr!important;gap:7px!important;padding:8px 9px!important;}
+  .dungeon-info-title{font-size:10px!important;}
+  .dungeon-info{font-size:9px!important;line-height:1.5!important;}
+}
+
+@media (max-width:380px){
+  #app{padding:5px 6px 6px!important;gap:5px!important;}
+  #titlebar h1{font-size:20px!important;}
+  .hud-name{font-size:10px!important;}
+  .hud-gold{font-size:9px!important;}
+  .town-title{font-size:17px!important;}
+  .town-desc{font-size:9px!important;}
+  .town-notice strong{font-size:9px!important;}
+  .town-notice small{font-size:7px!important;}
+  .town-card p{font-size:7.5px!important;}
+  .dungeon-title{font-size:19px!important;}
+  .dungeon-story{font-size:9px!important;}
+}
+</style>
 </head>
 <body>
 <div id="app">
