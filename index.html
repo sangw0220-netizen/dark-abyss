@@ -4713,7 +4713,11 @@ async function town(){
   const p = S.player;
   const invCount = Object.values(p.inventory || {}).reduce((a,b)=>a+b,0);
 
-  const rumorSource = aiPack?.rumor?.story || TOWN_RUMORS[rumorIdx];
+// 1. AI가 생성한 소문이 있으면 그것을 쓰고, 없으면 현재 스테이지의 3가지 루머 중 랜덤으로 딱 1개만 가져옵니다!
+  const randomSelectedRumor = TOWN_RUMORS[S.stageIdx] ? TOWN_RUMORS[S.stageIdx][Math.floor(Math.random() * TOWN_RUMORS[S.stageIdx].length)] : TOWN_RUMORS[0][0];
+  
+  const rumorSource = aiPack?.rumor?.story || randomSelectedRumor;
+
   const rumorText = String(rumorSource)
     .replace(/🍺\s*\[[^\]]+\]\s*/, "")
     .replace(/^\s*•\s*/, "")
