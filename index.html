@@ -1868,6 +1868,202 @@ body #app .shop-tabs {
 }
 @media(max-width:380px){.shop-category-grid,.shop-item-grid{grid-template-columns:1fr}.shop-category-card{min-height:132px}.shop-item-card{display:grid;grid-template-columns:74px 1fr;grid-template-rows:auto auto}.shop-item-visual{grid-row:1/3;height:100%;min-height:116px;border-bottom:0;border-right:1px solid rgba(75,49,14,.35)}.shop-item-body{grid-column:2}.shop-item-buy{grid-column:2}.shop-item-icon{font-size:34px}}
 </style>
+<style id="compact-prologue">
+/* ---------- compact prologue / start page ---------- */
+#log:has(.prologue-compact){
+  padding:8px 10px 10px !important;
+  overflow-y:auto !important;
+}
+.prologue-compact{
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  min-height:100%;
+  padding:4px 2px 6px;
+}
+.prologue-ornament{
+  text-align:center;
+  color:#8a5a12;
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:4px;
+  margin:0;
+}
+.prologue-title{
+  text-align:center;
+  margin:0;
+}
+.prologue-title h2{
+  margin:0;
+  font-family:'Cinzel Decorative','Cinzel',serif;
+  font-size:clamp(34px,6vw,54px);
+  line-height:1;
+  letter-spacing:2px;
+  color:#8a6a38;
+  text-shadow:0 1px 0 rgba(255,255,255,.55),0 2px 0 rgba(58,40,18,.15);
+}
+.prologue-title .subtitle{
+  margin-top:7px;
+  color:#9a7845;
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  letter-spacing:3px;
+}
+.prologue-seal{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  color:#6f4d1d;
+  font-weight:700;
+  font-size:14px;
+  margin-top:1px;
+}
+.prologue-seal::before,.prologue-seal::after{
+  content:"";
+  width:70px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,#a97a3a);
+}
+.prologue-seal::after{transform:scaleX(-1);}
+.prologue-quote{
+  text-align:center;
+  border-top:1px solid rgba(58,40,18,.28);
+  border-bottom:1px solid rgba(58,40,18,.28);
+  padding:14px 8px 12px;
+}
+.prologue-quote .kicker{
+  color:#a17b43;
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  letter-spacing:3px;
+  margin-bottom:7px;
+}
+.prologue-quote strong{
+  display:block;
+  font-size:17px;
+  line-height:1.45;
+  color:#3a2812;
+}
+.prologue-quote p{
+  margin:7px auto 0;
+  max-width:760px;
+  font-size:11px;
+  line-height:1.55;
+  color:#6e5732;
+}
+.prologue-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr)) minmax(180px,.9fr);
+  gap:7px;
+}
+.prologue-card{
+  position:relative;
+  min-height:125px;
+  padding:11px 12px;
+  border:1px solid rgba(58,40,18,.32);
+  background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(122,92,38,.07));
+  box-shadow:inset 0 1px rgba(255,255,255,.22);
+}
+.prologue-card::before{
+  content:"";
+  position:absolute;
+  top:-1px;left:-1px;
+  width:42px;height:3px;
+  background:#a97a3a;
+}
+.prologue-card .num{
+  color:#9a6d2a;
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  letter-spacing:1px;
+}
+.prologue-card h3{
+  margin:4px 0 7px;
+  font-size:14px;
+  color:#3a2812;
+}
+.prologue-card p{
+  margin:0;
+  font-size:10px;
+  line-height:1.55;
+  color:#6e5732;
+}
+.prologue-record{
+  min-height:125px;
+  padding:11px 13px;
+  border:1px solid rgba(58,40,18,.38);
+  background:rgba(255,255,255,.16);
+}
+.prologue-record .label{
+  display:flex;
+  justify-content:space-between;
+  color:#9a7845;
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  letter-spacing:2px;
+}
+.prologue-record h3{
+  margin:7px 0 5px;
+  font-size:16px;
+}
+.prologue-record p{
+  margin:0 0 9px;
+  font-size:10px;
+  line-height:1.5;
+  color:#6e5732;
+}
+.prologue-status{
+  display:grid;
+  gap:4px;
+}
+.prologue-status div{
+  display:flex;
+  justify-content:space-between;
+  padding-top:4px;
+  border-top:1px solid rgba(58,40,18,.14);
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  color:#8b7048;
+}
+.prologue-status b{color:#4d371b;}
+.prologue-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:4px 2px 0;
+  color:#8a6a38;
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  letter-spacing:1.8px;
+}
+.prologue-footer .waiting{font-size:10px;color:#6f4d1d;letter-spacing:2px;}
+@media(max-width:760px){
+  .prologue-compact{gap:9px;padding:2px 1px 5px;}
+  .prologue-title h2{font-size:34px;}
+  .prologue-title .subtitle{margin-top:5px;letter-spacing:2px;}
+  .prologue-seal{font-size:12px;}
+  .prologue-seal::before,.prologue-seal::after{width:42px;}
+  .prologue-quote{padding:10px 5px 9px;}
+  .prologue-quote strong{font-size:15px;}
+  .prologue-quote p{font-size:10px;line-height:1.45;}
+  .prologue-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
+  .prologue-card,.prologue-record{min-height:110px;padding:9px 10px;}
+  .prologue-card h3{font-size:13px;margin:3px 0 5px;}
+  .prologue-card p,.prologue-record p{font-size:9px;line-height:1.45;}
+  .prologue-record h3{font-size:14px;margin:5px 0 4px;}
+  .prologue-footer{font-size:7px;}
+}
+@media(max-width:430px){
+  .prologue-grid{grid-template-columns:1fr 1fr;}
+  .prologue-card:nth-child(3){grid-column:1 / -1;min-height:86px;}
+  .prologue-card:nth-child(3) p{max-width:90%;}
+  .prologue-record{grid-column:1 / -1;min-height:100px;}
+  .prologue-footer{flex-direction:column;align-items:center;gap:3px;}
+}
+</style>
 
 <style id="mobile-final-redesign">
 /* =====================================================================
@@ -2385,264 +2581,151 @@ body #app .shop-equip-card:active {
 </style>
 
 
-<style id="fixed-layout-all-sizes">
+<style id="job-card-selection-ui">
 /* ================================================================
-   FIXED GAME UI SCALE — TOWN / DUNGEON
-   화면 폭이 줄어도 카드의 배치 구조는 유지하고 내부 요소만 축소.
-   웹페이지 자체는 스크롤하지 않고 게임 페이지(#log)만 스크롤.
-   ================================================================ */
-html, body { width:100%; height:100%; overflow:hidden !important; }
-#app { width:100%; max-width:820px; height:100%; min-height:0; overflow:hidden; }
-#log { min-width:0; min-height:0; overflow-y:auto !important; overflow-x:hidden !important; -webkit-overflow-scrolling:touch; }
-
-/* 로비: 데스크톱의 2패널 구조를 모바일에서도 유지 */
-.town-hero {
-  grid-template-columns:minmax(0,1.55fr) minmax(150px,.75fr) !important;
-  gap:8px !important;
-}
-.town-grid {
-  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-  gap:6px !important;
-}
-.town-card { min-width:0 !important; }
-.town-card:last-child { grid-column:auto !important; }
-
-/* 던전: 3개 던전 카드를 항상 한 줄로 유지 */
-.dungeon-hero {
-  grid-template-columns:minmax(0,1fr) minmax(110px,auto) !important;
-}
-.dungeon-cards {
-  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-  gap:7px !important;
-}
-.dungeon-card { min-width:0 !important; }
-
-/* 좁은 화면에서는 구조를 바꾸지 않고 내부 밀도만 축소 */
-@media (max-width:600px){
-  .town-hero { grid-template-columns:minmax(0,1.55fr) minmax(120px,.75fr) !important; }
-  .town-location,.town-notice { padding:8px 9px !important; }
-  .town-title { font-size:16px !important; white-space:nowrap !important; }
-  .town-title span { font-size:7px !important; }
-  .town-desc { font-size:8.5px !important; line-height:1.35 !important; }
-  .town-meta { gap:3px !important; margin-top:4px !important; }
-  .town-chip { font-size:6.5px !important; padding:2px 4px !important; }
-  .town-notice .label { font-size:6px !important; }
-  .town-notice strong { font-size:8px !important; }
-  .town-notice small { font-size:6.5px !important; }
-  .town-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:4px !important; }
-  .town-card { padding:5px !important; min-height:48px !important; }
-  .town-card .icon { font-size:12px !important; margin-right:3px !important; }
-  .town-card b { font-size:8px !important; }
-  .town-card p { font-size:6.5px !important; line-height:1.3 !important; }
-
-  .dungeon-board { gap:7px !important; }
-  .dungeon-hero { grid-template-columns:minmax(0,1fr) minmax(105px,auto) !important; gap:7px !important; }
-  .dungeon-kicker { font-size:7px !important; letter-spacing:1.5px !important; }
-  .dungeon-title { font-size:17px !important; }
-  .dungeon-story { font-size:8px !important; line-height:1.35 !important; }
-  .dungeon-power { min-width:105px !important; padding:6px 7px !important; }
-  .dungeon-power .label { font-size:6.5px !important; }
-  .dungeon-power strong { font-size:14px !important; }
-  .dungeon-power > div:last-child { font-size:6.5px !important; }
-  .dungeon-intro { font-size:9px !important; }
-  .dungeon-intro::before { font-size:12px !important; }
-  .dungeon-cards { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:4px !important; }
-  .dungeon-card { padding:7px 6px 8px !important; }
-  .dungeon-ribbon { font-size:6px !important; margin-bottom:25px !important; }
-  .dungeon-icon { top:8px !important; right:6px !important; font-size:22px !important; }
-  .dungeon-card h3 { font-size:12px !important; }
-  .dungeon-subtitle { font-size:6px !important; }
-  .dungeon-desc { font-size:7px !important; line-height:1.3 !important; }
-  .dungeon-block { margin-top:5px !important; padding-top:4px !important; }
-  .dungeon-block b { font-size:7px !important; }
-  .dungeon-monsters { font-size:6.5px !important; line-height:1.3 !important; }
-  .dungeon-stars { font-size:9px !important; }
-  .dungeon-reward { font-size:6px !important; padding:2px 3px !important; }
-  .dungeon-footer { gap:5px !important; padding:6px !important; }
-  .dungeon-info-title { font-size:7px !important; }
-  .dungeon-info { font-size:6.5px !important; line-height:1.35 !important; }
-}
-
-@media (max-width:380px){
-  #app { padding:5px 6px 6px !important; gap:5px !important; }
-  .town-hero { grid-template-columns:minmax(0,1.55fr) minmax(105px,.75fr) !important; }
-  .town-title { font-size:14px !important; }
-  .town-title span { display:none !important; }
-  .town-desc { font-size:7px !important; }
-  .town-notice strong { font-size:7px !important; }
-  .town-notice small { font-size:5.5px !important; }
-  .town-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:3px !important; }
-  .town-card { padding:4px !important; min-height:44px !important; }
-  .town-card .icon { font-size:11px !important; }
-  .town-card b { font-size:7px !important; }
-  .town-card p { font-size:5.8px !important; }
-  .dungeon-hero { grid-template-columns:minmax(0,1fr) minmax(92px,auto) !important; }
-  .dungeon-power { min-width:92px !important; }
-  .dungeon-title { font-size:15px !important; }
-  .dungeon-story { font-size:7px !important; }
-  .dungeon-cards { grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:3px !important; }
-  .dungeon-card { padding:6px 4px 7px !important; }
-  .dungeon-card h3 { font-size:10px !important; }
-  .dungeon-desc { font-size:6px !important; }
-  .dungeon-block b { font-size:6px !important; }
-  .dungeon-monsters { font-size:5.7px !important; }
-  .dungeon-reward { font-size:5.3px !important; }
-}
-
-/* ===== JOB SELECT : fixed 3-column UI across screen sizes ===== */
-.job-select-screen{
-  min-height:100%; box-sizing:border-box; padding:clamp(18px,3.5vh,34px) clamp(10px,3vw,34px) 12px;
-  text-align:center; color:#4b3018;
-}
-.job-select-kicker{font-family:'Cinzel',serif;font-size:clamp(8px,1.2vw,12px);letter-spacing:.42em;color:#936b2d;margin-bottom:8px;}
-.job-select-title{font-family:'Cinzel','Noto Serif KR',serif;font-size:clamp(28px,4vw,46px);font-weight:500;letter-spacing:.12em;margin:0 0 10px;}
-.job-select-desc{font-size:clamp(11px,1.45vw,15px);line-height:1.7;color:#7b6038;margin:0 auto;max-width:620px;}
-.job-path-divider{display:flex;align-items:center;gap:12px;margin:clamp(16px,3vh,28px) 0 clamp(12px,2vh,22px);color:#a27a36;font-family:'Cinzel',serif;font-size:clamp(7px,1vw,10px);letter-spacing:.3em;}
-.job-path-divider:before,.job-path-divider:after{content:"";height:1px;background:#b99657;flex:1;}
-.job-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(7px,1.2vw,14px);width:100%;}
-.job-card{appearance:none;border:1px solid #b88d42;border-radius:7px;background:linear-gradient(180deg,#fff9e8,#ead19a);box-shadow:0 5px 12px rgba(70,40,10,.18);padding:clamp(10px,1.6vw,18px) clamp(7px,1.2vw,16px);min-width:0;color:#4b3018;text-align:center;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,background .16s ease;position:relative;overflow:hidden;}
-.job-card:before{content:"";position:absolute;inset:7px;border:1px solid rgba(151,111,45,.32);pointer-events:none;}
-.job-card:hover,.job-card:focus-visible{transform:translateY(-4px);box-shadow:0 9px 20px rgba(70,40,10,.24);background:linear-gradient(180deg,#fffbea,#e7ca89);outline:none;}
-.job-icon{width:clamp(42px,5vw,68px);height:clamp(42px,5vw,68px);margin:clamp(3px,1vw,10px) auto 8px;border:1px solid #c39a4e;border-radius:50%;display:grid;place-items:center;background:#f7e9bd;box-shadow:inset 0 0 0 5px #f1dfaa,0 3px 8px rgba(70,40,10,.18);font-size:clamp(22px,3.1vw,38px);position:relative;z-index:1;}
-.job-card h2{font-family:'Noto Serif KR',serif;font-size:clamp(18px,2.2vw,28px);margin:0;font-weight:800;}
-.job-en{font-family:'Cinzel',serif;font-size:clamp(7px,1vw,11px);letter-spacing:.22em;color:#a77a30;margin:4px 0 10px;}
-.job-card p{font-size:clamp(9px,1.15vw,13px);line-height:1.65;color:#755a35;min-height:5.3em;margin:0 auto 10px;max-width:280px;}
-.job-meta{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:auto;}
-.job-meta span{display:flex;flex-direction:column;gap:3px;padding:7px 3px;border:1px solid #d7bd7d;background:rgba(255,248,222,.55);font-size:clamp(8px,1vw,11px);color:#765b32;}
-.job-meta b{font-size:clamp(7px,.9vw,10px);color:#9b6d27;letter-spacing:.05em;}
-.job-choose{font-family:'Noto Serif KR',serif;font-weight:700;color:#9a6d27;font-size:clamp(9px,1.1vw,12px);letter-spacing:.05em;margin-top:10px;position:relative;z-index:1;}
-.job-footer-note{border-top:1px solid #c7a768;margin-top:clamp(14px,2.5vh,24px);padding-top:9px;font-size:clamp(8px,1vw,11px);line-height:1.65;color:#8b7046;}
-@media(max-width:420px){.job-select-screen{padding-left:5px;padding-right:5px}.job-select-title{letter-spacing:.06em}.job-select-desc{line-height:1.5}.job-path-divider{margin-top:12px;margin-bottom:10px;gap:6px}.job-card{padding:8px 4px}.job-card:before{inset:4px}.job-icon{margin-top:2px;margin-bottom:5px}.job-card p{line-height:1.45;min-height:6.2em;margin-bottom:6px}.job-meta{gap:3px}.job-meta span{padding:5px 1px}.job-choose{margin-top:6px}.job-footer-note{margin-top:10px;padding-top:7px}}
-</style>
-
-
-<style id="prologue-job-final">
-/* ================================================================
-   FINAL PROLOGUE + JOB SELECT UI
-   - viewport itself never scrolls; #log is the game-page scroller
-   - compact vertical rhythm
-   - job cards remain 3 columns at every width
+   JOB SELECTION — DARK ABYSS RPG CARD UI
 ================================================================ */
-.prologue-screen{
-  color:#4b3018;
-  min-height:100%;
-  padding:14px 12px 12px;
+#logFrame.job-select-active{
+  background:
+    radial-gradient(circle at 50% 18%, rgba(217,180,92,.12), transparent 32%),
+    linear-gradient(145deg, rgba(255,249,220,.98), rgba(224,199,143,.94));
+}
+#logFrame.job-select-active .frame-inner{padding:0!important;}
+#log.job-select-screen{
+  width:100%;
+  height:100%;
+  overflow:auto;
+  padding:22px 24px 20px;
+  color:var(--ink);
+  scrollbar-width:thin;
+}
+.job-select-head{
+  text-align:center;
+  padding:2px 0 18px;
+}
+.job-select-kicker{
+  font-family:'Cinzel',serif;
+  font-size:10px;
+  letter-spacing:4px;
+  color:#8a641e;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.job-select-title{
+  margin:5px 0 4px;
+  font-family:'Cinzel Decorative','Cinzel',serif;
+  font-size:27px;
+  line-height:1.1;
+  color:#2d1b0b;
+  letter-spacing:1px;
+  text-shadow:0 1px 0 rgba(255,255,255,.65);
+}
+.job-select-sub{
+  font-size:12px;
+  color:#725a37;
+  line-height:1.65;
+}
+.job-select-rule{
+  display:flex;align-items:center;gap:10px;
+  margin:2px 0 18px;
+  color:#a47727;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;
+}
+.job-select-rule::before,.job-select-rule::after{
+  content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(122,92,38,.65));
+}
+.job-select-rule::after{transform:scaleX(-1);}
+.job-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+.job-card{
+  position:relative;
+  appearance:none;
+  width:100%;
+  min-height:265px;
+  padding:0;
+  border:1px solid rgba(116,79,24,.72);
+  border-radius:4px;
+  overflow:hidden;
+  cursor:pointer;
+  color:var(--ink);
+  text-align:left;
+  background:
+    linear-gradient(180deg,rgba(255,250,226,.98),rgba(226,201,146,.94));
+  box-shadow:0 5px 12px rgba(60,38,12,.15), inset 0 0 0 2px rgba(255,255,255,.28);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  font-family:'Noto Serif KR','Cinzel',serif;
+}
+.job-card::before{
+  content:"";
+  position:absolute;inset:6px;
+  border:1px solid rgba(132,91,25,.24);
+  pointer-events:none;
+}
+.job-card::after{
+  content:"";
+  position:absolute;left:0;right:0;top:0;height:4px;
+  background:linear-gradient(90deg,transparent,rgba(217,180,92,.9),transparent);
+}
+.job-card:hover,.job-card:focus-visible{
+  transform:translateY(-5px);
+  border-color:#b8892f;
+  box-shadow:0 10px 22px rgba(54,34,9,.23),0 0 0 2px rgba(217,180,92,.16),inset 0 0 0 2px rgba(255,255,255,.38);
+  outline:none;
+}
+.job-card:active{transform:translateY(-1px) scale(.992);}
+.job-card-inner{
+  min-height:265px;
+  padding:20px 17px 15px;
   display:flex;
   flex-direction:column;
-  gap:10px;
+  position:relative;
+  z-index:1;
 }
-.prologue-head{text-align:center;padding:2px 4px 0;}
-.prologue-kicker{font-family:'Cinzel',serif;font-size:clamp(8px,1.1vw,11px);letter-spacing:.38em;color:#936b2d;margin-bottom:5px;}
-.prologue-head h1{font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(34px,5.2vw,56px);line-height:1;margin:0;font-weight:900;letter-spacing:.05em;color:#a47b39;text-shadow:0 1px 0 #fff2c7,0 2px 2px rgba(70,40,10,.18);}
-.prologue-sub{font-family:'Cinzel',serif;font-size:clamp(7px,1vw,10px);letter-spacing:.28em;color:#aa8750;margin-top:7px;}
-.prologue-rule{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;font-weight:700;font-size:clamp(12px,1.4vw,15px);}
-.prologue-rule:before,.prologue-rule:after{content:"";height:1px;background:#bd9955;flex:0 1 90px;}
-.prologue-intro{text-align:center;border-top:1px solid rgba(130,92,35,.38);border-bottom:1px solid rgba(130,92,35,.25);padding:10px 8px 9px;}
-.prologue-page-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:.32em;color:#aa8750;margin-bottom:7px;}
-.prologue-quote{font-size:clamp(15px,1.8vw,20px);line-height:1.42;color:#50351c;}
-.prologue-quote b{font-weight:900;}
-.prologue-intro p{margin:7px auto 0;font-size:clamp(10px,1.25vw,13px);line-height:1.55;color:#7b6038;}
-.prologue-content{display:block;width:100%;}
-.laws-panel{width:100%;}
-.panel-caption{font-family:'Cinzel',serif;font-size:8px;letter-spacing:.3em;color:#9b7130;margin-bottom:5px;}
-.law-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;height:auto!important;}
-.law-card{position:relative;border:1px solid #c7a768;background:linear-gradient(145deg,rgba(255,249,230,.78),rgba(235,211,160,.42));padding:16px 14px 14px;display:block;min-width:0;min-height:150px;box-shadow:0 5px 14px rgba(82,53,18,.08);overflow:hidden;}
-.law-card:before{content:'';position:absolute;top:0;left:0;width:52px;height:3px;background:#a8782b;}
-.law-card:after{content:'✦';position:absolute;right:12px;bottom:9px;font-size:15px;color:rgba(166,123,57,.35);}
-.law-num{display:block;font-family:'Cinzel',serif;font-size:18px;color:#9b6d27;line-height:1;font-weight:600;margin-bottom:9px;}
-.law-card h2{font-family:'Noto Serif KR',serif;font-size:clamp(15px,1.6vw,20px);margin:0 0 8px;color:#4a3018;}
-.law-card p{font-size:clamp(10px,1.05vw,13px);line-height:1.7;color:#765b32;margin:0;max-width:34em;}
-.chronicle-card{position:relative;border:1px solid #b88d42;background:linear-gradient(145deg,rgba(255,249,230,.78),rgba(235,211,160,.72));padding:10px 11px;min-width:0;}
-.chronicle-top{display:flex;justify-content:space-between;font-family:'Cinzel',serif;color:#9b7130;font-size:8px;letter-spacing:.2em;}
-.chronicle-top b{font-size:14px;letter-spacing:0;}
-.chronicle-card h2{font-size:clamp(15px,1.7vw,19px);margin:8px 0 4px;color:#4a3018;}
-.chronicle-card>p{font-size:9px;color:#806542;margin:0 0 7px;line-height:1.45;}
-.record-row{display:flex;justify-content:space-between;gap:8px;border-top:1px solid rgba(155,113,48,.22);padding:5px 0;font-family:'Cinzel',serif;font-size:7px;color:#aa8750;letter-spacing:.1em;}
-.record-row b{font-size:8px;color:#5d421f;letter-spacing:.05em;}
-.seal{width:30px;height:30px;border:1px solid #c6a35f;border-radius:50%;display:grid;place-items:center;margin:5px auto 0;color:#a6792f;box-shadow:inset 0 0 0 4px rgba(255,255,255,.25);}
-.prologue-bottom{display:flex;justify-content:space-between;gap:8px;border-top:1px solid rgba(130,92,35,.35);padding-top:6px;font-family:'Cinzel',serif;font-size:7px;letter-spacing:.12em;color:#9b7844;}
-.prologue-bottom span{color:#7b5b2c;}
-
-/* Keep job selection compact and horizontal at every viewport width. */
-.job-select-screen{min-height:100%;box-sizing:border-box;padding:14px 8px 10px;text-align:center;color:#4b3018;}
-.job-select-kicker{font-family:'Cinzel',serif;font-size:clamp(8px,1.2vw,12px);letter-spacing:.42em;color:#936b2d;margin-bottom:5px;}
-.job-select-title{font-family:'Cinzel','Noto Serif KR',serif;font-size:clamp(25px,4vw,42px);font-weight:500;letter-spacing:.10em;margin:0 0 7px;}
-.job-select-desc{font-size:clamp(10px,1.35vw,14px);line-height:1.55;color:#7b6038;margin:0 auto;max-width:620px;}
-.job-path-divider{display:flex;align-items:center;gap:10px;margin:12px 0 9px;color:#a27a36;font-family:'Cinzel',serif;font-size:clamp(7px,1vw,10px);letter-spacing:.3em;}
-.job-path-divider:before,.job-path-divider:after{content:"";height:1px;background:#b99657;flex:1;}
-.job-cards{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;width:100%;}
-.job-card{padding:10px 6px!important;min-width:0!important;min-height:0!important;}
-.job-card p{min-height:4.8em!important;line-height:1.48!important;}
-.job-meta{gap:4px!important;}
-.job-meta span{padding:6px 2px!important;}
-.job-footer-note{margin-top:9px!important;padding-top:7px!important;font-size:clamp(7px,1vw,10px)!important;}
-
+.job-icon-wrap{
+  width:58px;height:58px;
+  margin:0 auto 11px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(122,92,38,.58);
+  border-radius:50%;
+  background:radial-gradient(circle,#fff8d8 0%,#d9bd78 100%);
+  box-shadow:inset 0 0 0 4px rgba(255,255,255,.28),0 3px 8px rgba(70,44,12,.14);
+  font-size:28px;
+}
+.job-card-name{text-align:center;font-size:20px;font-weight:900;color:#2d1b0b;letter-spacing:1px;}
+.job-card-role{text-align:center;margin-top:3px;font-family:'Cinzel',serif;font-size:8px;letter-spacing:2px;color:#9a6d1e;font-weight:900;}
+.job-card-desc{
+  margin:14px 2px 0;
+  padding-top:11px;
+  border-top:1px solid rgba(122,92,38,.26);
+  font-size:11.5px;line-height:1.65;color:#5b4528;
+  text-align:center;
+}
+.job-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:auto;padding-top:13px;}
+.job-stat{padding:7px 6px;border:1px solid rgba(122,92,38,.22);background:rgba(255,248,219,.42);text-align:center;}
+.job-stat b{display:block;font-size:9px;color:#8b661f;letter-spacing:.5px;margin-bottom:2px;}
+.job-stat span{font-size:10px;color:#3f2b16;}
+.job-card-cta{
+  margin-top:10px;text-align:center;font-size:9px;letter-spacing:1.5px;color:#8a641e;font-weight:900;
+}
+.job-select-footer{
+  margin-top:15px;padding-top:12px;border-top:1px solid rgba(122,92,38,.28);
+  text-align:center;font-size:10px;color:#806844;line-height:1.6;
+}
+.job-select-footer b{color:#684914;}
+#actions.job-select-actions{padding-top:0!important;}
+#actions.job-select-actions .action-btn:not(.empty){min-height:42px;}
 @media(max-width:700px){
-  .prologue-screen{padding:10px 7px 8px;gap:8px;}
-  .prologue-content{display:block;}
-  .law-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;}
-  .law-grid{gap:4px;}
-  .law-card{padding:10px 7px 12px;min-height:125px;}
-  .law-card:before{width:34px;}
-  .law-num{font-size:14px;margin-bottom:6px;}
-  .law-card h2{font-size:clamp(10px,3.4vw,15px);margin-bottom:5px;}
-  .law-card p{font-size:clamp(8px,2.5vw,11px);line-height:1.5;}
-  .law-num{font-size:16px;}
-  .chronicle-card{padding:8px 7px;}
-  .chronicle-card h2{margin-top:6px;}
-  .job-select-screen{padding:10px 3px 7px;}
-  .job-card{padding:7px 3px!important;}
-  .job-card:before{inset:4px;}
-  .job-icon{width:44px!important;height:44px!important;font-size:23px!important;margin:2px auto 4px!important;}
-  .job-card h2{font-size:17px!important;}
-  .job-en{font-size:7px!important;margin:3px 0 6px!important;letter-spacing:.14em!important;}
-  .job-card p{font-size:8px!important;line-height:1.38!important;min-height:5.7em!important;margin-bottom:5px!important;}
-  .job-meta span{font-size:7px!important;padding:5px 1px!important;}
-  .job-meta b{font-size:6.5px!important;}
-  .job-choose{font-size:8px!important;margin-top:5px!important;}
-}
-@media(max-width:390px){
-  .prologue-kicker{letter-spacing:.24em;}
-  .prologue-head h1{font-size:31px;}
-  .prologue-sub{letter-spacing:.16em;}
-  .prologue-intro{padding:8px 4px;}
-  .prologue-quote{font-size:13px;}
-  .prologue-intro p{font-size:9px;}
-  .prologue-content{grid-template-columns:minmax(0,1fr) 132px;}
-  .law-card{padding:6px 4px;}
-  .law-card h2{font-size:10px;}
-  .law-card p{font-size:7px;}
-  .chronicle-card h2{font-size:13px;}
-  .record-row{font-size:6px;}
-  .record-row b{font-size:6px;}
-  .job-card h2{font-size:15px!important;}
-  .job-card p{font-size:7px!important;}
-}
-</style>
-
-
-<style id="prologue-height-fix">
-/* FIX: prevent the prologue law/chronicle cards from stretching to the full page height. */
-.prologue-screen{min-height:0!important;}
-.prologue-content{align-items:start!important;}
-.laws-panel{min-height:0!important;}
-.law-grid{height:auto!important;min-height:0!important;align-items:stretch!important;}
-.law-card{height:auto!important;min-height:0!important;box-sizing:border-box;}
-.chronicle-card{height:auto!important;min-height:0!important;box-sizing:border-box;}
-.prologue-bottom{flex-shrink:0!important;}
-@media(max-width:700px){
-  .prologue-content{align-items:start!important;}
-  .law-grid{height:auto!important;}
-  .law-card,.chronicle-card{height:auto!important;}
-}
-/* Final initial-menu law card layout: no chronicle column, three cards only. */
-.prologue-content{display:block!important;}
-.prologue-content .laws-panel{width:100%!important;}
-.prologue-content .law-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;height:auto!important;}
-.prologue-content .law-card{height:auto!important;min-height:150px!important;box-sizing:border-box!important;}
-@media(max-width:700px){
-  .prologue-content .law-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;}
-  .prologue-content .law-card{min-height:125px!important;padding:10px 7px 12px!important;}
+  #log.job-select-screen{padding:18px 14px 15px;}
+  .job-grid{grid-template-columns:1fr;gap:10px;}
+  .job-card,.job-card-inner{min-height:0;}
+  .job-card-inner{padding:15px 14px 13px;}
+  .job-icon-wrap{width:50px;height:50px;font-size:24px;margin-bottom:7px;}
+  .job-card-name{font-size:18px;}
+  .job-card-desc{margin-top:10px;padding-top:8px;font-size:11px;line-height:1.55;}
+  .job-card-stats{padding-top:9px;}
+  .job-card-cta{margin-top:7px;}
 }
 </style>
 </head>
@@ -2691,40 +2774,40 @@ html, body { width:100%; height:100%; overflow:hidden !important; }
 ===================================================================== */
 const BASE_SKILLS = {
   "전사": {
-    "강타": {rank:10, price:300, mp:10, mult:1.5, upgrade:0, type:"slash", elem:"phys"},
-    "휩쓸기": {rank:9, price:500, mp:15, mult:1.65, upgrade:0, type:"slash", elem:"phys"},
-    "화염 베기": {rank:8, price:800, mp:20, mult:1.8, upgrade:0, type:"slash", elem:"fire"},
-    "대지 가르기": {rank:7, price:1100, mp:25, mult:1.95, upgrade:0, type:"earthquake", elem:"phys"},
-    "빙결의 일격": {rank:6, price:1500, mp:35, mult:2.2, upgrade:0, type:"heavy", elem:"ice"},
-    "방패 강타": {rank:5, price:2000, mp:42, mult:2.4, upgrade:0, type:"heavy", elem:"phys"},
-    "뇌전 돌진": {rank:4, price:2500, mp:50, mult:2.8, upgrade:0, type:"charge", elem:"light"},
-    "진공파": {rank:3, price:3000, mp:60, mult:3.0, upgrade:0, type:"slash", elem:"phys"},
-    "십자 베기": {rank:2, price:3500, mp:70, mult:3.2, upgrade:0, type:"slash", elem:"holy"},
-    "빛의 심판": {rank:1, price:4500, mp:85, mult:3.6, upgrade:0, type:"earthquake", elem:"holy"}
+    "강타": {rank:10, price:300, mp:10, mult:1.5, upgrade:0, type:"slash", elem:"phys", targets:1},
+    "휩쓸기": {rank:9, price:500, mp:15, mult:1.65, upgrade:0, type:"slash", elem:"phys", targets:2},
+    "화염 베기": {rank:8, price:800, mp:20, mult:1.8, upgrade:0, type:"slash", elem:"fire", targets:1},
+    "대지 가르기": {rank:7, price:1100, mp:25, mult:1.95, upgrade:0, type:"earthquake", elem:"phys", targets:2},
+    "빙결의 일격": {rank:6, price:1500, mp:35, mult:2.2, upgrade:0, type:"heavy", elem:"ice", targets:1},
+    "방패 강타": {rank:5, price:2000, mp:42, mult:2.4, upgrade:0, type:"heavy", elem:"phys", targets:1},
+    "뇌전 돌진": {rank:4, price:2500, mp:50, mult:2.8, upgrade:0, type:"charge", elem:"light", targets:1},
+    "진공파": {rank:3, price:3000, mp:60, mult:3.0, upgrade:0, type:"slash", elem:"phys", targets:2},
+    "십자 베기": {rank:2, price:3500, mp:70, mult:3.2, upgrade:0, type:"slash", elem:"holy", targets:1},
+    "빛의 심판": {rank:1, price:4500, mp:85, mult:3.6, upgrade:0, type:"earthquake", elem:"holy", targets:2}
   },
   "마법사": {
-    "매직 미사일": {rank:10, price:300, mp:15, mult:1.7, upgrade:0, type:"magic_missile", elem:"arcane"},
-    "윈드 커터": {rank:9, price:500, mp:20, mult:1.85, upgrade:0, type:"magic_missile", elem:"phys"},
-    "파이어볼": {rank:8, price:800, mp:30, mult:2.1, upgrade:0, type:"fireball", elem:"fire"},
-    "프로스트 노바": {rank:7, price:1100, mp:38, mult:2.3, upgrade:0, type:"ice_spear", elem:"ice"},
-    "아이스 스피어": {rank:6, price:1500, mp:45, mult:2.6, upgrade:0, type:"ice_spear", elem:"ice"},
-    "다크 오라": {rank:5, price:2000, mp:55, mult:2.85, upgrade:0, type:"soul_steal", elem:"dark"},
-    "체인 라이트닝": {rank:4, price:2500, mp:70, mult:3.2, upgrade:0, type:"lightning", elem:"light"},
-    "화염 폭풍": {rank:3, price:3000, mp:85, mult:3.5, upgrade:0, type:"inferno", elem:"fire"},
-    "블리자드": {rank:2, price:3500, mp:100, mult:3.9, upgrade:0, type:"ice_spear", elem:"ice"},
-    "홀리 레이": {rank:1, price:4500, mp:130, mult:4.6, upgrade:0, type:"meteor", elem:"holy"}
+    "매직 미사일": {rank:10, price:300, mp:15, mult:1.7, upgrade:0, type:"magic_missile", elem:"arcane", targets:1},
+    "윈드 커터": {rank:9, price:500, mp:20, mult:1.85, upgrade:0, type:"magic_missile", elem:"phys", targets:2},
+    "파이어볼": {rank:8, price:800, mp:30, mult:2.1, upgrade:0, type:"fireball", elem:"fire", targets:3},
+    "프로스트 노바": {rank:7, price:1100, mp:38, mult:2.3, upgrade:0, type:"ice_spear", elem:"ice", targets:3},
+    "아이스 스피어": {rank:6, price:1500, mp:45, mult:2.6, upgrade:0, type:"ice_spear", elem:"ice", targets:2},
+    "다크 오라": {rank:5, price:2000, mp:55, mult:2.85, upgrade:0, type:"soul_steal", elem:"dark", targets:2},
+    "체인 라이트닝": {rank:4, price:2500, mp:70, mult:3.2, upgrade:0, type:"lightning", elem:"light", targets:3},
+    "화염 폭풍": {rank:3, price:3000, mp:85, mult:3.5, upgrade:0, type:"inferno", elem:"fire", targets:3},
+    "블리자드": {rank:2, price:3500, mp:100, mult:3.9, upgrade:0, type:"ice_spear", elem:"ice", targets:3},
+    "홀리 레이": {rank:1, price:4500, mp:130, mult:4.6, upgrade:0, type:"meteor", elem:"holy", targets:2}
   },
   "도적": {
-    "찌르기": {rank:10, price:300, mp:10, mult:1.6, upgrade:0, type:"stab", elem:"phys"},
-    "연속 베기": {rank:9, price:500, mp:15, mult:1.8, upgrade:0, type:"flurry", elem:"phys"},
-    "맹독 단검": {rank:8, price:800, mp:25, mult:2.0, upgrade:0, type:"poison", elem:"poison"},
-    "그림자 밟기": {rank:7, price:1100, mp:32, mult:2.25, upgrade:0, type:"shadow", elem:"dark"},
-    "서리 표창": {rank:6, price:1500, mp:40, mult:2.5, upgrade:0, type:"flurry", elem:"ice"},
-    "환영 찌르기": {rank:5, price:2000, mp:48, mult:2.75, upgrade:0, type:"stab", elem:"dark"},
-    "그림자 베기": {rank:4, price:2500, mp:60, mult:3.0, upgrade:0, type:"shadow", elem:"dark"},
-    "맹독 폭발": {rank:3, price:3000, mp:72, mult:3.3, upgrade:0, type:"poison", elem:"poison"},
-    "암흑 기습": {rank:2, price:3500, mp:80, mult:3.6, upgrade:0, type:"assassinate", elem:"dark"},
-    "지옥염무": {rank:1, price:4500, mp:95, mult:4.2, upgrade:0, type:"assassinate", elem:"fire"}
+    "찌르기": {rank:10, price:300, mp:10, mult:1.6, upgrade:0, type:"stab", elem:"phys", targets:1},
+    "연속 베기": {rank:9, price:500, mp:15, mult:1.8, upgrade:0, type:"flurry", elem:"phys", targets:2},
+    "맹독 단검": {rank:8, price:800, mp:25, mult:2.0, upgrade:0, type:"poison", elem:"poison", targets:1},
+    "그림자 밟기": {rank:7, price:1100, mp:32, mult:2.25, upgrade:0, type:"shadow", elem:"dark", targets:2},
+    "서리 표창": {rank:6, price:1500, mp:40, mult:2.5, upgrade:0, type:"flurry", elem:"ice", targets:2},
+    "환영 찌르기": {rank:5, price:2000, mp:48, mult:2.75, upgrade:0, type:"stab", elem:"dark", targets:1},
+    "그림자 베기": {rank:4, price:2500, mp:60, mult:3.0, upgrade:0, type:"shadow", elem:"dark", targets:2},
+    "맹독 폭발": {rank:3, price:3000, mp:72, mult:3.3, upgrade:0, type:"poison", elem:"poison", targets:2},
+    "암흑 기습": {rank:2, price:3500, mp:80, mult:3.6, upgrade:0, type:"assassinate", elem:"dark", targets:1},
+    "지옥염무": {rank:1, price:4500, mp:95, mult:4.2, upgrade:0, type:"assassinate", elem:"fire", targets:2}
   }
 };
 // 속성 아이콘 및 이름 변환 유틸리티
@@ -2735,6 +2818,11 @@ function getElemIcon(elem) {
 function getElemName(elem) {
   const map = { phys:"물리", arcane:"비전", fire:"화염", ice:"얼음", light:"전격", poison:"맹독", dark:"암흑", holy:"신성", gold:"황금" };
   return map[elem] || "물리";
+}
+// 스킬의 대상 수(targets)를 표시용 텍스트로 변환
+function getTargetLabel(sData) {
+  const n = Math.max(1, sData.targets || 1);
+  return n <= 1 ? "단일 대상" : `${n}명 대상`;
 }
 
 const ADVANCE_JOBS = {
@@ -3213,6 +3301,20 @@ function getTarget(){
   const alive = aliveMonsters();
   if(alive.length){ S.targetIndex = list.indexOf(alive[0]); return alive[0]; }
   return null;
+}
+// 현재 선택된 대상을 시작으로, 살아있는 적을 순서대로 최대 n마리까지 골라 반환
+function getMultiTargets(n){
+  const list = S.currentMonsters||[];
+  const primary = getTarget();
+  if(!primary) return [];
+  const startIdx = list.indexOf(primary);
+  const ordered = [];
+  for(let i=0;i<list.length;i++){
+    const idx = (startIdx+i)%list.length;
+    const mon = list[idx];
+    if(mon && mon.hp>0) ordered.push(mon);
+  }
+  return ordered.slice(0, Math.max(1, n));
 }
 function selectTarget(idx){
   const list = S.currentMonsters||[];
@@ -4212,98 +4314,157 @@ function confirmModal(title, okLabel="확인", cancelLabel="취소"){
 function mainMenu(){
   setButtons([]);
   clearBattle();
+  document.getElementById("logFrame")?.classList.remove("job-select-active");
+  actionsEl().classList.remove("job-select-actions");
+  document.getElementById("logFrame")?.classList.add("prologue-active");
+  actionsEl().classList.add("prologue-actions-bar");
   const log = logEl();
-  log.scrollTop = 0;
   log.innerHTML = `
-    <section class="prologue-screen">
-      <div class="prologue-head">
-        <div class="prologue-kicker">THE CHRONICLES OF THE ABYSS</div>
-        <h1>DARK ABYSS</h1>
-        <div class="prologue-sub">AI CHRONICLES · TEXT FANTASY RPG</div>
-        <div class="prologue-rule"><span>심연의 개척자 서약</span></div>
+    <div class="prologue-compact">
+      <div class="prologue-ornament">THE CHRONICLES OF THE ABYSS</div>
+      <div class="prologue-title">
+        <h2>DARK ABYSS</h2>
+        <div class="subtitle">AI CHRONICLES · TEXT FANTASY RPG</div>
       </div>
+      <div class="prologue-seal">심연의 개척자 서약</div>
 
-      <div class="prologue-intro">
-        <div class="prologue-page-label">THE FIRST PAGE</div>
-        <div class="prologue-quote">“이 세계에는 정해진 이야기가 없습니다.<br><b>당신이 걷는 길이 곧, 이야기의 역사가 됩니다.</b>”</div>
+      <div class="prologue-quote">
+        <div class="kicker">THE FIRST PAGE</div>
+        <strong>“이 세계에는 정해진 이야기가 없습니다.<br>당신이 걷는 길이 곧, 이야기의 역사가 됩니다.”</strong>
         <p>루센트의 작은 등불에서부터 이름 없는 심연의 끝까지.<br>당신의 선택에 따라 사건과 인물, 적과 동료의 운명이 달라집니다.</p>
       </div>
 
-      <div class="prologue-content">
-        <div class="laws-panel">
-          <div class="panel-caption">THE LAWS</div>
-          <div class="law-grid">
-            <article class="law-card"><span class="law-num">I</span><div><h2>미지의 세계</h2><p>AI가 당신의 여정에 맞춰 새로운 사건과 인물을 엮어냅니다.</p></div></article>
-            <article class="law-card"><span class="law-num">II</span><div><h2>운명의 무게</h2><p>선과 악의 선택은 카르마로 남아 이후의 운명에 영향을 줍니다.</p></div></article>
-            <article class="law-card"><span class="law-num">III</span><div><h2>죽음의 대가</h2><p>심연에서 패배하면 소중한 기록과 장비를 잃을 수 있습니다.</p></div></article>
+      <div class="prologue-grid">
+        <article class="prologue-card">
+          <div class="num">I · THE UNKNOWN</div>
+          <h3>미지의 세계</h3>
+          <p>AI가 당신의 여정에 맞춰 새로운 사건과 인물을 만들어냅니다.</p>
+        </article>
+        <article class="prologue-card">
+          <div class="num">II · FATE</div>
+          <h3>운명의 무게</h3>
+          <p>선과 악의 선택이 카르마로 남아 이후의 운명에 영향을 줍니다.</p>
+        </article>
+        <article class="prologue-card">
+          <div class="num">III · DEATH</div>
+          <h3>죽음의 대가</h3>
+          <p>심연에서 쓰러지면 기록과 장비를 잃을 수 있습니다. 이 세계는 자비롭지 않습니다.</p>
+        </article>
+        <aside class="prologue-record">
+          <div class="label"><span>CHRONICLE</span><span>01</span></div>
+          <h3>첫 번째 기록</h3>
+          <p>아직 당신의 이야기는 시작되지 않았습니다.</p>
+          <div class="prologue-status">
+            <div><span>NAME</span><b>UNWRITTEN</b></div>
+            <div><span>FATE</span><b>UNDECIDED</b></div>
+            <div><span>WORLD</span><b>AWAITING</b></div>
           </div>
-        </div>
-
+        </aside>
       </div>
 
-      <div class="prologue-bottom">CHRONICLE STATUS · UNWRITTEN <span>THE ABYSS IS WAITING</span></div>
-    </section>`;
+      <div class="prologue-footer">
+        <span>CHRONICLE STATUS · UNWRITTEN</span>
+        <span class="waiting">✦ THE ABYSS IS WAITING ✦</span>
+      </div>
+    </div>`;
+  log.scrollTop = 0;
+  applyTextSettings();
 
   setButtons([
     ["✦ 서약하고 모험을 시작한다", newGame],
-    ["✕ 이 세계를 떠난다", ()=>{ document.body.innerHTML = "<div style=\"padding:40px;text-align:center;color:#a4906a;font-family:'Cinzel',serif;\">게임을 종료했습니다.</div>"; }]
+    ["✕ 이 세계를 떠난다", ()=>{
+      document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#a4906a;font-family:Cinzel,serif;">게임을 종료했습니다.</div>';
+    }, {danger:true}]
   ]);
 }
 
 async function newGame(){
+  document.getElementById("logFrame")?.classList.remove("prologue-active");
+  document.getElementById("logFrame")?.classList.add("job-select-active");
+  actionsEl().classList.remove("prologue-actions-bar");
+  actionsEl().classList.add("job-select-actions");
   setButtons([]);
-  const name = await askName();
 
+  const name = await askName();
   const log = logEl();
+  log.className = "job-select-screen";
   log.innerHTML = `
-    <section class="job-select-screen">
+    <div class="job-select-head">
       <div class="job-select-kicker">CHOOSE YOUR FATE</div>
-      <h1 class="job-select-title">직업 선택</h1>
-      <p class="job-select-desc">'${name}'의 여정은 지금 선택한 길에서 시작됩니다.<br>어떤 힘을 품고 심연으로 향하시겠습니까?</p>
-      <div class="job-path-divider"><span>THE THREE PATHS</span></div>
-      <div class="job-cards">
-        <button type="button" class="job-card" data-job="전사">
-          <div class="job-icon">⚔️</div>
-          <h2>전사</h2><div class="job-en">THE WARRIOR</div>
-          <p>강인한 육체와 검으로 전장을 지배합니다.<br>높은 체력과 안정적인 공격력을 지닌 정통 전투형.</p>
-          <div class="job-meta"><span><b>전투 성향</b>근접 · 균형</span><span><b>전직 계열</b>검투사 · 버서커</span></div>
-          <div class="job-choose">✦ 이 길을 선택한다</div>
-        </button>
-        <button type="button" class="job-card" data-job="마법사">
-          <div class="job-icon">🔮</div>
-          <h2>마법사</h2><div class="job-en">THE MAGE</div>
-          <p>비전의 힘을 다루어 압도적인 화력을 발휘합니다.<br>강력한 스킬과 속성 공격으로 적을 무너뜨립니다.</p>
-          <div class="job-meta"><span><b>전투 성향</b>원거리 · 화력</span><span><b>전직 계열</b>원소 · 흑마법</span></div>
-          <div class="job-choose">✦ 이 길을 선택한다</div>
-        </button>
-        <button type="button" class="job-card" data-job="도적">
-          <div class="job-icon">🗡️</div>
-          <h2>도적</h2><div class="job-en">THE ROGUE</div>
-          <p>그림자 속에서 기회를 노리고 치명적인 일격을 날립니다.<br>빠른 속도와 높은 치명타에 특화된 기습형.</p>
-          <div class="job-meta"><span><b>전투 성향</b>속도 · 치명타</span><span><b>전직 계열</b>시프 · 어쌔신</span></div>
-          <div class="job-choose">✦ 이 길을 선택한다</div>
-        </button>
-      </div>
-      <div class="job-footer-note">선택한 직업은 모험의 시작부터 당신의 전투 방식과 성장 방향을 결정합니다.<br><b>한 번 내린 선택은 심연의 기록에 남습니다.</b></div>
-    </section>`;
+      <div class="job-select-title">직업 선택</div>
+      <div class="job-select-sub">'${name}'의 여정은 지금 선택한 길에서 시작됩니다.<br>어떤 힘을 품고 심연으로 향하시겠습니까?</div>
+    </div>
+    <div class="job-select-rule"><span>THE THREE PATHS</span></div>
+    <div class="job-grid">
+      <button class="job-card" type="button" data-job="전사" aria-label="전사 선택">
+        <div class="job-card-inner">
+          <div class="job-icon-wrap">⚔️</div>
+          <div class="job-card-name">전사</div>
+          <div class="job-card-role">THE WARRIOR</div>
+          <div class="job-card-desc">강인한 육체와 검으로 전장을 지배합니다.<br>높은 체력과 안정적인 공격력을 지닌 정통 전투형.</div>
+          <div class="job-card-stats">
+            <div class="job-stat"><b>전투 성향</b><span>근접 · 균형</span></div>
+            <div class="job-stat"><b>전직 계열</b><span>검투사 · 버서커</span></div>
+          </div>
+          <div class="job-card-cta">✦ 이 길을 선택한다</div>
+        </div>
+      </button>
+      <button class="job-card" type="button" data-job="마법사" aria-label="마법사 선택">
+        <div class="job-card-inner">
+          <div class="job-icon-wrap">🔮</div>
+          <div class="job-card-name">마법사</div>
+          <div class="job-card-role">THE MAGE</div>
+          <div class="job-card-desc">비전의 힘을 다루어 압도적인 화력을 발휘합니다.<br>강력한 스킬과 속성 공격으로 적을 무너뜨립니다.</div>
+          <div class="job-card-stats">
+            <div class="job-stat"><b>전투 성향</b><span>원거리 · 화력</span></div>
+            <div class="job-stat"><b>전직 계열</b><span>원소 · 흑마법</span></div>
+          </div>
+          <div class="job-card-cta">✦ 이 길을 선택한다</div>
+        </div>
+      </button>
+      <button class="job-card" type="button" data-job="도적" aria-label="도적 선택">
+        <div class="job-card-inner">
+          <div class="job-icon-wrap">🗡️</div>
+          <div class="job-card-name">도적</div>
+          <div class="job-card-role">THE ROGUE</div>
+          <div class="job-card-desc">그림자 속에서 기회를 노리고 치명적인 일격을 날립니다.<br>빠른 속도와 높은 치명타에 특화된 기습형.</div>
+          <div class="job-card-stats">
+            <div class="job-stat"><b>전투 성향</b><span>속도 · 치명타</span></div>
+            <div class="job-stat"><b>전직 계열</b><span>시프 · 어쌔신</span></div>
+          </div>
+          <div class="job-card-cta">✦ 이 길을 선택한다</div>
+        </div>
+      </button>
+    </div>
+    <div class="job-select-footer">선택한 직업은 모험의 시작부터 당신의 전투 방식과 성장 방향을 결정합니다.<br><b>한 번 내린 선택은 심연의 기록에 남습니다.</b></div>
+  `;
+  log.scrollTop = 0;
 
   const selectJob = async (job)=>{
     setButtons([]);
+    document.getElementById("logFrame")?.classList.remove("job-select-active");
+    actionsEl().classList.remove("job-select-actions");
+    log.className = "";
     S.player = createPlayer(name, job);
     S.stageIdx = 0;
     S.currentTownName = "루센트 마을";
     autoSave();
     displayText(`▶ 클래스 [${job}] '${name}' 님의 기나긴 여정이 시작됩니다!`, {clear:true});
-    await wait(1200);
+    await wait(900);
     town();
   };
 
-  log.querySelectorAll('.job-card').forEach(card=>{
-    card.addEventListener('click', ()=>selectJob(card.dataset.job));
+  log.querySelectorAll(".job-card").forEach(card=>{
+    card.addEventListener("click", ()=>selectJob(card.dataset.job));
   });
-  setButtons([["← 처음으로", mainMenu]]);
-}
 
+  setButtons([["← 처음으로", ()=>{
+    document.getElementById("logFrame")?.classList.remove("job-select-active");
+    actionsEl().classList.remove("job-select-actions");
+    log.className = "";
+    mainMenu();
+  }]]);
+}
 
 const EMBEDDED_TOWN_SCENES = {"루센트 마을": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#7fb4d8%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#5d8b4a%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#d8c17a%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2259%22%20cy=%22118%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22114%22%20cy=%22108%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2214%22%20cy=%22121%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22299%22%20cy=%22158%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22354%22%20cy=%22148%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22254%22%20cy=%22161%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22501%22%20cy=%22150%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22556%22%20cy=%22140%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22456%22%20cy=%22153%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22735%22%20cy=%22153%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22790%22%20cy=%22143%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22690%22%20cy=%22156%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22952%22%20cy=%22115%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221007%22%20cy=%22105%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22907%22%20cy=%22118%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221182%22%20cy=%2274%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221237%22%20cy=%2264%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221137%22%20cy=%2277%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221404%22%20cy=%2275%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221459%22%20cy=%2265%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221359%22%20cy=%2278%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20365%20Q280%20325%20520%20370%20T1020%20350%20T1600%20365%20V600%20H0Z%22%20fill=%22url(#ground)%22/%3E%3Cg%20transform=%22translate(184,419)%20scale(1.1428571428571428)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(559,331)%20scale(0.8571428571428571)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(706,354)%20scale(0.9642857142857143)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(437,347)%20scale(0.7857142857142857)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(406,369)%20scale(1.0357142857142858)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1302,377)%20scale(0.8571428571428571)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(845,384)%20scale(0.9285714285714286)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(788,345)%20scale(0.75)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(389,325)%20scale(1.0714285714285714)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(322,424)%20scale(0.8214285714285714)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(414,346)%20scale(0.6428571428571429)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1383,355)%20scale(1.1428571428571428)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1326,374)%20scale(0.7857142857142857)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1297,395)%20scale(0.6785714285714286)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1267,356)%20scale(1.2142857142857142)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1482,362)%20scale(1.0)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1101,412)%20scale(1.0)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1130,371)%20scale(1.1785714285714286)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1180%20235)%22%3E%3Cpath%20d=%22M-35%20245%20L-22%2055%20H55%20L70%20245Z%22%20fill=%22#bca06f%22%20stroke=%22#503c27%22%20stroke-width=%227%22/%3E%3Cpath%20d=%22M-30%20105%20L15%2055%2058%20105Z%22%20fill=%22#704c35%22/%3E%3Ccircle%20cx=%2216%22%20cy=%22105%22%20r=%2216%22%20fill=%22#d7bb76%22%20stroke=%22#4d3928%22%20stroke-width=%226%22/%3E%3Cg%20stroke=%22#ead7a0%22%20stroke-width=%2212%22%20stroke-linecap=%22round%22%3E%3Cpath%20d=%22M16%20105%20L16%2010%22/%3E%3Cpath%20d=%22M16%20105%20L105%20105%22/%3E%3Cpath%20d=%22M16%20105%20L-50%20170%22/%3E%3Cpath%20d=%22M16%20105%20L-75%2045%22/%3E%3C/g%3E%3C/g%3E%3Cg%20transform=%22translate(340,330)%20scale(1)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Cg%20transform=%22translate(620,315)%20scale(0.8)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Cg%20transform=%22translate(830,350)%20scale(0.9)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1030,325)%20scale(1.1)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "그레이브턴": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#586273%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#3f4650%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#b9a6a0%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2287%22%20cy=%2284%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22142%22%20cy=%2274%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2242%22%20cy=%2287%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22328%22%20cy=%22129%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22383%22%20cy=%22119%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22283%22%20cy=%22132%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22549%22%20cy=%22105%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22604%22%20cy=%2295%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22504%22%20cy=%22108%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22739%22%20cy=%2266%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22794%22%20cy=%2256%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22694%22%20cy=%2269%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22972%22%20cy=%22124%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221027%22%20cy=%22114%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22927%22%20cy=%22127%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221163%22%20cy=%22137%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221218%22%20cy=%22127%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221118%22%20cy=%22140%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221384%22%20cy=%2296%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221439%22%20cy=%2286%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221339%22%20cy=%2299%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20370%20Q320%20300%20640%20380%20T1200%20350%20T1600%20370%20V600%20H0Z%22%20fill=%22#45484a%22/%3E%3Cg%20transform=%22translate(90,393)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(210,404)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(330,383)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(450,350)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(570,336)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(690,353)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(810,385)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(930,404)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1050,391)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1170,359)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1290,337)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1410,345)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20405%20Q420%20355%20800%20415%20T1600%20400%22%20fill=%22none%22%20stroke=%22#a7a49b%22%20stroke-width=%2224%22%20opacity=%22.25%22%20filter=%22url(#soft)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "미스릴 광산촌": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#5f7890%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#4c4b48%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#c7a96b%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2259%22%20cy=%22146%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22114%22%20cy=%22136%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2214%22%20cy=%22149%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22309%22%20cy=%22105%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22364%22%20cy=%2295%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22264%22%20cy=%22108%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22500%22%20cy=%22130%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22555%22%20cy=%22120%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22455%22%20cy=%22133%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22755%22%20cy=%22144%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22810%22%20cy=%22134%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22710%22%20cy=%22147%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22968%22%20cy=%2283%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221023%22%20cy=%2273%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22923%22%20cy=%2286%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221174%22%20cy=%2297%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221229%22%20cy=%2287%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221129%22%20cy=%22100%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221409%22%20cy=%22114%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221464%22%20cy=%22104%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221364%22%20cy=%22117%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20350%20L170%20300%20330%20360%20500%20305%20690%20360%20870%20300%201050%20360%201230%20315%201430%20360%201600%20320%20V600%20H0Z%22%20fill=%22#4c4a46%22/%3E%3Cpath%20d=%22M520%20600%20V420%20Q800%20250%201080%20420%20V600Z%22%20fill=%22#272729%22/%3E%3Cpath%20d=%22M585%20420%20V600%20M640%20420%20V600%22%20stroke=%22#765c40%22%20stroke-width=%2220%22/%3E%3Cpath%20d=%22M1015%20420%20V600%20M1070%20420%20V600%22%20stroke=%22#765c40%22%20stroke-width=%2220%22/%3E%3Ccircle%20cx=%221259%22%20cy=%22538%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%221259%22%20cy=%22538%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22188%22%20cy=%22525%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22188%22%20cy=%22525%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%221212%22%20cy=%22548%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%221212%22%20cy=%22548%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%221164%22%20cy=%22437%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%221164%22%20cy=%22437%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22872%22%20cy=%22503%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22872%22%20cy=%22503%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22564%22%20cy=%22520%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22564%22%20cy=%22520%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22362%22%20cy=%22411%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22362%22%20cy=%22411%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22208%22%20cy=%22437%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22208%22%20cy=%22437%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%221347%22%20cy=%22537%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%221347%22%20cy=%22537%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%221004%22%20cy=%22518%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%221004%22%20cy=%22518%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "오크 리버": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#6e9a91%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#4d6f55%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#c89b62%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2295%22%20cy=%22118%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22150%22%20cy=%22108%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2250%22%20cy=%22121%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22329%22%20cy=%22152%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22384%22%20cy=%22142%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22284%22%20cy=%22155%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22534%22%20cy=%22154%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22589%22%20cy=%22144%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22489%22%20cy=%22157%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22762%22%20cy=%2287%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22817%22%20cy=%2277%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22717%22%20cy=%2290%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22974%22%20cy=%2269%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221029%22%20cy=%2259%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22929%22%20cy=%2272%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221208%22%20cy=%22137%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221263%22%20cy=%22127%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221163%22%20cy=%22140%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221417%22%20cy=%2275%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221472%22%20cy=%2265%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221372%22%20cy=%2278%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20365%20Q280%20325%20520%20370%20T1020%20350%20T1600%20365%20V600%20H0Z%22%20fill=%22url(#ground)%22/%3E%3Cg%20transform=%22translate(1360,373)%20scale(1.1428571428571428)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(712,411)%20scale(0.75)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1021,335)%20scale(0.7857142857142857)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(475,399)%20scale(0.6428571428571429)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(110,353)%20scale(0.75)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1436,341)%20scale(1.2142857142857142)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(621,348)%20scale(1.1071428571428572)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1521,399)%20scale(1.1071428571428572)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(484,425)%20scale(0.8928571428571429)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(196,372)%20scale(0.8571428571428571)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1208,352)%20scale(1.2142857142857142)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(992,357)%20scale(0.9642857142857143)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(461,421)%20scale(1.2142857142857142)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(961,392)%20scale(0.8571428571428571)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1470,392)%20scale(0.9642857142857143)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(104,386)%20scale(0.7857142857142857)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(288,378)%20scale(1.2142857142857142)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(537,337)%20scale(1.1785714285714286)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(340,330)%20scale(1)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Cg%20transform=%22translate(620,315)%20scale(0.8)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Cg%20transform=%22translate(830,350)%20scale(0.9)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1030,325)%20scale(1.1)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "블레이즈 볼케이노": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#6f3f3a%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#74362b%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#e49a45%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2251%22%20cy=%2285%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22106%22%20cy=%2275%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%226%22%20cy=%2288%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22316%22%20cy=%22158%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22371%22%20cy=%22148%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22271%22%20cy=%22161%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22504%22%20cy=%22110%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22559%22%20cy=%22100%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22459%22%20cy=%22113%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22731%22%20cy=%2260%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22786%22%20cy=%2250%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22686%22%20cy=%2263%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22975%22%20cy=%2276%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221030%22%20cy=%2266%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22930%22%20cy=%2279%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221201%22%20cy=%2262%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221256%22%20cy=%2252%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221156%22%20cy=%2265%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221428%22%20cy=%2281%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221483%22%20cy=%2271%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221383%22%20cy=%2284%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20600%20L300%20480%20520%20300%20700%20470%20860%20270%201040%20480%201250%20320%201600%20600Z%22%20fill=%22#4a2a27%22/%3E%3Cpath%20d=%22M650%20390%20L860%20250%201060%20405%22%20stroke=%22#d85a34%22%20stroke-width=%2235%22%20fill=%22none%22/%3E%3Cpath%20d=%22M790%20300%20Q860%20235%20930%20300%20L900%20140%20Q860%2080%20820%20140Z%22%20fill=%22#9d4b3c%22%20opacity=%22.5%22%20filter=%22url(#soft)%22/%3E%3Cpath%20d=%22M560%20500%20Q580%20430%20600%20500%22%20stroke=%22#ef8b32%22%20stroke-width=%2212%22%20fill=%22none%22/%3E%3Cpath%20d=%22M690%20500%20Q710%20430%20730%20500%22%20stroke=%22#ef8b32%22%20stroke-width=%2212%22%20fill=%22none%22/%3E%3Cpath%20d=%22M880%20500%20Q900%20430%20920%20500%22%20stroke=%22#ef8b32%22%20stroke-width=%2212%22%20fill=%22none%22/%3E%3Cpath%20d=%22M1010%20500%20Q1030%20430%201050%20500%22%20stroke=%22#ef8b32%22%20stroke-width=%2212%22%20fill=%22none%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "프로스트 윈드": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#789bb8%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#87a9bd%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#dceef2%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22106%22%20cy=%22135%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22161%22%20cy=%22125%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2261%22%20cy=%22138%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22292%22%20cy=%22134%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22347%22%20cy=%22124%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22247%22%20cy=%22137%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22540%22%20cy=%2273%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22595%22%20cy=%2263%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22495%22%20cy=%2276%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22770%22%20cy=%2260%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22825%22%20cy=%2250%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22725%22%20cy=%2263%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22949%22%20cy=%22127%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221004%22%20cy=%22117%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22904%22%20cy=%22130%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221199%22%20cy=%22133%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221254%22%20cy=%22123%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221154%22%20cy=%22136%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221391%22%20cy=%2297%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221446%22%20cy=%2287%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221346%22%20cy=%22100%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20370%20L220%20260%20400%20365%20590%20190%20780%20350%20980%20210%201160%20360%201370%20230%201600%20360%20V600%20H0Z%22%20fill=%22#7897aa%22/%3E%3Cpath%20d=%22M590%20190%20L640%20250%20700%20235%20780%20350%22%20stroke=%22#eaf7fa%22%20stroke-width=%2235%22%20fill=%22none%22%20opacity=%22.85%22/%3E%3Cpath%20d=%22M1370%20230%20L1420%20290%201470%20270%201600%20360%22%20stroke=%22#eefaff%22%20stroke-width=%2232%22%20fill=%22none%22%20opacity=%22.8%22/%3E%3Cg%20transform=%22translate(80,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(260,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(440,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(620,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(800,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(980,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1160,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1340,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "세인트 캐슬": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#687fa3%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#56657e%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#e7c985%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2295%22%20cy=%22121%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22150%22%20cy=%22111%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2250%22%20cy=%22124%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22271%22%20cy=%22131%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22326%22%20cy=%22121%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22226%22%20cy=%22134%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22550%22%20cy=%22127%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22605%22%20cy=%22117%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22505%22%20cy=%22130%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22762%22%20cy=%22120%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22817%22%20cy=%22110%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22717%22%20cy=%22123%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22933%22%20cy=%2293%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22988%22%20cy=%2283%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22888%22%20cy=%2296%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221201%22%20cy=%2268%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221256%22%20cy=%2258%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221156%22%20cy=%2271%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221382%22%20cy=%22123%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221437%22%20cy=%22113%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221337%22%20cy=%22126%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20380%20Q300%20330%20600%20380%20T1200%20360%20T1600%20380%20V600%20H0Z%22%20fill=%22#34313a%22/%3E%3Cg%20transform=%22translate(650%20170)%22%3E%3Cpath%20d=%22M0%20330%20V90%20H80%20V330%20M170%20330%20V70%20H250%20V330%20M340%20330%20V90%20H420%20V330%22%20fill=%22#56515d%22%20stroke=%22#26242d%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M40%20160%20L125%2070%20210%20160Z%22%20fill=%22#7a4e58%22/%3E%3Cpath%20d=%22M210%20160%20L295%2070%20380%20160Z%22%20fill=%22#7a4e58%22/%3E%3Crect%20x=%2290%22%20y=%22205%22%20width=%22220%22%20height=%22125%22%20fill=%22#45414c%22%20stroke=%22#26242d%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M160%20330%20V260%20Q200%20205%20240%20260%20V330%22%20fill=%22#201d26%22/%3E%3C/g%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")"};
 const EMBEDDED_DUNGEON_SCENES = {"고블린 숲": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#7eaa75%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#3f633c%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#d9bd78%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2252%22%20cy=%2286%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22107%22%20cy=%2276%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%227%22%20cy=%2289%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22317%22%20cy=%22150%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22372%22%20cy=%22140%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22272%22%20cy=%22153%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22491%22%20cy=%2278%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22546%22%20cy=%2268%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22446%22%20cy=%2281%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22749%22%20cy=%2294%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22804%22%20cy=%2284%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22704%22%20cy=%2297%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22988%22%20cy=%2261%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221043%22%20cy=%2251%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22943%22%20cy=%2264%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221194%22%20cy=%22116%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221249%22%20cy=%22106%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221149%22%20cy=%22119%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221415%22%20cy=%2281%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221470%22%20cy=%2271%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221370%22%20cy=%2284%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20365%20Q280%20325%20520%20370%20T1020%20350%20T1600%20365%20V600%20H0Z%22%20fill=%22url(#ground)%22/%3E%3Cg%20transform=%22translate(1491,327)%20scale(1.1428571428571428)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(589,381)%20scale(1.1428571428571428)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(494,349)%20scale(0.75)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(634,415)%20scale(1.0714285714285714)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(738,408)%20scale(0.75)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(969,380)%20scale(0.8928571428571429)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1424,387)%20scale(0.9642857142857143)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1335,416)%20scale(0.75)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1526,342)%20scale(0.7857142857142857)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1007,387)%20scale(0.8214285714285714)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(408,374)%20scale(1.1785714285714286)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(247,397)%20scale(0.8928571428571429)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1140,411)%20scale(1.0)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(272,343)%20scale(0.8928571428571429)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1304,420)%20scale(0.6785714285714286)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1208,413)%20scale(1.0357142857142858)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(366,385)%20scale(1.1428571428571428)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1217,412)%20scale(0.9642857142857143)%22%3E%3Cpath%20d=%22M0%2060%20L0%2010%22%20stroke=%22#3d3429%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%200%20L-25%2035%20H-8%20L-30%2058%20H30%20L8%2035%20H25Z%22%20fill=%22#31523a%22/%3E%3C/g%3E%3Cg%20transform=%22translate(340,330)%20scale(1)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Cg%20transform=%22translate(620,315)%20scale(0.8)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Cg%20transform=%22translate(830,350)%20scale(0.9)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1030,325)%20scale(1.1)%22%3E%3Crect%20x=%220%22%20y=%2240%22%20width=%22150%22%20height=%22110%22%20rx=%224%22%20fill=%22#b78d62%22%20stroke=%22#513d2d%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M-12%2055%20L75%20-10%20165%2055Z%22%20fill=%22#714a36%22%20stroke=%22#4a3528%22%20stroke-width=%226%22/%3E%3Crect%20x=%2262%22%20y=%2290%22%20width=%2225%22%20height=%2260%22%20fill=%22#51392b%22/%3E%3Crect%20x=%2222%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3Crect%20x=%22100%22%20y=%2268%22%20width=%2227%22%20height=%2224%22%20fill=%22#a8c2bd%22/%3E%3C/g%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "언데드 묘지": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#565b68%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#383844%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#a695a0%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2254%22%20cy=%22151%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22109%22%20cy=%22141%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%229%22%20cy=%22154%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22290%22%20cy=%22113%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22345%22%20cy=%22103%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22245%22%20cy=%22116%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22490%22%20cy=%22159%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22545%22%20cy=%22149%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22445%22%20cy=%22162%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22728%22%20cy=%22101%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22783%22%20cy=%2291%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22683%22%20cy=%22104%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22978%22%20cy=%22149%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221033%22%20cy=%22139%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22933%22%20cy=%22152%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221194%22%20cy=%22147%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221249%22%20cy=%22137%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221149%22%20cy=%22150%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221400%22%20cy=%22139%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221455%22%20cy=%22129%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221355%22%20cy=%22142%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20370%20Q320%20300%20640%20380%20T1200%20350%20T1600%20370%20V600%20H0Z%22%20fill=%22#45484a%22/%3E%3Cg%20transform=%22translate(90,393)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(210,404)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(330,383)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(450,350)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(570,336)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(690,353)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(810,385)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(930,404)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1050,391)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1170,359)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1290,337)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1410,345)%22%3E%3Cpath%20d=%22M0%2075%20V18%20Q0%20-10%2025%20-10%20Q50%20-10%2050%2018%20V75Z%22%20fill=%22#8b8a82%22%20stroke=%22#383636%22%20stroke-width=%225%22/%3E%3Cpath%20d=%22M25%2010%20V52%20M8%2031%20H42%22%20stroke=%22#5d5a56%22%20stroke-width=%225%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20405%20Q420%20355%20800%20415%20T1600%20400%22%20fill=%22none%22%20stroke=%22#a7a49b%22%20stroke-width=%2224%22%20opacity=%22.25%22%20filter=%22url(#soft)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "버려진 광산": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#6b7077%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#3f3f43%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#c59c62%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2298%22%20cy=%22109%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22153%22%20cy=%2299%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2253%22%20cy=%22112%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22311%22%20cy=%22120%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22366%22%20cy=%22110%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22266%22%20cy=%22123%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22516%22%20cy=%2285%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22571%22%20cy=%2275%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22471%22%20cy=%2288%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22722%22%20cy=%22146%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22777%22%20cy=%22136%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22677%22%20cy=%22149%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22955%22%20cy=%2267%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221010%22%20cy=%2257%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22910%22%20cy=%2270%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221177%22%20cy=%22116%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221232%22%20cy=%22106%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221132%22%20cy=%22119%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221424%22%20cy=%22117%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221479%22%20cy=%22107%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221379%22%20cy=%22120%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20350%20L170%20300%20330%20360%20500%20305%20690%20360%20870%20300%201050%20360%201230%20315%201430%20360%201600%20320%20V600%20H0Z%22%20fill=%22#4c4a46%22/%3E%3Cpath%20d=%22M520%20600%20V420%20Q800%20250%201080%20420%20V600Z%22%20fill=%22#272729%22/%3E%3Cpath%20d=%22M585%20420%20V600%20M640%20420%20V600%22%20stroke=%22#765c40%22%20stroke-width=%2220%22/%3E%3Cpath%20d=%22M1015%20420%20V600%20M1070%20420%20V600%22%20stroke=%22#765c40%22%20stroke-width=%2220%22/%3E%3Ccircle%20cx=%22173%22%20cy=%22525%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22173%22%20cy=%22525%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22767%22%20cy=%22441%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22767%22%20cy=%22441%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22586%22%20cy=%22516%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22586%22%20cy=%22516%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%221389%22%20cy=%22546%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%221389%22%20cy=%22546%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%221416%22%20cy=%22523%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%221416%22%20cy=%22523%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22493%22%20cy=%22492%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22493%22%20cy=%22492%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22769%22%20cy=%22511%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22769%22%20cy=%22511%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%22362%22%20cy=%22498%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%22362%22%20cy=%22498%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%221052%22%20cy=%22399%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%221052%22%20cy=%22399%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Ccircle%20cx=%221169%22%20cy=%22453%22%20r=%223%22%20fill=%22#f5d47c%22%20opacity=%22.7%22/%3E%3Ccircle%20cx=%221169%22%20cy=%22453%22%20r=%2212%22%20fill=%22#f5b642%22%20opacity=%22.12%22%20filter=%22url(#glow)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "오크 야영지": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#7c755f%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#554a38%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#bd9b61%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2255%22%20cy=%2265%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22110%22%20cy=%2255%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2210%22%20cy=%2268%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22323%22%20cy=%22122%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22378%22%20cy=%22112%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22278%22%20cy=%22125%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22528%22%20cy=%2287%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22583%22%20cy=%2277%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22483%22%20cy=%2290%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22711%22%20cy=%22159%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22766%22%20cy=%22149%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22666%22%20cy=%22162%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22968%22%20cy=%2293%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221023%22%20cy=%2283%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22923%22%20cy=%2296%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221189%22%20cy=%2290%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221244%22%20cy=%2280%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221144%22%20cy=%2293%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221416%22%20cy=%2262%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221471%22%20cy=%2252%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221371%22%20cy=%2265%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20365%20Q280%20320%20520%20370%20T980%20355%20T1600%20370%20V600%20H0Z%22%20fill=%22#564b3a%22/%3E%3Cpath%20d=%22M300%20520%20L370%20385%20L440%20520Z%22%20fill=%22#7b4e3c%22%20stroke=%22#3f3129%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M370%20385%20V520%22%20stroke=%22#3b3028%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M560%20520%20L630%20385%20L700%20520Z%22%20fill=%22#7b4e3c%22%20stroke=%22#3f3129%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M630%20385%20V520%22%20stroke=%22#3b3028%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M820%20520%20L890%20385%20L960%20520Z%22%20fill=%22#7b4e3c%22%20stroke=%22#3f3129%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M890%20385%20V520%22%20stroke=%22#3b3028%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M1080%20520%20L1150%20385%20L1220%20520Z%22%20fill=%22#7b4e3c%22%20stroke=%22#3f3129%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M1150%20385%20V520%22%20stroke=%22#3b3028%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M1340%20520%20L1410%20385%20L1480%20520Z%22%20fill=%22#7b4e3c%22%20stroke=%22#3f3129%22%20stroke-width=%226%22/%3E%3Cpath%20d=%22M1410%20385%20V520%22%20stroke=%22#3b3028%22%20stroke-width=%228%22/%3E%3Ccircle%20cx=%22760%22%20cy=%22510%22%20r=%2245%22%20fill=%22#f39a32%22%20opacity=%22.85%22/%3E%3Ccircle%20cx=%22760%22%20cy=%22510%22%20r=%2280%22%20fill=%22#f39a32%22%20opacity=%22.16%22%20filter=%22url(#glow)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "화염의 화산": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#8e4b3e%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#55251f%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#ef9a45%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2275%22%20cy=%2270%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22130%22%20cy=%2260%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2230%22%20cy=%2273%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22329%22%20cy=%22134%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22384%22%20cy=%22124%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22284%22%20cy=%22137%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22503%22%20cy=%2276%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22558%22%20cy=%2266%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22458%22%20cy=%2279%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22736%22%20cy=%22121%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22791%22%20cy=%22111%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22691%22%20cy=%22124%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22985%22%20cy=%22102%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221040%22%20cy=%2292%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22940%22%20cy=%22105%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221156%22%20cy=%22149%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221211%22%20cy=%22139%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221111%22%20cy=%22152%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221406%22%20cy=%2280%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221461%22%20cy=%2270%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221361%22%20cy=%2283%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20600%20L300%20480%20520%20300%20700%20470%20860%20270%201040%20480%201250%20320%201600%20600Z%22%20fill=%22#4a2a27%22/%3E%3Cpath%20d=%22M650%20390%20L860%20250%201060%20405%22%20stroke=%22#d85a34%22%20stroke-width=%2235%22%20fill=%22none%22/%3E%3Cpath%20d=%22M790%20300%20Q860%20235%20930%20300%20L900%20140%20Q860%2080%20820%20140Z%22%20fill=%22#9d4b3c%22%20opacity=%22.5%22%20filter=%22url(#soft)%22/%3E%3Cpath%20d=%22M560%20500%20Q580%20430%20600%20500%22%20stroke=%22#ef8b32%22%20stroke-width=%2212%22%20fill=%22none%22/%3E%3Cpath%20d=%22M690%20500%20Q710%20430%20730%20500%22%20stroke=%22#ef8b32%22%20stroke-width=%2212%22%20fill=%22none%22/%3E%3Cpath%20d=%22M880%20500%20Q900%20430%20920%20500%22%20stroke=%22#ef8b32%22%20stroke-width=%2212%22%20fill=%22none%22/%3E%3Cpath%20d=%22M1010%20500%20Q1030%20430%201050%20500%22%20stroke=%22#ef8b32%22%20stroke-width=%2212%22%20fill=%22none%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "얼음 협곡": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#759ab9%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#607d98%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#dff4fa%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2277%22%20cy=%22121%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22132%22%20cy=%22111%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%2232%22%20cy=%22124%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22316%22%20cy=%2272%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22371%22%20cy=%2262%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22271%22%20cy=%2275%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22524%22%20cy=%22123%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22579%22%20cy=%22113%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22479%22%20cy=%22126%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22739%22%20cy=%22150%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22794%22%20cy=%22140%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22694%22%20cy=%22153%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22944%22%20cy=%22156%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22999%22%20cy=%22146%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22899%22%20cy=%22159%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221183%22%20cy=%2283%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221238%22%20cy=%2273%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221138%22%20cy=%2286%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221376%22%20cy=%2285%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221431%22%20cy=%2275%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221331%22%20cy=%2288%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20370%20L220%20260%20400%20365%20590%20190%20780%20350%20980%20210%201160%20360%201370%20230%201600%20360%20V600%20H0Z%22%20fill=%22#7897aa%22/%3E%3Cpath%20d=%22M590%20190%20L640%20250%20700%20235%20780%20350%22%20stroke=%22#eaf7fa%22%20stroke-width=%2235%22%20fill=%22none%22%20opacity=%22.85%22/%3E%3Cpath%20d=%22M1370%20230%20L1420%20290%201470%20270%201600%20360%22%20stroke=%22#eefaff%22%20stroke-width=%2232%22%20fill=%22none%22%20opacity=%22.8%22/%3E%3Cg%20transform=%22translate(80,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(260,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(440,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(620,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(800,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(980,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1160,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Cg%20transform=%22translate(1340,390)%22%3E%3Cpath%20d=%22M0%20120%20V25%22%20stroke=%22#496b78%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M0%2025%20L-35%2070%20H-10%20L-42%20100%20H42%20L10%2070%20H35Z%22%20fill=%22#dcecf0%22%20stroke=%22#547583%22%20stroke-width=%224%22/%3E%3C/g%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")", "마왕성 심층부": "url(\"data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20600%22%20preserveAspectRatio=%22xMidYMid%20slice%22%3E%0A%20%20%20%20%3Cdefs%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22sky%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#343244%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#efe1b7%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22ground%22%20x1=%220%22%20y1=%220%22%20x2=%220%22%20y2=%221%22%3E%3Cstop%20offset=%220%22%20stop-color=%22#211b2a%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#2e2a24%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3ClinearGradient%20id=%22fog%22%20x1=%220%22%20y1=%220%22%20x2=%221%22%20y2=%220%22%3E%3Cstop%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3Cstop%20offset=%22.5%22%20stop-color=%22#fff%22%20stop-opacity=%22.02%22/%3E%3Cstop%20offset=%221%22%20stop-color=%22#fff%22%20stop-opacity=%22.16%22/%3E%3C/linearGradient%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22soft%22%3E%3CfeGaussianBlur%20stdDeviation=%228%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cfilter%20id=%22glow%22%3E%3CfeGaussianBlur%20stdDeviation=%2214%22/%3E%3C/filter%3E%0A%20%20%20%20%20%20%3Cpattern%20id=%22grain%22%20width=%2218%22%20height=%2218%22%20patternUnits=%22userSpaceOnUse%22%3E%3Ccircle%20cx=%223%22%20cy=%225%22%20r=%221%22%20fill=%22#fff%22%20opacity=%22.08%22/%3E%3Ccircle%20cx=%2214%22%20cy=%2212%22%20r=%22.8%22%20fill=%22#000%22%20opacity=%22.07%22/%3E%3C/pattern%3E%0A%20%20%20%20%3C/defs%3E%0A%20%20%20%20%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#sky)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2270%22%20fill=%22#9a5260%22%20opacity=%22.75%22%20filter=%22url(#soft)%22/%3E%0A%20%20%20%20%3Ccircle%20cx=%221270%22%20cy=%22125%22%20r=%2235%22%20fill=%22#fff2c0%22%20opacity=%22.75%22/%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%2250%22%20cy=%2270%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22105%22%20cy=%2260%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%225%22%20cy=%2273%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22289%22%20cy=%22154%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22344%22%20cy=%22144%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22244%22%20cy=%22157%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22504%22%20cy=%2276%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22559%22%20cy=%2266%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22459%22%20cy=%2279%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22767%22%20cy=%2288%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%22822%22%20cy=%2278%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22722%22%20cy=%2291%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%22945%22%20cy=%2283%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221000%22%20cy=%2273%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%22900%22%20cy=%2286%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221171%22%20cy=%2293%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221226%22%20cy=%2283%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221126%22%20cy=%2296%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cg%20opacity=%22.22%22%20fill=%22#fff%22%3E%3Cellipse%20cx=%221428%22%20cy=%22127%22%20rx=%2275%22%20ry=%2222%22/%3E%3Cellipse%20cx=%221483%22%20cy=%22117%22%20rx=%2252%22%20ry=%2228%22/%3E%3Cellipse%20cx=%221383%22%20cy=%22130%22%20rx=%2245%22%20ry=%2218%22/%3E%3C/g%3E%3Cpath%20d=%22M0%20320%20L160%20210%20270%20300%20420%20155%20570%20290%20720%20175%20880%20305%201030%20185%201180%20300%201330%20160%201600%20315%20V390%20H0Z%22%20fill=%22#3e5360%22%20opacity=%22.48%22/%3E%3Cpath%20d=%22M0%20350%20L180%20255%20330%20335%20520%20205%20680%20330%20850%20235%201030%20340%201200%20230%201390%20335%201600%20250%20V410%20H0Z%22%20fill=%22#536d61%22%20opacity=%22.68%22/%3E%3Cpath%20d=%22M0%20380%20Q300%20330%20600%20380%20T1200%20360%20T1600%20380%20V600%20H0Z%22%20fill=%22#34313a%22/%3E%3Cg%20transform=%22translate(650%20170)%22%3E%3Cpath%20d=%22M0%20330%20V90%20H80%20V330%20M170%20330%20V70%20H250%20V330%20M340%20330%20V90%20H420%20V330%22%20fill=%22#56515d%22%20stroke=%22#26242d%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M40%20160%20L125%2070%20210%20160Z%22%20fill=%22#7a4e58%22/%3E%3Cpath%20d=%22M210%20160%20L295%2070%20380%20160Z%22%20fill=%22#7a4e58%22/%3E%3Crect%20x=%2290%22%20y=%22205%22%20width=%22220%22%20height=%22125%22%20fill=%22#45414c%22%20stroke=%22#26242d%22%20stroke-width=%228%22/%3E%3Cpath%20d=%22M160%20330%20V260%20Q200%20205%20240%20260%20V330%22%20fill=%22#201d26%22/%3E%3C/g%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#fog)%22/%3E%3Crect%20width=%221600%22%20height=%22600%22%20fill=%22url(#grain)%22%20opacity=%22.35%22/%3E%3C/svg%3E\")"};
@@ -5656,7 +5817,7 @@ function showStatus(){
     unlocked.sort((a,b)=>b[1].rank-a[1].rank).forEach(([k,v])=>{
       const r = v.rank>0 ? `[${v.rank}등급]` : "[전직전용]";
       const u = v.upgrade>0 ? `+${v.upgrade}` : "";
-      displayText(` - ${r} ${k} ${u} (MP:${v.mp}) : x${(v.mult+v.upgrade*0.2).toFixed(1)}`);
+      displayText(` - ${r} ${k} ${u} (MP:${v.mp}) : x${(v.mult+v.upgrade*0.2).toFixed(1)} · 🎯 ${getTargetLabel(v)}`);
     });
   }
   setButtons([["마을로 돌아가기", town]]);
@@ -5919,7 +6080,7 @@ function skillUpgradeMenu(){
       cardsHtml += `
         <div class="lab-card" onclick="window._learnSkill('${sName}')">
           <div>
-            <div class="fl-header"><div class="fl-icon">${icon}</div><div><div class="fl-title">${sName}</div><div class="fl-sub">[${eName}] 신규 마법</div></div></div>
+            <div class="fl-header"><div class="fl-icon">${icon}</div><div><div class="fl-title">${sName}</div><div class="fl-sub">[${eName}] 신규 마법 · 🎯 ${getTargetLabel(sData)}</div></div></div>
             <div class="fl-body">위력: <b>x${sData.mult.toFixed(1)}</b><br>마모: MP ${sData.mp}</div>
           </div>
           <div class="fl-footer"><span>💰 ${sData.price} G</span><div class="fl-btn" style="background:#244d75;">학습하기</div></div>
@@ -5937,7 +6098,7 @@ function skillUpgradeMenu(){
       cardsHtml += `
         <div class="lab-card" onclick="window._upSkill('${sName}')">
           <div>
-            <div class="fl-header"><div class="fl-icon">${icon}</div><div><div class="fl-title">${sName} [+${up}]</div><div class="fl-sub">[${eName}] 보유 마법</div></div></div>
+            <div class="fl-header"><div class="fl-icon">${icon}</div><div><div class="fl-title">${sName} [+${up}]</div><div class="fl-sub">[${eName}] 보유 마법 · 🎯 ${getTargetLabel(sData)}</div></div></div>
             <div class="fl-body">현재 위력: <b>x${cur.toFixed(1)}</b> ➔ <b>x${next.toFixed(1)}</b></div>
           </div>
           <div class="fl-footer"><span>💰 ${cost} G</span><div class="fl-btn">위력 강화</div></div>
@@ -6152,7 +6313,7 @@ function useSkillMenu(){
 
   const btnData = unlocked.map(([sName,sData])=>{
       const cost = Math.floor(sData.mp * envMpMult);
-      return [`${sName} (MP:${cost})`, ()=>executeSkill(sName, sData, cost)];
+      return [`${sName} (MP:${cost} · ${getTargetLabel(sData)})`, ()=>executeSkill(sName, sData, cost)];
   });
   btnData.push(["뒤로 가기", battleUI]);
   setPaginatedButtons(btnData);
@@ -6163,10 +6324,10 @@ function useSkillMenu(){
 ===================================================================== */
 async function executeSkill(sName, sData, cost){
   setButtons([]);
-  const p = S.player, m = getTarget();
-  if(!m){ await endPlayerAction(); return; }
-  const idx = S.currentMonsters.indexOf(m);
-  
+  const p = S.player;
+  const primary = getTarget();
+  if(!primary){ await endPlayerAction(); return; }
+
   if(p.mp < cost){
     displayText(`▶ 마나가 부족합니다! (필요: ${cost} / 현재: ${p.mp}) 턴을 날렸습니다.`);
     await wait(500); await endPlayerAction(); return;
@@ -6204,55 +6365,28 @@ async function executeSkill(sName, sData, cost){
   let totalMult = (sData.mult + sData.upgrade*0.2) * weakMult;
   if (p.equipped_weapon && p.equipped_weapon.effect === "magic_amp") totalMult *= p.equipped_weapon.effect_val;
 
-  const dmg = Math.max(1, Math.floor(baseAtk*totalMult) - m.def_stat);
-  critFlash();
-  m.hp -= dmg;
-  
   if (isWeak) {
       displayText(`🎯 [약점 공략!] 적의 취약한 속성(${getElemName(elem)})을 파고들어 위력이 1.5배 상승합니다!`, {highlight: true});
   }
-  displayText(`✨ 스킬 발동! [${sName}] ${m.name}에게 ${dmg} 데미지!`);
-  
-  // 애니메이션은 sData.type을 그대로 호출하여 정상 작동하도록 함
-  await animateBattleAction("player", sData.type, idx); 
+
+  // [다중 대상 시스템] - 스킬의 targets 값만큼 살아있는 적을 순서대로 타격
+  const targetCount = Math.max(1, sData.targets || 1);
+  const targets = getMultiTargets(targetCount);
+  if(targets.length > 1){
+    displayText(`✨ 스킬 발동! [${sName}] (${targets.length}명 대상)`);
+  }
+
+  for(const m of targets){
+    const idx = S.currentMonsters.indexOf(m);
+    const dmg = Math.max(1, Math.floor(baseAtk*totalMult) - m.def_stat);
+    critFlash();
+    m.hp -= dmg;
+    displayText(`✨ [${sName}] ${m.name}에게 ${dmg} 데미지!`);
+    // 애니메이션은 sData.type을 그대로 호출하여 정상 작동하도록 함
+    await animateBattleAction("player", sData.type, idx);
+  }
   
   S.currentMonsters.forEach(monster => { monster._first_action_this_turn = false; });
-  await endPlayerAction();
-}
-
-async function executeSkill(sName, sData){
-  setButtons([]);
-  const p = S.player, m = getTarget();
-  if(!m){ await endPlayerAction(); return; }
-  const idx = S.currentMonsters.indexOf(m);
-  if(p.mp < sData.mp){
-    displayText("▶ 마나가 부족합니다! 턴을 날렸습니다.");
-    await wait(500);
-    await endPlayerAction();
-    return;
-  }
-  p.mp -= sData.mp;
-  let baseAtk = getAtk(p);
-  if(p.next_attack_boost){
-    baseAtk = Math.floor(baseAtk*1.5);
-    displayText("🔥 [카운터 태세] 스킬의 위력이 1.5배 증폭되어 꽂힙니다!");
-    p.next_attack_boost = false;
-  }
-  
-  let totalMult = sData.mult + sData.upgrade*0.2;
-  if (p.equipped_weapon && p.equipped_weapon.effect === "magic_amp") totalMult *= p.equipped_weapon.effect_val;
-
-  const dmg = Math.max(1, Math.floor(baseAtk*totalMult) - m.def_stat);
-  critFlash();
-  m.hp -= dmg;
-  displayText(`✨ 스킬 발동! [${sName}] ${m.name}에게 ${dmg} 데미지!`);
-  await animateBattleAction("player", sData.type, idx);
-  
-  // 모든 적의 _first_action_this_turn 리셋
-  S.currentMonsters.forEach(monster => {
-   monster._first_action_this_turn = false;
-  });
-  
   await endPlayerAction();
 }
 
