@@ -2728,10 +2728,146 @@ body #app .shop-equip-card:active {
   .job-card-cta{margin-top:7px;}
 }
 </style>
+<style id="mobile-ui-remake-final">
+/* =====================================================================
+   1. 상태창(HUD) 초압축 및 불필요 정보 제거 (모바일 전용)
+===================================================================== */
+@media(max-width: 768px) {
+  #scene .lobby-hud { padding: 8px 12px !important; }
+  .lobby-hud .hud-row { margin-bottom: 4px !important; }
+  .lobby-hud .hud-gold { font-size: 10.5px !important; }
+  .lobby-hud .bar-line { margin-top: 3px !important; gap: 6px !important; }
+  .lobby-hud .bar-track { height: 7px !important; } 
+  .lobby-hud .bar-num { font-size: 9px !important; width: auto !important; }
+  .lobby-hud .hud-stats { margin-top: 5px !important; gap: 4px !important; justify-content: space-around; }
+  .lobby-hud .hud-equip { display: none !important; }
+
+  /* =====================================================================
+     3. 다른 메뉴 진입 시 하단 액션 버튼을 '카드형 UI'로 교체
+  ===================================================================== */
+  #actions {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px 4px !important;
+  }
+  .action-btn {
+    border-radius: 8px !important;
+    min-height: 52px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    background: linear-gradient(145deg, rgba(55, 35, 20, 0.95), rgba(25, 15, 8, 0.95)) !important;
+    border: 1px solid rgba(217, 180, 92, 0.4) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+    word-break: keep-all !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .action-btn.empty { display: none !important; }
+}
+
+/* =====================================================================
+   2. 로비 메뉴 내비게이션 전용 카드 UI (다크 판타지 스타일)
+===================================================================== */
+.lobby-nav-section {
+  border-top: 1px solid rgba(58,40,18,.28);
+  padding-top: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.lobby-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding-bottom: 10px;
+}
+@media(max-width: 600px) {
+  .lobby-nav-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+}
+.lobby-nav-card {
+  background: linear-gradient(180deg, var(--wood-lighter) 0%, var(--wood) 60%, var(--panel-alt) 100%);
+  border: 1px solid #000;
+  outline: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  padding: 14px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 3px 6px rgba(0,0,0,0.4);
+  transition: background 0.15s, outline-color 0.15s, transform 0.1s;
+}
+.lobby-nav-card:hover {
+  outline-color: var(--gold);
+  background: linear-gradient(180deg, #84592c, #4a3018 60%, var(--panel-alt) 100%);
+}
+.lobby-nav-card:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.6);
+}
+.lobby-nav-card .icon {
+  font-size: 26px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+}
+.lobby-nav-card .title {
+  font-family: 'Cinzel', 'Noto Serif KR', serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--gold-bright);
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+.lobby-nav-card.system-btn {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  min-height: 44px;
+  padding: 8px;
+  background: linear-gradient(180deg, #3a2712 0%, #1c1207 100%);
+  outline-color: #543b22;
+}
+.lobby-nav-card.system-btn .icon { font-size: 20px; }
+.lobby-nav-card.system-btn .title { font-size: 13px; }
+
+.quest-card { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+.quest-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(58,40,18,0.15); border-color: rgba(138,90,18,0.8); }
+.quest-card:active { transform: translateY(0); }
+
+.dungeon-card { cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; }
+.dungeon-card:not(.locked):hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(58,40,18,0.25); border-color: rgba(138,90,18,0.8); }
+.dungeon-card.locked { cursor: not-allowed; }
+
+.encounter-choice-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
+.encounter-choice-card {
+    background: linear-gradient(145deg, rgba(55, 35, 20, 0.95), rgba(25, 15, 8, 0.95));
+    border: 1px solid rgba(217, 180, 92, 0.4);
+    border-radius: 6px;
+    padding: 14px 16px;
+    color: var(--gold-bright);
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: transform 0.1s, box-shadow 0.1s, border-color 0.1s;
+}
+.encounter-choice-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--gold);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+.encounter-choice-card:active {
+    transform: translateY(1px);
+}
+</style>
 </head>
+
 <body>
 <div id="app">
-  <div id="titlebar">
+  <div id="titlebar" style="display:none !important;">
     <div>
       <h1>DARK ABYSS</h1>
       <div class="sub">: AI CHRONICLES</div>
@@ -2993,9 +3129,19 @@ function rumorQuestDef(stageIdx=S.stageIdx){
 }
 
 
+
 /* =====================================================================
    QUEST SYSTEM
 ===================================================================== */
+window._questAction = function(id) {
+    const q = allQuestDefs().find(x => x.id === id);
+    const st = getQuestState(q);
+    if(st.status === "available") acceptQuest(id);
+    else if(st.status === "complete") claimQuest(id);
+    else if(st.status === "active") toast("이미 진행 중인 의뢰입니다.");
+    else if(st.status === "claimed") toast("이미 완료된 의뢰입니다.");
+};
+
 const QUEST_TEMPLATES = [
   {key:"hunt", icon:"⚔️", title:"주변의 위협", type:"normal", need:3,
    desc:(stageName)=>`${stageName} 주변에 출몰하는 몬스터를 처치하세요.`},
@@ -3163,7 +3309,7 @@ function renderQuestCard(q){
   if(st.status==="active"){status="진행 중";cls="active";}
   if(st.status==="complete"){status="보상 대기";cls="complete";}
   if(st.status==="claimed"){status="완료";cls="complete";}
-  return `<div class="quest-card ${cls}">
+  return `<div class="quest-card ${cls}" onclick="window._questAction('${q.id}')">
     <div class="quest-row"><div class="quest-icon">${q.icon}</div><div class="quest-main">
       <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;"><div class="quest-name">${q.title}</div><span class="quest-status ${cls}">${status}</span></div>
       <div class="quest-desc">${q.desc}</div>
@@ -3756,11 +3902,14 @@ async function triggerRandomEvent(locationStr, callback) {
   displayText(`\n📜 [돌발 이벤트]`,{highlight:true,clear:true});
   displayText(eventData.story);
 
-  const btns=eventData.choices.map(c=>[
-    c.text,
-    ()=>resolveEvent(c,callback)
-  ]);
-  setPaginatedButtons(btns,0,true);
+  window._currentEncounterChoices = eventData.choices.map(c => () => resolveEvent(c, callback));
+  const choicesHtml = eventData.choices.map((c, i) => {
+      const cleanText = c.text.replace(/\s*\(.*?\)\s*$/, '');
+      return `<button class="encounter-choice-card" onclick="window._currentEncounterChoices[${i}]()">${cleanText}</button>`;
+  }).join('');
+  
+  log.innerHTML += `<div class="encounter-choice-grid">${choicesHtml}</div>`;
+  setButtons([]);
 }
 
 async function resolveEvent(choice, callback) {
@@ -4401,7 +4550,7 @@ async function newGame(){
           <div class="job-icon-wrap">⚔️</div>
           <div class="job-card-name">전사</div>
           <div class="job-card-role">THE WARRIOR</div>
-          <div class="job-card-desc">강인한 육체와 검으로 전장을 지배합니다.<br>높은 체력과 단일 대상 특화 공격을 지닌 정통 전투형.</div>
+          <div class="job-card-desc">강인한 육체와 검으로 전장을 지배합니다.<br>높은 체력과 안정적인 공격력을 지닌 정통 전투형.</div>
           <div class="job-card-stats">
             <div class="job-stat"><b>전투 성향</b><span>근접 · 균형</span></div>
             <div class="job-stat"><b>전직 계열</b><span>검투사 · 버서커</span></div>
@@ -4414,7 +4563,7 @@ async function newGame(){
           <div class="job-icon-wrap">🔮</div>
           <div class="job-card-name">마법사</div>
           <div class="job-card-role">THE MAGE</div>
-          <div class="job-card-desc">비전의 힘을 다루어 압도적인 화력을 발휘합니다.<br>강력한 광역 스킬과 속성 공격으로 적들을 압도하는 마법형.</div>
+          <div class="job-card-desc">비전의 힘을 다루어 압도적인 화력을 발휘합니다.<br>강력한 스킬과 속성 공격으로 적을 무너뜨립니다.</div>
           <div class="job-card-stats">
             <div class="job-stat"><b>전투 성향</b><span>원거리 · 화력</span></div>
             <div class="job-stat"><b>전직 계열</b><span>원소 · 흑마법</span></div>
@@ -4603,16 +4752,45 @@ async function town(){
     encounterAction.addEventListener("click", triggerTownEncounter);
   }
 
-  // 메뉴 버튼 렌더링
-  setPaginatedButtons([
-    ["⚔️ 모험 떠나기", dungeonMenu],
-    ["📜 퀘스트 게시판", questMenu],
-    ["🛒 상점 가기", shopMenu],
-    ["🎒 장비 관리", equipmentInvenMenu],
-    ["🏨 여관 / 대장간", townFacilityMenu],
-    ["🗺️ 마을 이동", travelTown],
-    ["⚙️ 시스템 메뉴", statusOrSaveMenu]
-  ]);
+  // =====================================================================
+  // (수정됨) 하단 고정 버튼을 제거하고, 화면 내부 카드형 UI 메뉴로 교체
+  // 기존 DOM의 이벤트 리스너 파괴를 막기 위해 insertAdjacentHTML 사용
+  // =====================================================================
+  const navHtml = `
+    <section class="town-section lobby-nav-section">
+      <div class="town-section-head">
+        <span class="town-section-title">🧭 마을 편의시설 및 탐험</span>
+        <span class="town-section-sub">TOWN MENU</span>
+      </div>
+      <div class="lobby-nav-grid">
+        <div class="lobby-nav-card" onclick="dungeonMenu()">
+          <div class="icon">⚔️</div><div class="title">모험 떠나기</div>
+        </div>
+        <div class="lobby-nav-card" onclick="questMenu()">
+          <div class="icon">📜</div><div class="title">퀘스트 게시판</div>
+        </div>
+        <div class="lobby-nav-card" onclick="shopMenu()">
+          <div class="icon">🛒</div><div class="title">상점 가기</div>
+        </div>
+        <div class="lobby-nav-card" onclick="equipmentInvenMenu()">
+          <div class="icon">🎒</div><div class="title">장비 관리</div>
+        </div>
+        <div class="lobby-nav-card" onclick="townFacilityMenu()">
+          <div class="icon">🏨</div><div class="title">여관/대장간</div>
+        </div>
+        <div class="lobby-nav-card" onclick="travelTown()">
+          <div class="icon">🗺️</div><div class="title">마을 이동</div>
+        </div>
+        <div class="lobby-nav-card system-btn" onclick="statusOrSaveMenu()">
+          <div class="icon">⚙️</div><div class="title">시스템 메뉴</div>
+        </div>
+      </div>
+    </section>
+  `;
+  
+  // innerHTML += 방식은 기존 등록된 이벤트들을 날려버리므로, 요소를 안전하게 추가합니다.
+  log.insertAdjacentHTML('beforeend', navHtml);
+  setButtons([]);
 }
 
 function statusOrSaveMenu(){
@@ -5011,7 +5189,26 @@ function triggerTownEncounter() {
     </div>
   `;
   
-  setPaginatedButtons(ev.choices);
+window._currentEncounterChoices = ev.choices.map(c => c[1]);
+  const choicesHtml = ev.choices.map((c, i) => {
+      // 정규식을 사용해 괄호 안의 내용(보상 및 소모 정보 등)을 화면에서 제거
+      const cleanText = c[0].replace(/\s*\(.*?\)\s*$/, '');
+      return `<button class="encounter-choice-card" onclick="window._currentEncounterChoices[${i}]()">${cleanText}</button>`;
+  }).join('');
+
+  // 내용과 버튼을 양피지 카드 패널(encounter-card) 안에 모두 통합하여 스크롤 문제 해결
+  log.innerHTML = `
+    <div class="encounter-wrap">
+      <div class="encounter-card">
+        <div class="encounter-kicker">RANDOM ENCOUNTER</div>
+        <div class="encounter-title">🎲 ${ev.title}</div>
+        <div class="encounter-story">“${ev.desc}”</div>
+        <div class="encounter-choice-grid">${choicesHtml}</div>
+      </div>
+    </div>
+  `;
+  
+  setButtons([["↩ 마을로 돌아가기", town]]);
 
   // --- 기존의 20가지 이벤트들이 선언된 이후 아래에 다음 코드를 추가 ---
 
@@ -5086,20 +5283,58 @@ function triggerTownEncounter() {
 function travelTown(){
   setButtons([]);
   renderScene();
-  displayText("==================================================\n           🗺️ 다른 마을로 이동\n==================================================", {clear:true});
-  displayText("지금까지 도달하거나 해금된 안전한 거점들입니다.");
-
+  const p = S.player;
   const unlocked = TOWN_DATA.slice(0, S.stageIdx+1);
-  const btnData = [];
+  const allQuests = allQuestDefs();
+  let cardsHtml = '';
+  
   unlocked.forEach((t, idx)=>{
-    if(idx===S.stageIdx){
-      btnData.push([`📍 ${t.name} (현재)`, ()=>displayText(`이미 ${t.name}에 머물고 있습니다.`)]);
-    } else {
-      btnData.push([`✈️ S${idx+1}. ${t.name}`, ()=>moveToTownIdx(idx)]);
+    const isCurrent = idx === S.stageIdx;
+    
+    // 던전 및 퀘스트 클리어 내역 계산
+    const clears = p.dungeon_clears && p.dungeon_clears[idx] ? p.dungeon_clears[idx] : { normal: 0, elite: 0, boss: 0 };
+    let qCompleted = 0;
+    let qTotal = 0;
+    if(p.quests){
+        allQuests.forEach(q => {
+            if(q.stage === idx) {
+                qTotal++;
+                if(p.quests[q.id] && (p.quests[q.id].status === 'complete' || p.quests[q.id].status === 'claimed')) {
+                    qCompleted++;
+                }
+            }
+        });
     }
+
+    // 카드 UI 렌더링 (진행도 요약 추가)
+    cardsHtml += `
+      <div class="forge-card ${isCurrent ? 'disabled' : ''}" ${!isCurrent ? `onclick="moveToTownIdx(${idx})"` : ''} style="min-height: 110px;">
+        <div>
+          <div class="fl-header"><div class="fl-icon">📍</div><div><div class="fl-title">Stage ${idx+1}. ${t.name}</div><div class="fl-sub">${isCurrent ? 'CURRENT LOCATION' : 'SAFE ZONE'}</div></div></div>
+          <div class="fl-body">${t.desc}</div>
+          <div style="margin-top:6px; padding-top:6px; border-top:1px dashed rgba(91,67,31,0.3); font-size:10.5px; color:#5b431f; line-height:1.4;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:2px;"><b>⚔️ 일반:</b> <span>${clears.normal}회</span> <b>💀 정예:</b> <span>${clears.elite}회</span> <b>🔥 보스:</b> <span>${clears.boss}회</span></div>
+            <div style="display:flex; justify-content:space-between;"><b>📜 의뢰 완료:</b> <span>${qCompleted} / ${qTotal} 건</span></div>
+          </div>
+        </div>
+        <div class="fl-footer" style="margin-top:8px;"><span>이동 비용: 무료</span><div class="fl-btn" style="${isCurrent ? 'background:#555;' : 'background:#244d75;'}">${isCurrent ? '현재 위치' : '이동하기'}</div></div>
+      </div>
+    `;
   });
-  btnData.push(["마을로 돌아가기", town]);
-  setPaginatedButtons(btnData);
+  
+  logEl().innerHTML = `
+    <div class="equip-board">
+      <div class="equip-head">
+        <div><div class="equip-kicker">FAST TRAVEL</div><div class="equip-title">🗺️ 마을 이동</div></div>
+      </div>
+      <div style="font-size:11px; color:#5b431f; margin-top:4px; margin-bottom:10px;">해금된 거점으로 안전하게 이동할 수 있습니다.</div>
+      <div class="forge-lab-grid">
+        ${cardsHtml}
+      </div>
+    </div>
+  `;
+  logEl().scrollTop = 0;
+  setButtons([["↩ 마을로 돌아가기", town]]);
 }
 
 async function moveToTownIdx(sNum){
@@ -5111,6 +5346,22 @@ async function moveToTownIdx(sNum){
   await wait(700);
   town();
 }
+
+
+/* =====================================================================
+   DUNGEON SYSTEM HELPERS
+===================================================================== */
+window._dungeonAction = function(type, canEnter = true) {
+    if (!canEnter) {
+        if (type === 'elite') {
+            toast("일반 던전을 5회 이상 클리어해야 입장할 수 있습니다.");
+        } else if (type === 'boss') {
+            toast("정예 던전을 3회 이상 클리어해야 입장할 수 있습니다.");
+        }
+        return;
+    }
+    enterDungeon(type);
+};
 
 function dungeonMenu(){
   setButtons([]);
@@ -5189,7 +5440,7 @@ function dungeonMenu(){
       <div class="dungeon-intro">진입할 던전을 선택하세요</div>
 
       <section class="dungeon-cards">
-        <article class="dungeon-card">
+        <article class="dungeon-card" onclick="window._dungeonAction('normal')">
           <div class="dungeon-ribbon">01 · SAFE HUNTING</div>
           <div class="dungeon-icon">🌲</div>
           <h3>일반 던전</h3>
@@ -5201,7 +5452,7 @@ function dungeonMenu(){
           <div class="dungeon-block"><b>던전 진행도</b><div style="font-size:10px;color:#3a2812;margin-top:2px;">현재 클리어: ${clears.normal} 회</div></div>
         </article>
 
-        <article class="dungeon-card elite ${canElite ? '' : 'locked'}">
+        <article class="dungeon-card elite ${canElite ? '' : 'locked'}" onclick="window._dungeonAction('elite', ${canElite})">
           <div class="dungeon-ribbon">02 · HIGH RISK</div>
           <div class="dungeon-icon">💀</div>
           <h3>정예 던전</h3>
@@ -5216,7 +5467,7 @@ function dungeonMenu(){
           </div>
         </article>
 
-        <article class="dungeon-card boss ${canBoss ? '' : 'locked'}">
+        <article class="dungeon-card boss ${canBoss ? '' : 'locked'}" onclick="window._dungeonAction('boss', ${canBoss})">
           <div class="dungeon-ribbon">03 · STAGE BOSS</div>
           <div class="dungeon-icon">🔥</div>
           <h3>보스 던전</h3>
@@ -5251,9 +5502,6 @@ function dungeonMenu(){
   log.scrollTop = 0;
 
   setButtons([
-    ["🌲 일반 던전", ()=>enterDungeon("normal")],
-    canElite ? ["💀 정예 던전", ()=>enterDungeon("elite")] : ["🔒 정예 던전 (잠김)", ()=>{ displayText("▶ 일반 던전을 5회 이상 클리어해야 입장할 수 있습니다."); dungeonMenu(); }],
-    canBoss ? ["🔥 보스 던전", ()=>enterDungeon("boss"), {danger:true}] : ["🔒 보스 던전 (잠김)", ()=>{ displayText("▶ 정예 던전을 3회 이상 클리어해야 입장할 수 있습니다."); dungeonMenu(); }],
     ["↩ 마을로 돌아가기", town]
   ]);
 }
@@ -5584,15 +5832,28 @@ function shopMenu(){
   `;
 
   // 기존 중복 안내문(.shop-location, .shop-welcome)을 제거하고 바로 카테고리 진입
+  const sellCards = `
+    <div class="shop-section-title" style="margin-top: 20px;"><div><span>TRADE</span><h3>전리품 매각</h3></div><small>SELL ITEMS</small></div>
+    <div class="shop-category-grid">
+      <button class="shop-category-card" onclick="shopSellMenu()" style="border-color:#7a9c5c; background:linear-gradient(145deg,#f2f7ec,#dce8ce);">
+        <div class="shop-category-art" style="background:linear-gradient(135deg,rgba(46,74,21,0.88),rgba(92,138,46,0.68)); border-bottom-color:#7a9c5c;"><span>⚖️</span><i>SELL</i></div>
+        <div class="shop-category-copy"><div class="shop-category-label">TRADE</div><h3>개별 판매</h3><p>전리품을 개별적으로 선택해서 매각합니다.</p></div>
+      </button>
+      <button class="shop-category-card" onclick="sellAllLoot()" style="border-color:#7a9c5c; background:linear-gradient(145deg,#f2f7ec,#dce8ce);">
+        <div class="shop-category-art" style="background:linear-gradient(135deg,rgba(46,74,21,0.88),rgba(92,138,46,0.68)); border-bottom-color:#7a9c5c;"><span>📦</span><i>ALL</i></div>
+        <div class="shop-category-copy"><div class="shop-category-label">BULK SELL</div><h3>모두 팔기</h3><p>가방 안의 모든 전리품을 일괄 매각합니다.</p></div>
+      </button>
+    </div>
+  `;
+
   renderShopShell(`
     <div class="shop-section-title"><div><span>SHOP</span><h3>무엇을 찾으시나요?</h3></div><small>4 CATEGORIES</small></div>
     <div class="shop-category-grid">${cards}</div>
+    ${sellCards}
     ${equipHtml}
   `);
   
   setButtons([
-    ["⚖️ 개별 판매 (매입소)", shopSellMenu],
-    ["📦 전리품 모두 팔기", sellAllLoot], 
     ["↩ 마을로 돌아가기", town]
   ]);
 }
