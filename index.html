@@ -2697,7 +2697,8 @@ function createPlayer(name, baseJob){
     inventory:{"힐링포션(소)":2, "마나포션(소)":2},
     quests:{}, rumors:{},
     inn_use_count:0, next_attack_boost:false,
-    skills:{}
+    skills:{},
+    dungeon_clears: {} // [추가됨] 스테이지별 던전 클리어 기록
   };
   for(const [k,v] of Object.entries(BASE_SKILLS[baseJob])){
     p.skills[k] = Object.assign({}, v, {unlocked:false});
@@ -3351,6 +3352,14 @@ function dungeonMenu(){
 
   const [stageName, normalList, eliteList, bossList] = STAGE_DATA[S.stageIdx];
   const p = S.player;
+  
+  // [추가됨] 던전 입장 권한 및 현재 클리어 수 체크
+  if (!p.dungeon_clears) p.dungeon_clears = {};
+  if (!p.dungeon_clears[S.stageIdx]) p.dungeon_clears[S.stageIdx] = { normal: 0, elite: 0, boss: 0 };
+  const clears = p.dungeon_clears[S.stageIdx];
+  const canElite = clears.normal >= 5;
+  const canBoss = clears.elite >= 3;
+
   const [, currentPower] = playerTitleAndPower(p);
   const stageNo = S.stageIdx + 1;
   const currentTown = TOWN_DATA[S.stageIdx] ? TOWN_DATA[S.stageIdx].name : "알 수 없는 거점";
@@ -3397,9 +3406,10 @@ function dungeonMenu(){
           <div class="dungeon-block"><b>출현 몬스터</b><div class="dungeon-monsters">${normalList.join(' · ')}</div></div>
           <div class="dungeon-block"><b>권장 전투력 · 난이도</b><div style="font-size:9px;color:#3d6a3a;font-weight:800;">${recommendations.normal} 이상</div><div class="dungeon-stars">${stars(1)}</div></div>
           <div class="dungeon-block"><b>주요 보상</b><div class="dungeon-rewards"><span class="dungeon-reward">💰 ${normalReward}</span><span class="dungeon-reward">🧪 포션 획득 가능</span></div></div>
+          <div class="dungeon-block"><b>던전 진행도</b><div style="font-size:10px;color:#3a2812;margin-top:2px;">현재 클리어: ${clears.normal} 회</div></div>
         </article>
 
-        <article class="dungeon-card elite">
+        <article class="dungeon-card elite ${canElite ? '' : 'locked'}">
           <div class="dungeon-ribbon">02 · HIGH RISK</div>
           <div class="dungeon-icon">💀</div>
           <h3>정예 던전</h3>
@@ -3408,9 +3418,13 @@ function dungeonMenu(){
           <div class="dungeon-block"><b>출현 몬스터</b><div class="dungeon-monsters">${eliteList.join(' · ')}</div></div>
           <div class="dungeon-block"><b>권장 전투력 · 난이도</b><div style="font-size:9px;color:#765018;font-weight:800;">${recommendations.elite} 이상</div><div class="dungeon-stars">${stars(3)}</div></div>
           <div class="dungeon-block"><b>주요 보상</b><div class="dungeon-rewards"><span class="dungeon-reward">💰 ${eliteReward}</span><span class="dungeon-reward">🧪 포션 획득 가능</span></div></div>
+          <div class="dungeon-block"><b>입장 조건 및 진행도</b>
+            <div style="font-size:10px;color:${canElite ? '#3d6a3a' : '#b5323f'};font-weight:800;">일반 던전 ${clears.normal} / 5회</div>
+            <div style="font-size:10px;color:#3a2812;margin-top:2px;">현재 클리어: ${clears.elite} 회</div>
+          </div>
         </article>
 
-        <article class="dungeon-card boss">
+        <article class="dungeon-card boss ${canBoss ? '' : 'locked'}">
           <div class="dungeon-ribbon">03 · STAGE BOSS</div>
           <div class="dungeon-icon">🔥</div>
           <h3>보스 던전</h3>
@@ -3419,13 +3433,17 @@ function dungeonMenu(){
           <div class="dungeon-block"><b>최종 보스</b><div class="dungeon-monsters" style="font-weight:800;color:#7d3029;">${bossList[0]}</div></div>
           <div class="dungeon-block"><b>권장 전투력 · 난이도</b><div style="font-size:9px;color:#8e3329;font-weight:800;">${recommendations.boss} 이상</div><div class="dungeon-stars boss-stars">${stars(5)}</div></div>
           <div class="dungeon-block"><b>주요 보상</b><div class="dungeon-rewards"><span class="dungeon-reward">💰 ${bossReward}</span><span class="dungeon-reward">🎁 스테이지 해금</span></div></div>
+          <div class="dungeon-block"><b>입장 조건 및 진행도</b>
+            <div style="font-size:10px;color:${canBoss ? '#3d6a3a' : '#b5323f'};font-weight:800;">정예 던전 ${clears.elite} / 3회</div>
+            <div style="font-size:10px;color:#3a2812;margin-top:2px;">현재 클리어: ${clears.boss} 회</div>
+          </div>
         </article>
       </section>
 
       <section class="dungeon-footer">
         <div>
           <div class="dungeon-info-title">📜 던전 정보</div>
-          <div class="dungeon-info">• 일반/정예 던전은 반복 입장이 가능합니다.<br>• 보스 던전 클리어 시 다음 지역으로 진행할 수 있습니다.<br>• 권장 전투력보다 낮아도 도전은 가능하지만 위험합니다.</div>
+          <div class="dungeon-info">• 정예/보스 던전은 하위 던전을 기준치 이상 클리어해야 개방됩니다.<br>• 보스 던전 클리어 시 다음 지역으로 진행할 수 있습니다.<br>• 권장 전투력보다 낮아도 도전은 가능하지만 매우 위험합니다.</div>
         </div>
         <div>
           <div class="dungeon-info-title">⚔️ 심연으로 향하는 길</div>
@@ -3440,10 +3458,11 @@ function dungeonMenu(){
   if(dungeonScene) dungeonScene.style.setProperty("--dungeon-scene-bg", dungeonBg);
   log.scrollTop = 0;
 
+  // [추가됨] 조건에 따라 하단 메뉴 버튼 분기 처리
   setButtons([
     ["🌲 일반 던전", ()=>enterDungeon("normal")],
-    ["💀 정예 던전", ()=>enterDungeon("elite")],
-    ["🔥 보스 던전", ()=>enterDungeon("boss"), {danger:true}],
+    canElite ? ["💀 정예 던전", ()=>enterDungeon("elite")] : ["🔒 정예 던전 (잠김)", ()=>{ displayText("▶ 일반 던전을 5회 이상 클리어해야 입장할 수 있습니다."); dungeonMenu(); }],
+    canBoss ? ["🔥 보스 던전", ()=>enterDungeon("boss"), {danger:true}] : ["🔒 보스 던전 (잠김)", ()=>{ displayText("▶ 정예 던전을 3회 이상 클리어해야 입장할 수 있습니다."); dungeonMenu(); }],
     ["↩ 마을로 돌아가기", town]
   ]);
 }
@@ -4301,13 +4320,20 @@ async function checkBattleState(){
   }
 
   const p = S.player;
+  
+  // [추가됨] 던전 클리어 횟수 누적 기록 (기존 세이브 호환 포함)
+  if (!p.dungeon_clears) p.dungeon_clears = {};
+  if (!p.dungeon_clears[S.stageIdx]) p.dungeon_clears[S.stageIdx] = { normal: 0, elite: 0, boss: 0 };
+  p.dungeon_clears[S.stageIdx][S.currentDungeonType]++;
+
   renderScene();
   const inner = document.querySelector("#logFrame .frame-inner");
   for(let i=0;i<2;i++){
     inner.style.background = "#FFD700"; await wait(70);
     inner.style.background = ""; await wait(70);
   }
-  renderScene();
+  
+  // ( ... 기존 checkBattleState 코드 하단은 그대로 유지 ... )
 
   const totalExp = S.currentMonsters.reduce((a,m)=>a+m.exp_reward,0);
   const totalGold = S.currentMonsters.reduce((a,m)=>a+m.gold_reward,0);
