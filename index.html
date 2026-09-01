@@ -2542,13 +2542,16 @@ html, body { width:100%; height:100%; overflow:hidden !important; }
 .prologue-quote{font-size:clamp(15px,1.8vw,20px);line-height:1.42;color:#50351c;}
 .prologue-quote b{font-weight:900;}
 .prologue-intro p{margin:7px auto 0;font-size:clamp(10px,1.25vw,13px);line-height:1.55;color:#7b6038;}
-.prologue-content{display:grid;grid-template-columns:minmax(0,1fr) minmax(205px,.43fr);gap:10px;align-items:stretch;}
+.prologue-content{display:block;width:100%;}
+.laws-panel{width:100%;}
 .panel-caption{font-family:'Cinzel',serif;font-size:8px;letter-spacing:.3em;color:#9b7130;margin-bottom:5px;}
-.law-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;height:calc(100% - 15px);}
-.law-card{border:1px solid #c7a768;background:rgba(255,248,222,.48);padding:9px 8px;display:flex;gap:7px;min-width:0;}
-.law-num{font-family:'Cinzel',serif;font-size:19px;color:#9b6d27;line-height:1;font-weight:600;}
-.law-card h2{font-family:'Noto Serif KR',serif;font-size:clamp(11px,1.25vw,14px);margin:0 0 3px;color:#4a3018;}
-.law-card p{font-size:clamp(8px,1vw,11px);line-height:1.5;color:#765b32;margin:0;}
+.law-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;height:auto!important;}
+.law-card{position:relative;border:1px solid #c7a768;background:linear-gradient(145deg,rgba(255,249,230,.78),rgba(235,211,160,.42));padding:16px 14px 14px;display:block;min-width:0;min-height:150px;box-shadow:0 5px 14px rgba(82,53,18,.08);overflow:hidden;}
+.law-card:before{content:'';position:absolute;top:0;left:0;width:52px;height:3px;background:#a8782b;}
+.law-card:after{content:'✦';position:absolute;right:12px;bottom:9px;font-size:15px;color:rgba(166,123,57,.35);}
+.law-num{display:block;font-family:'Cinzel',serif;font-size:18px;color:#9b6d27;line-height:1;font-weight:600;margin-bottom:9px;}
+.law-card h2{font-family:'Noto Serif KR',serif;font-size:clamp(15px,1.6vw,20px);margin:0 0 8px;color:#4a3018;}
+.law-card p{font-size:clamp(10px,1.05vw,13px);line-height:1.7;color:#765b32;margin:0;max-width:34em;}
 .chronicle-card{position:relative;border:1px solid #b88d42;background:linear-gradient(145deg,rgba(255,249,230,.78),rgba(235,211,160,.72));padding:10px 11px;min-width:0;}
 .chronicle-top{display:flex;justify-content:space-between;font-family:'Cinzel',serif;color:#9b7130;font-size:8px;letter-spacing:.2em;}
 .chronicle-top b{font-size:14px;letter-spacing:0;}
@@ -2576,9 +2579,14 @@ html, body { width:100%; height:100%; overflow:hidden !important; }
 
 @media(max-width:700px){
   .prologue-screen{padding:10px 7px 8px;gap:8px;}
-  .prologue-content{grid-template-columns:minmax(0,1fr) minmax(155px,.42fr);gap:6px;}
+  .prologue-content{display:block;}
+  .law-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;}
   .law-grid{gap:4px;}
-  .law-card{padding:7px 5px;gap:4px;}
+  .law-card{padding:10px 7px 12px;min-height:125px;}
+  .law-card:before{width:34px;}
+  .law-num{font-size:14px;margin-bottom:6px;}
+  .law-card h2{font-size:clamp(10px,3.4vw,15px);margin-bottom:5px;}
+  .law-card p{font-size:clamp(8px,2.5vw,11px);line-height:1.5;}
   .law-num{font-size:16px;}
   .chronicle-card{padding:8px 7px;}
   .chronicle-card h2{margin-top:6px;}
@@ -2626,6 +2634,15 @@ html, body { width:100%; height:100%; overflow:hidden !important; }
   .prologue-content{align-items:start!important;}
   .law-grid{height:auto!important;}
   .law-card,.chronicle-card{height:auto!important;}
+}
+/* Final initial-menu law card layout: no chronicle column, three cards only. */
+.prologue-content{display:block!important;}
+.prologue-content .laws-panel{width:100%!important;}
+.prologue-content .law-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;height:auto!important;}
+.prologue-content .law-card{height:auto!important;min-height:150px!important;box-sizing:border-box!important;}
+@media(max-width:700px){
+  .prologue-content .law-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;}
+  .prologue-content .law-card{min-height:125px!important;padding:10px 7px 12px!important;}
 }
 </style>
 </head>
@@ -4222,15 +4239,6 @@ function mainMenu(){
           </div>
         </div>
 
-        <aside class="chronicle-card">
-          <div class="chronicle-top"><span>CHRONICLE</span><b>01</b></div>
-          <h2>첫 번째 기록</h2>
-          <p>아직 당신의 이름은 기록되지 않았습니다.</p>
-          <div class="record-row"><span>NAME</span><b>UNWRITTEN</b></div>
-          <div class="record-row"><span>FATE</span><b>UNDECIDED</b></div>
-          <div class="record-row"><span>WORLD</span><b>AWAITING</b></div>
-          <div class="seal">✦</div>
-        </aside>
       </div>
 
       <div class="prologue-bottom">CHRONICLE STATUS · UNWRITTEN <span>THE ABYSS IS WAITING</span></div>
