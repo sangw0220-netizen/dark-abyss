@@ -3057,23 +3057,62 @@ const LOOT_PRICES = {
   "알 수 없는 파편": 10
 };
 const TOWN_DATA = [
-  {name:"루센트 마을", desc:"아늑하고 평화로운 초원의 거점. 초보 모험가들이 모입니다."},
-  {name:"그레이브턴", desc:"음산한 안개가 자욱하게 서려 있는 묘지 입구의 마을."},
-  {name:"미스릴 광산촌", desc:"쉴 새 없이 망치 소리가 울려 퍼지는 거대한 광산 도시."},
-  {name:"오크 리버", desc:"거친 강줄기 옆에 세워진 요충지. 야만족들과의 거래가 이루어집니다."},
-  {name:"블레이즈 볼케이노", desc:"활화산의 뜨거운 열기가 가득한 대장장이 거점."},
-  {name:"프로스트 윈드", desc:"온통 하얀 눈과 얼어붙은 폭풍으로 뒤덮인 설산의 은신처."},
-  {name:"세인트 캐슬", desc:"마왕성 결전 바로 앞의 최후의 성채. 결전이 다가옵니다."}
+  {name:"루센트 마을", desc:"심연으로 향하는 자들이 머무는 끄트머리의 초원. 옅은 빛무리가 위태로운 평화를 지탱하고 있습니다."},
+  {name:"그레이브턴", desc:"독한 향냄새조차 피비린내를 다 가리지 못하는 곳. 산 자와 죽은 자의 경계가 무너진 잿빛 무덤가입니다."},
+  {name:"미스릴 광산촌", desc:"탐욕으로 파 내려간 거대한 지하 거점. 쉬지 않고 울리는 망치 소리가 마치 대지의 비명처럼 들려옵니다."},
+  {name:"오크 리버", desc:"탁한 피가 섞여 흐르는 굽이치는 강줄기. 이종족들과의 아슬아슬한 뒷거래가 이루어지는 무법 지대입니다."},
+  {name:"블레이즈 볼케이노", desc:"검은 재가 눈처럼 내리는 광기의 대장간. 끓어오르는 용암 곁에서 장인들은 신을 죽일 무구를 벼려냅니다."},
+  {name:"프로스트 윈드", desc:"내쉬는 숨결조차 얼어붙는 혹한의 피난처. 이곳에서 살아남는 것 자체가 매일 치러야 하는 잔혹한 투쟁입니다."},
+  {name:"세인트 캐슬", desc:"멸망을 목전에 둔 인류의 마지막 신성한 방벽. 닿지 않는 기도를 올리며 피로 물들 결전의 새벽을 기다립니다."}
 ];
-
+// 해당 스테이지(마을)의 3가지 루머 중 무작위로 하나를 반환하는 함수
+function getRandomRumor(stageIdx) {
+  const stageRumors = TOWN_RUMORS[stageIdx] || TOWN_RUMORS[0];
+  return stageRumors[Math.floor(Math.random() * stageRumors.length)];
+}
 const TOWN_RUMORS = [
-  "🍺 [루센트 마을 - 주점 소식판]\n • \"요즘 초원 너머 고블린들이 묘하게 무리를 지어 움직인단 말이지... 뭔가 큰 계획이 있는 게 분명해.\"",
-  "🍺 [그레이브턴 - 묘비 주점 소식판]\n • \"크흠, 안개가 이토록 짙게 낀 적은 천 년 만이야. 죽은 자들이 자꾸 땅을 파고 기어오르고 있어.\"",
-  "🍺 [미스릴 광산촌 - 곡괭이 주점 소식판]\n • \"갱도 밑바닥에서 지축을 울리는 괴성이 들렸어. 거대한 지렁이가 깨어났다는 공포가 퍼지는 중이야.\"",
-  "🍺 [오크 리버 - 거친 물살 주점 소식판]\n • \"야만족들의 대족장 가르바나가 흑마법사의 힘을 빌려 부족들을 하나로 규합하고 있다는 소문이야.\"",
-  "🍺 [화염의 화산 - 대장간 소식판]\n • \"화산의 열기가 이리 뜨거운데도 바닥에서 한기가 느껴져. 불의 화신이 미쳐 날뛰고 있어!\"",
-  "🍺 [얼어붙은 협곡 - 얼어붙은 잔 소식판]\n • \"눈보라 속에 거대한 푸른 눈동자의 용이 날아다니는 걸 봤다는 이가 있어. 폭풍의 전조가 분명해.\"",
-  "🍺 [세인트 캐슬 - 최후의 성채 대성당 공고]\n • \"심연의 마왕 카르가스가 마왕성 심층부에서 온 세상의 빛을 집어삼키고 있다! 준비하라!\""
+  // --- STAGE 1: 루센트 마을 ---
+  [
+    "🍺 [루센트 마을 - 구석진 오크통 위쪽]\n • \"저 너머 숲에서 고블린 놈들이... 쇠붙이를 제련하고 있어. 멍청한 짐승들이 아니라 '군대'를 조직하고 있다고!\"",
+    "🍺 [루센트 마을 - 이슬 맺힌 우물가]\n • \"어젯밤에 경비병들이 초원 외곽을 순찰하다가 거꾸로 매달린 채 발견됐어. 표정이... 마치 무언가에 홀린 것처럼 짓고 있더군.\"",
+    "🍺 [루센트 마을 - 낡은 게시판 아래]\n • \"들판의 풀들이 검게 썩어가고 있어. 짐승들도 자취를 감췄지. 심연의 기운이 초원 밑바닥까지 스며든 게 분명해.\""
+  ],
+  // --- STAGE 2: 그레이브턴 ---
+  [
+    "🍺 [그레이브턴 - 촛불 꺼진 예배당 앞]\n • \"쉿, 발밑을 조심해. 어젯밤부터 관을 뚫고 나오는 소리가 그치질 않아... 안개 속에 서 있는 건 이제 네 이웃이 아니야.\"",
+    "🍺 [그레이브턴 - 묘지기 집의 담벼락]\n • \"파묘꾼들이 사흘째 돌아오지 않고 있어. 파다 만 무덤 속에서 푸른 불꽃이 춤을 추고 있었다는 목격담만 돌 뿐이지.\"",
+    "🍺 [그레이브턴 - 차가운 안개 속 장터]\n • \"죽은 자들이 살아생전의 목소리로 문을 두드려. 절대 밤에 이름을 부르는 소리에 대답해서는 안 돼. 영혼을 빼앗기니까.\""
+  ],
+  // --- STAGE 3: 미스릴 광산촌 ---
+  [
+    "🍺 [미스릴 광산촌 - 피 묻은 곡괭이 주점]\n • \"제7 갱도가 통째로 무너졌어. 생존자 말로는... 바위가 아니라 '살아 숨 쉬는 거대한 턱'이 벽을 부수고 지나갔다더군.\>",
+    "🍺 [미스릴 광산촌 - 제련소 화덕 옆]\n • \"광석을 캐러 내려간 인부들이 자꾸 눈이 멀어 돌아와. 어둠 속에서 번뜩이는 수천 개의 붉은 눈을 보았다고 미쳐 날뛰고 있어.\"",
+    "🍺 [미스릴 광산촌 - 붕괴된 갱도 입구]\n • \"광산 깊은 곳에서 들리는 망치 소리가 우리 리듬과 달라... 뭔가 다른 존재가 우리를 따라 광석을 두드리고 있어.\""
+  ],
+  // --- STAGE 4: 오크 리버 ---
+  [
+    "🍺 [오크 리버 - 도축장의 뒷골목]\n • \"가르바나 놈이 피의 의식을 치렀대. 뿔뿔이 흩어졌던 야만족들이 흑마법의 깃발 아래 뭉치고 있어. 강물이 곧 붉게 물들 거다.\"",
+    "🍺 [오크 리버 - 흙탕물 흐르는 강가]\n • \"상류에서 흘러내려온 시체들마다 온몸에 기괴한 문신이 새겨져 있었어. 그들이 모시는 신은 더 이상 우리 대지가 아니야.\"",
+    "🍺 [오크 리버 - 야만족 경계지 근처]\n • \"밤마다 북소리가 울리는데, 그 소릴 들으면 심장이 조여들어. 전사들이 싸우는 게 아니라... 산 제물을 바치며 광란의 춤을 추는 소리야.\""
+  ],
+  // --- STAGE 5: 블레이즈 볼케이노 ---
+  [
+    "🍺 [화염의 화산 - 화산재 덮인 대장간]\n • \"용암이 끓어오르는데 뼛속까지 한기가 스며들어... 화산의 주인이 미쳐버린 게 분명해. 자신의 심장을 태워 모든 걸 재로 만들 작정이야!\"",
+    "🍺 [화염의 화산 - 검게 그그실린 휴게실]\n • \"녹아내린 갑옷 안에서 피를 흘리며 걸어 나오는 용병을 봤어. 불에 타 죽은 게 아니라, 화산의 열기가 그를 삼켰다더군.\"",
+    "🍺 [화염의 화산 - 화구 주변의 바위 틈]\n • \"용암 바다 한가운데서 거대한 눈꺼풀이 깜빡이는 걸 보았다는 대장장이가 있어. 화산 전체가 하나의 살아있는 괴수야.\""
+  ],
+  // --- STAGE 6: 프로스트 윈드 ---
+  [
+    "🍺 [얼어붙은 협곡 - 얼어붙은 모닥불 곁]\n • \"절대 눈보라 속을 똑바로 쳐다보지 마. 구름 사이로 산맥보다 거대한 푸른 안광이 우릴 조용히 내려다보고 있으니까...\"",
+    "🍺 [얼어붙은 협곡 - 얼음 장벽의 은신처]\n • \"사냥 나간 동료들이 얼음 조각상이 되어 돌아왔어. 눈물마저 얼어붙은 채로... 그들의 눈동자는 북쪽을 향해 고정되어 있었지.\"",
+    "🍺 [얼어붙은 협곡 - 눈보라 몰아치는 폭포]\n • \"눈 속에 파묻힌 고대 유적의 문이 열렸어. 그 속에서 흘러나온 찬 바람이 마을 전체를 집어삼키려 하고 있어.\""
+  ],
+  // --- STAGE 7: 세인트 캐슬 ---
+  [
+    "🍺 [세인트 캐슬 - 부서진 대성당 벽면]\n • \"신의 빛이 바스라지고 있다. 심연의 주인이 마침내 눈을 떴어... 어쩌면 내일의 태양은 영영 뜨지 않을지도 몰라.\"",
+    "🍺 [세인트 캐슬 - 성벽 위 최후의 망루]\n • \"마왕성에서 피어오르는 검은 연기가 하늘의 별을 지워버렸어. 성 안의 모든 기도 소리가 공포에 질려 떨리고 있다.\"",
+    "🍺 [세인트 캐슬 - 기사단의 병영 안쪽]\n • \"더 이상 도망칠 곳도, 물러설 곳도 없어. 오늘 밤이 지나면 인류의 역사도 끝을 맺겠지... 마지막까지 싸우다 죽는 것만이 유일한 명예야.\""
+  ]
 ];
 
 /* =====================================================================
@@ -3754,6 +3793,7 @@ function validateAIStagePack(raw, stageIdx){
   const rumor=source.rumor && typeof source.rumor==="object" ? source.rumor : {};
   const quests=Array.isArray(source.quests) ? source.quests : [];
   const events=Array.isArray(source.events) ? source.events : [];
+  const town_reaction=source.town_reaction && typeof source.town_reaction==="object" ? source.town_reaction : null;
 
   const fallbackRumor=getRumorEvent(stageIdx) || RUMOR_EVENTS[stageIdx] || {title:"수상한 소문",kicker:"FIELD REPORT",story:"주민들 사이에서 수상한 소문이 돌고 있습니다.",objective:"주변을 조사하세요.",target:allNormal[0]||boss,type:"normal",need:3,questKey:"hunt"};
   const normalizedRumor={
@@ -3799,7 +3839,19 @@ function validateAIStagePack(raw, stageIdx){
     return {story:String(ev?.story||"길을 걷던 중 수상한 기척이 느껴집니다.").slice(0,500),choices:safeChoices};
   });
 
-  return {version:AI_CONTENT_VERSION,stage:stageIdx,generatedAt:Date.now(),rumor:normalizedRumor,quests:outQuests,events:normalizedEvents};
+  // 마을 사람 반응 기본값 처리
+  const fallbackReaction = {
+    dialogue1: "저기 모험가가 지나가는군.",
+    dialogue2: "무사히 돌아와야 할 텐데.",
+    description: `주민들이 ${S.player ? S.player.name : '모험가'}의 눈치를 살피며 조용히 길을 내어줍니다.`
+  };
+  const normalizedReaction = town_reaction ? {
+    dialogue1: String(town_reaction.dialogue1 || fallbackReaction.dialogue1).slice(0, 100),
+    dialogue2: String(town_reaction.dialogue2 || fallbackReaction.dialogue2).slice(0, 100),
+    description: String(town_reaction.description || fallbackReaction.description).slice(0, 200)
+  } : fallbackReaction;
+
+  return {version:AI_CONTENT_VERSION,stage:stageIdx,generatedAt:Date.now(),rumor:normalizedRumor,quests:outQuests,events:normalizedEvents, town_reaction: normalizedReaction};
 }
 
 async function generateAIStagePack(stageIdx=S.stageIdx){
@@ -3809,7 +3861,7 @@ async function generateAIStagePack(stageIdx=S.stageIdx){
   const prompt=`당신은 DARK ABYSS 판타지 텍스트 RPG의 지역 콘텐츠 작가입니다.
 이번 호출에서는 STAGE ${stageIdx+1}의 콘텐츠를 한 번에 묶어서 생성합니다.
 중요: 보상 수치, 몬스터 능력치, 전투 결과는 생성하지 마세요. 실제 게임 엔진이 결정합니다.
-플레이어: 레벨 ${p.level}, 직업 ${p.current_job}, Karma ${p.karma} (${karmaDesc})
+플레이어: 이름 '${p.name}', 레벨 ${p.level}, 직업 ${p.current_job}, Karma ${p.karma} (${karmaDesc})
 지역: ${allowed.stageName}
 일반 몬스터 후보: ${JSON.stringify(allowed.normalList)}
 정예 몬스터 후보: ${JSON.stringify(allowed.eliteList)}
@@ -3819,6 +3871,11 @@ async function generateAIStagePack(stageIdx=S.stageIdx){
 형식:
 {
   "rumor":{"title":"...","kicker":"FIELD REPORT · ...","story":"2~3문장","objective":"...","target":"일반 몬스터 후보 중 1개"},
+  "town_reaction":{
+    "dialogue1": "마을 주민 1의 대사 (플레이어의 카르마 수치에 완벽히 비례한 반응)",
+    "dialogue2": "마을 주민 2의 대사",
+    "description": "플레이어를 바라보는 마을의 전반적인 분위기와 묘사"
+  },
   "quests":[
     {"type":"normal","title":"...","description":"...","target":"일반 몬스터 후보 중 1개"},
     {"type":"elite","title":"...","description":"...","target":"정예 몬스터 후보 중 1개"},
@@ -3832,13 +3889,37 @@ async function generateAIStagePack(stageIdx=S.stageIdx){
     ]}
   ]
 }
-이벤트는 5개 이하로 생성하세요. reward_tier는 small/medium/none 중 하나이며 실제 골드 금액은 절대 쓰지 마세요.`;
+마을 사람들의 반응(town_reaction)은 플레이어의 이름 '${p.name}'을 자연스럽게 포함하며, Karma 수치(${p.karma})를 적극 반영하여 선하면 칭송을, 악하면 두려움이나 경멸을 보여주세요.`;
 
-  const res=await fetch(`/api/gemini`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt})});
-  if(!res.ok) throw new Error(`AI HTTP ${res.status}`);
-  const data=await res.json();
-  if(!data.candidates?.[0]?.content?.parts?.[0]?.text) throw new Error("API 응답 형식 오류");
-  return validateAIStagePack(JSON.parse(cleanAIJson(data.candidates[0].content.parts[0].text)),stageIdx);
+  // 여기에 본인의 발급받은 API 키를 넣어주세요!
+  const API_KEY = "여기에_발급받으신_AIza_키_입력"; 
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+
+  const payload = {
+    contents: [{ parts: [{ text: prompt }] }]
+  };
+
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if(!res.ok) {
+      const errData = await res.json();
+      throw new Error(`AI HTTP ${res.status}: ${errData.error?.message}`);
+    }
+    
+    const data = await res.json();
+    if(!data.candidates?.[0]?.content?.parts?.[0]?.text) throw new Error("API 응답 오류");
+    
+    return validateAIStagePack(JSON.parse(cleanAIJson(data.candidates[0].content.parts[0].text)),stageIdx);
+
+  } catch (error) {
+    console.error("AI 콘텐츠 생성 실패:", error);
+    return null; 
+  }
 }
 
 async function ensureAIStageContent(stageIdx=S.stageIdx, options={}){
@@ -4715,6 +4796,20 @@ async function town(){
         <div class="town-karma-box">
            <div class="karma-score">👼 나의 선향 지수: ${p.karma} <span>${getKarmaTitle(p.karma)}</span></div>
            <div class="karma-desc">${karmaFlavorText}</div>
+           
+           <!-- AI 생성 주민 반응 추가 구역 -->
+           <div style="margin-top:12px; padding-top:12px; border-top:1px dashed rgba(138,90,18,0.3);">
+             <div style="font-size:12px; color:#4a361b; margin-bottom:5px; font-weight:600;">
+               💬 <span>주민 1:</span> "${aiPack?.town_reaction?.dialogue1 || "모험가님이 오셨군."}"
+             </div>
+             <div style="font-size:12px; color:#4a361b; margin-bottom:8px; font-weight:600;">
+               💬 <span>주민 2:</span> "${aiPack?.town_reaction?.dialogue2 || "우리 마을에 도움이 되었으면 좋겠어."}"
+             </div>
+             <div style="font-size:11px; color:#704b0e; line-height:1.5; font-style:italic; background:rgba(255,255,255,0.4); padding:6px 8px; border-radius:3px; border-left:2px solid #a97a3a;">
+               ${aiPack?.town_reaction?.description || "주민들이 호기심 어린 눈으로 당신을 지켜봅니다."}
+             </div>
+           </div>
+           
         </div>
       </section>
 
