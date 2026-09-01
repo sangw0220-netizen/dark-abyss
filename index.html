@@ -1555,6 +1555,205 @@ html,body{font-size:14px;}
 @media(max-width:380px){.shop-category-grid,.shop-item-grid{grid-template-columns:1fr}.shop-category-card{min-height:132px}.shop-item-card{display:grid;grid-template-columns:74px 1fr;grid-template-rows:auto auto}.shop-item-visual{grid-row:1/3;height:100%;min-height:116px;border-bottom:0;border-right:1px solid rgba(75,49,14,.35)}.shop-item-body{grid-column:2}.shop-item-buy{grid-column:2}.shop-item-icon{font-size:34px}}
 </style>
 
+<style id="mobile-final-redesign">
+/* =====================================================================
+   MOBILE FINAL REDESIGN
+   위의 여러 겹 모바일 패치들이 서로 충돌하며 "한 화면에 욱여넣기" 위해
+   글자를 6~9px까지 줄이고, 설명 텍스트에 불필요한 max-width(72~80%)를
+   걸어 화면 폭 대비 글자가 좁은 단으로 눌려 보이던 문제를 해결합니다.
+   이 블록은 문서에서 가장 마지막에 로드되는 <style>이므로(동일 우선순위
+   규칙에서 후순위 규칙이 승리) 위의 모든 충돌 규칙을 안전하게 덮어씁니다.
+   원칙: 억지로 한 화면에 안 맞추고, 세로 스크롤을 허용하는 대신
+   글자 크기와 여백은 실제 손가락/눈으로 편안한 수준을 유지합니다.
+===================================================================== */
+
+/* #log 는 전투 로그(내러티브 텍스트)를 위해 white-space:pre-wrap을 쓰지만,
+   이 속성이 상속되면서 town-hub/dungeon-board 같은 구조화된 UI 템플릿의
+   줄바꿈·들여쓰기 공백까지 실제 빈 줄로 렌더링되어 요소 사이가 불필요하게
+   벌어지는 버그가 있었습니다. 구조화된 패널에서는 일반 문서 흐름을 쓰도록
+   되돌립니다. (모든 화면 폭에 적용 — 데스크톱에서도 동일한 문제였습니다) */
+.town-hub,.dungeon-board,.quest-board,.equip-board,.shop-ui,.rumor-event{
+  white-space:normal!important;
+}
+
+@media (max-width:768px){
+
+  /* ---------- 뷰포트 / 전체 여백 ---------- */
+  #app{padding:10px 10px 14px!important;gap:8px!important;}
+  #log{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;}
+  #log:has(.town-hub),
+  #log:has(.dungeon-board){overflow-y:auto!important;}
+  #logFrame .frame-inner{padding:10px 10px!important;}
+  #log{padding:6px 5px!important;font-size:13.5px!important;line-height:1.65!important;}
+
+  /* ---------- 상단 타이틀 바 ---------- */
+  #titlebar{padding:2px 2px 10px!important;}
+  #titlebar h1{font-size:21px!important;letter-spacing:1.5px!important;}
+  #titlebar .sub{font-size:8px!important;letter-spacing:2px!important;margin-top:2px!important;}
+  .ctrl-row{font-size:9px!important;gap:4px!important;}
+  .mini-btn{width:22px!important;height:22px!important;font-size:12px!important;}
+
+  /* ---------- 캐릭터 상태(로비 HUD) 패널 ---------- */
+  .lobby-hud{padding:11px 11px 12px!important;}
+  .lobby-hud .hud-row{margin-bottom:7px!important;gap:4px!important;}
+  .hud-name{font-size:13px!important;}
+  .hud-name b{font-size:13px!important;}
+  .hud-gold{font-size:12px!important;}
+  .bar-line{font-size:11px!important;gap:6px!important;margin-top:6px!important;}
+  .bar-label{width:32px!important;font-size:10px!important;}
+  .bar-track{height:13px!important;}
+  .bar-num{width:66px!important;font-size:10.5px!important;}
+  .mini-turn-track{height:6px!important;}
+  .lobby-hud .hud-stats{margin-top:8px!important;gap:6px!important;}
+  .hud-stats span{padding:4px 8px!important;font-size:11px!important;}
+  .lobby-hud .hud-equip{margin-top:8px!important;gap:6px!important;}
+  .lobby-hud .hud-equip span{min-height:26px!important;padding:4px 9px!important;font-size:10.5px!important;}
+
+  /* ---------- 마을(로비) 허브 ---------- */
+  .town-hub{gap:14px!important;padding:0!important;}
+
+  .town-hero{
+    display:block!important;
+    position:static!important;
+    height:auto!important;min-height:0!important;
+  }
+  .town-location{
+    position:relative!important;inset:auto!important;
+    height:auto!important;min-height:0!important;
+    padding:16px 15px!important;
+    display:block!important;
+  }
+  .town-kicker{font-size:10px!important;letter-spacing:2px!important;margin-bottom:4px!important;}
+  .town-title{
+    font-size:21px!important;line-height:1.3!important;
+    margin:2px 0 8px!important;white-space:normal!important;
+  }
+  .town-title span{font-size:10px!important;letter-spacing:1px!important;display:inline-block!important;margin-left:5px!important;}
+  .town-desc{max-width:100%!important;font-size:13px!important;line-height:1.65!important;}
+  .town-meta{margin-top:10px!important;gap:6px!important;}
+  .town-chip{font-size:10px!important;padding:4px 8px!important;}
+
+  .town-notice{
+    position:relative!important;inset:auto!important;right:auto!important;bottom:auto!important;left:auto!important;
+    width:100%!important;min-height:0!important;
+    margin-top:8px!important;
+    padding:14px 15px!important;
+    display:block!important;
+    backdrop-filter:none!important;
+  }
+  .town-notice .label{font-size:9.5px!important;letter-spacing:1.5px!important;margin-bottom:5px!important;}
+  .town-notice strong{font-size:13.5px!important;line-height:1.55!important;}
+  .town-notice small{font-size:10.5px!important;line-height:1.55!important;margin-top:6px!important;display:block!important;}
+
+  .town-section{padding-top:12px!important;border-top:1px solid rgba(58,40,18,.28)!important;}
+  .town-section-head{margin-bottom:6px!important;}
+  .town-section-title{font-size:14px!important;}
+  .town-section-sub{font-size:9px!important;}
+
+  .town-rumor{font-size:12px!important;line-height:1.6!important;padding:11px 13px 11px 16px!important;}
+  .town-rumor-source{font-size:9.5px!important;margin-top:3px!important;}
+  .rumor-action-hint{font-size:10px!important;margin-top:6px!important;flex-wrap:wrap!important;gap:6px!important;}
+  .rumor-action-hint b{padding:3px 7px!important;}
+
+  .town-grid{grid-template-columns:1fr!important;gap:8px!important;}
+  .town-card{
+    min-height:0!important;padding:11px 12px!important;
+    display:grid!important;
+    grid-template-columns:auto 1fr!important;
+    align-items:start!important;
+    column-gap:10px!important;row-gap:2px!important;
+  }
+  .town-card .icon{
+    grid-column:1!important;grid-row:1/3!important;
+    font-size:21px!important;float:none!important;margin-right:0!important;
+    line-height:1!important;padding-top:1px!important;
+  }
+  .town-card b{grid-column:2!important;display:block!important;font-size:13px!important;}
+  .town-card p{grid-column:2!important;font-size:11.5px!important;line-height:1.55!important;margin:2px 0 0!important;clear:none!important;}
+
+  .town-progress{gap:4px!important;margin-top:2px!important;}
+  .town-stage-dot{height:6px!important;}
+  .town-footer-note{font-size:9.5px!important;padding-top:4px!important;line-height:1.5!important;}
+
+  /* ---------- 던전 선택 화면 ---------- */
+  .dungeon-board{gap:14px!important;padding:0!important;}
+
+  .dungeon-hero{
+    display:block!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    padding:16px 15px!important;
+  }
+  .dungeon-hero > div:first-child{
+    position:static!important;left:auto!important;top:auto!important;
+    max-width:100%!important;
+  }
+  .dungeon-kicker{font-size:10px!important;letter-spacing:2px!important;}
+  .dungeon-title{font-size:21px!important;line-height:1.3!important;margin:4px 0 8px!important;}
+  .dungeon-story{font-size:12.5px!important;line-height:1.65!important;}
+
+  .dungeon-power{
+    position:relative!important;inset:auto!important;right:auto!important;top:auto!important;left:auto!important;bottom:auto!important;
+    width:100%!important;max-height:none!important;
+    margin-top:12px!important;
+    display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;
+    padding:11px 15px!important;
+    text-align:left!important;
+    backdrop-filter:none!important;
+  }
+  .dungeon-power .label{font-size:9.5px!important;letter-spacing:1px!important;}
+  .dungeon-power strong{font-size:19px!important;margin:0!important;}
+  .dungeon-power > div:last-child{font-size:9.5px!important;margin-top:0!important;text-align:right!important;}
+  .dungeon-intro{font-size:12.5px!important;gap:6px!important;}
+
+  .dungeon-cards{grid-template-columns:1fr!important;gap:11px!important;}
+  .dungeon-card{
+    min-height:0!important;
+    padding:13px 14px!important;
+  }
+  .dungeon-card::before{height:0!important;background:none!important;}
+  .dungeon-card::after{display:none!important;}
+  .dungeon-ribbon{margin-bottom:8px!important;font-size:9px!important;padding:3px 7px!important;}
+  .dungeon-icon{
+    position:static!important;height:auto!important;
+    text-align:center!important;font-size:36px!important;
+    margin-bottom:4px!important;
+  }
+  .dungeon-card h3{font-size:16px!important;margin:2px 0 2px!important;text-align:center!important;}
+  .dungeon-subtitle{font-size:9px!important;margin-bottom:8px!important;text-align:center!important;}
+  .dungeon-desc{font-size:11.5px!important;line-height:1.6!important;min-height:0!important;text-align:center!important;}
+  .dungeon-block{margin-top:9px!important;padding-top:8px!important;}
+  .dungeon-block b{font-size:11px!important;margin-bottom:4px!important;}
+  .dungeon-monsters{font-size:10.5px!important;line-height:1.55!important;min-height:0!important;}
+  .dungeon-stars{font-size:13px!important;}
+  .dungeon-rewards{gap:6px!important;}
+  .dungeon-reward{font-size:9.5px!important;padding:3px 6px!important;}
+
+  .dungeon-footer{grid-template-columns:1fr!important;gap:10px!important;padding:12px 14px!important;}
+  .dungeon-info-title{font-size:11px!important;margin-bottom:4px!important;}
+  .dungeon-info{font-size:10.5px!important;line-height:1.6!important;}
+  .dungeon-stage-line{gap:4px!important;margin-top:6px!important;}
+  .dungeon-stage-dot{height:6px!important;}
+  .dungeon-stage-label{font-size:8px!important;margin-top:4px!important;}
+
+  /* ---------- 하단 액션 버튼 ---------- */
+  #actions{grid-template-columns:repeat(2,1fr)!important;gap:8px!important;}
+  .action-btn{
+    min-height:48px!important;padding:9px 6px!important;
+    font-size:13px!important;line-height:1.3!important;
+  }
+}
+
+/* 매우 좁은 화면(구형/소형 기기)에서도 최소 가독성 확보 — 더 줄이지 않고
+   여백만 살짝 조여서 내용이 잘리지 않게 합니다. */
+@media (max-width:360px){
+  #app{padding:8px 8px 12px!important;}
+  .town-title{font-size:19px!important;}
+  .dungeon-title{font-size:19px!important;}
+  .town-desc,.dungeon-story{font-size:12.5px!important;}
+  .action-btn{font-size:12px!important;padding:8px 5px!important;}
+}
+</style>
+
 </head>
 <body>
 <div id="app">
