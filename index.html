@@ -8,6 +8,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;500;600;700&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
+/* =====================================================================
+   TOWN 여백 강제 축소 (최상위 우선순위 적용)
+===================================================================== */
+body #app .town-hub .town-location .town-status-wrap {
+  margin-bottom: 14px !important;
+}
+
+body #app .town-hub .town-location .town-meta {
+  margin-top: 0 !important; /* 하단으로 칩을 강제로 밀어내는 auto 속성 완벽 차단 */
+}  
 :root{
   --bg:#100a06;
   --bg-glow:#2a1a0c;
@@ -870,6 +880,246 @@ html,body{font-size:14px;}
 
 /* Buttons should be immediately identifiable and readable. */
 .action-btn{font-size:13px;}
+/* =====================================================================
+   NEW TOWN UI : 평판(Karma) 및 마을 조우(Encounter)
+===================================================================== */
+.town-karma-box {
+  border: 1px solid rgba(91,67,31,.42);
+  background: linear-gradient(135deg,rgba(255,249,226,.88),rgba(218,194,139,.38));
+  padding: 12px 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 2px 5px rgba(58,40,18,.08);
+  color: #2f2110;
+  border-radius: 3px;
+}
+.town-karma-box .karma-score {
+  font-weight: 900; font-size: 13px; color: #281a08; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.town-karma-box .karma-score span {
+  font-size: 10px; font-weight: 700; padding: 2px 6px; 
+  background: rgba(255,255,255,0.6); border: 1px solid rgba(91,67,31,.3); border-radius: 2px;
+}
+.town-karma-box .karma-desc {
+  font-size: 11px; line-height: 1.6; color: #4a361b; font-style: italic;
+  position: relative; padding-left: 12px;
+}
+.town-karma-box .karma-desc::before { 
+  content: '“'; position: absolute; left: 0; top: 0;
+  font-family: Georgia, serif; font-size: 18px; color: #a97a3a; line-height: 1;
+}
+
+.town-encounter-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 3px;
+  border: 1px solid rgba(84,56,17,.3);
+  background: linear-gradient(90deg, rgba(255,255,255,.5), rgba(240,230,200,.3));
+  cursor: pointer; transition: all 0.2s ease;
+}
+.town-encounter-card:hover {
+  background: linear-gradient(90deg, rgba(255,255,255,.9), rgba(240,230,200,.7));
+  border-color: rgba(138,90,18,.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(58,40,18,.1);
+}
+.town-encounter-card .icon {
+  font-size: 24px; width: 42px; height: 42px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.6); border: 1px solid rgba(91,67,31,.3); border-radius: 50%;
+}
+.town-encounter-card .info { flex: 1; min-width: 0; }
+.town-encounter-card .info b { display: block; font-size: 13px; color: #281a08; margin-bottom: 3px; }
+.town-encounter-card .info p { margin: 0; font-size: 10px; color: #5b431f; line-height: 1.4; }
+.town-encounter-card .action-btn-mini {
+  padding: 6px 10px; background: #4a3018; color: #f4dd97; flex-shrink: 0;
+  border: 1px solid #241708; border-radius: 3px; font-size: 10px; font-weight: bold;
+  white-space: nowrap; font-family: 'Cinzel', serif; box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
+}
+/* =====================================================================
+   ENCOUNTER UI (무작위 이벤트 전용 큰 화면)
+===================================================================== */
+.encounter-wrap {
+  display: flex; flex-direction: column; justify-content: flex-start;
+  padding: 10px 4px; min-height: 100%;
+}
+.encounter-card {
+  border: 1px solid rgba(91,67,31,.5);
+  background: linear-gradient(135deg, #fffcf0, #e8d5a6);
+  padding: 28px 24px;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 8px 24px rgba(45,30,10,.15);
+  text-align: center;
+}
+.encounter-kicker {
+  font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 3.5px; 
+  color: #a97a3a; font-weight: 800; margin-bottom: 10px;
+}
+.encounter-title {
+  font-size: 26px; font-weight: 900; color: #241707; 
+  margin: 0 0 20px; line-height: 1.35; word-break: keep-all;
+}
+.encounter-story {
+  font-size: 15px; line-height: 1.75; color: #3a2812; 
+  padding: 20px 18px; background: rgba(255,255,255,0.55); 
+  border-radius: 4px; border: 1px dashed rgba(138,90,18,0.35);
+  text-align: left; word-break: keep-all; font-weight: 600;
+}
+
+/* 모바일 화면 최적화 */
+@media(max-width: 600px){
+  .encounter-card { padding: 22px 16px; }
+  .encounter-kicker { font-size: 10px; letter-spacing: 2px; }
+  .encounter-title { font-size: 22px; margin-bottom: 16px; }
+  .encounter-story { font-size: 14px; padding: 16px 14px; line-height: 1.65; }
+}
+/* =====================================================================
+   RUMOR UI UPGRADE (마을 소식 가독성 및 디자인 대폭 개선)
+===================================================================== */
+.town-rumor {
+  position: relative !important;
+  padding: 18px 20px 18px 28px !important;
+  border: 1px solid rgba(91,67,31,.4) !important;
+  border-left: 4px solid #a97a3a !important;
+  background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(245,235,210,0.7)) !important;
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+  color: #1c1206 !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 4px 12px rgba(58,40,18,0.08) !important;
+  margin-top: 6px !important;
+}
+
+/* 왼쪽 상단 큰 따옴표 포인트 */
+.town-rumor::before {
+  content: '“' !important;
+  position: absolute !important;
+  left: 8px !important;
+  top: 14px !important;
+  font-family: Georgia, serif !important;
+  font-size: 32px !important;
+  color: #a97a3a !important;
+  opacity: 0.8 !important;
+}
+
+/* 제보자 정보 스타일 */
+.town-rumor-source {
+  display: block !important;
+  margin-top: 12px !important;
+  font-size: 12px !important;
+  color: #8a5a12 !important;
+  text-align: right !important;
+  font-weight: 800 !important;
+}
+
+/* 하단 버튼 및 안내 텍스트 영역 */
+.rumor-action-hint {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin-top: 14px !important;
+  padding-top: 14px !important;
+  border-top: 1px dashed rgba(91,67,31,0.3) !important;
+  font-size: 12px !important;
+  color: #5b431f !important;
+  font-weight: 700 !important;
+}
+
+/* 🔎 소문 조사 액션 버튼 (황금색 입체 버튼으로 변경) */
+.rumor-action-hint b {
+  padding: 8px 14px !important;
+  border: 1px solid #7f561c !important;
+  background: linear-gradient(180deg, #a8752b, #694314) !important;
+  color: #fff0bd !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  font-family: 'Cinzel', serif !important;
+  font-weight: bold !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.2), 0 2px 4px rgba(45,29,7,.2) !important;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.5) !important;
+  cursor: pointer !important;
+}
+
+/* 해결 완료(is-done) 상태일 때의 회색조 스타일 */
+.town-rumor.is-done {
+  background: linear-gradient(135deg, rgba(240,240,240,0.8), rgba(220,220,220,0.5)) !important;
+  border-left: 4px solid #999 !important;
+  border-color: #ccc !important;
+  color: #555 !important;
+}
+.town-rumor.is-done::before { color: #999 !important; }
+.town-rumor.is-done .town-rumor-source { color: #777 !important; }
+.town-rumor.is-done .rumor-action-hint b {
+  background: #d5cfc6 !important;
+  border-color: #b8b0a5 !important;
+  color: #8c8273 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+/* =====================================================================
+   TOWN STATUS UI (거점 상태 대시보드: 특성 & 위험도)
+===================================================================== */
+.town-status-wrap { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 10px; 
+  margin-top: 16px; 
+  margin-bottom: auto; 
+}
+.town-status-card {
+  background: linear-gradient(145deg, rgba(20,15,10,0.85), rgba(40,25,15,0.6));
+  border: 1px solid rgba(217,180,92,0.3);
+  padding: 10px 14px 12px; 
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+}
+.town-status-card .title { 
+  font-family: 'Cinzel', serif; 
+  font-size: 9px; 
+  color: #a4906a; 
+  letter-spacing: 1px; 
+  margin-bottom: 6px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+.town-status-card .content { 
+  font-size: 13px; 
+  font-weight: 800; 
+  color: #f4dd97; 
+  margin-bottom: 4px; 
+  text-shadow: 0 1px 2px #000;
+}
+.town-status-card .desc { 
+  font-size: 10px; 
+  color: #ecdcb4; 
+  opacity: 0.8; 
+  line-height: 1.35; 
+}
+.threat-bar { 
+  height: 5px; 
+  background: rgba(0,0,0,0.7); 
+  border-radius: 3px; 
+  margin-top: 7px; 
+  overflow: hidden; 
+  border: 1px solid rgba(0,0,0,0.9); 
+}
+.threat-fill { 
+  height: 100%; 
+  background: linear-gradient(90deg, #b5323f, #e0616c); 
+  transition: width 0.5s ease-out; 
+  box-shadow: 0 0 5px rgba(224,97,108,0.5);
+}
+
+@media(max-width: 600px){
+  .town-status-wrap { gap: 6px; margin-top: 12px; }
+  .town-status-card { padding: 8px 10px 10px; }
+  .town-status-card .title { font-size: 8px; margin-bottom: 4px; }
+  .town-status-card .content { font-size: 12px; }
+  .town-status-card .desc { font-size: 9px; }
+}
 
 </style>
 <style id="dungeon-compact-fix">
@@ -1751,6 +2001,116 @@ html,body{font-size:14px;}
   .dungeon-title{font-size:19px!important;}
   .town-desc,.dungeon-story{font-size:12.5px!important;}
   .action-btn{font-size:12px!important;padding:8px 5px!important;}
+}
+/* =====================================================================
+   TOWN STATUS UI (거점 대시보드 레이아웃 강제 덮어쓰기)
+===================================================================== */
+/* 1. 기존의 짧았던 마을 배너 높이를 늘려서 대시보드가 들어갈 공간 확보 */
+.town-hero {
+  height: clamp(400px, 45vh, 480px) !important;
+  min-height: 400px !important;
+}
+
+/* 2. 대시보드가 우측 공지사항(Notice)을 침범하지 않도록 좌측 60% 영역에만 배치 */
+.town-status-wrap { 
+  display: grid !important; 
+  grid-template-columns: 1fr 1fr !important; 
+  gap: 12px !important; 
+  margin-top: 20px !important; 
+  margin-bottom: auto !important; 
+  width: min(550px, 60%) !important; 
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* 3. 판타지 게임 스탯창 느낌의 카드 디자인 */
+.town-status-card {
+  background: linear-gradient(145deg, rgba(20,15,10,0.9), rgba(40,25,15,0.7)) !important;
+  border: 1px solid rgba(217,180,92,0.4) !important;
+  padding: 12px 14px 14px !important; 
+  border-radius: 6px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 6px 16px rgba(0,0,0,0.6) !important;
+  backdrop-filter: blur(4px) !important;
+}
+.town-status-card .title { 
+  font-family: 'Cinzel', serif !important; 
+  font-size: 10px !important; 
+  color: #a4906a !important; 
+  margin-bottom: 8px !important; 
+  display: flex !important; 
+  justify-content: space-between !important; 
+  align-items: center !important; 
+}
+.town-status-card .content { 
+  font-size: 14px !important; 
+  font-weight: 800 !important; 
+  color: #f4dd97 !important; 
+  margin-bottom: 4px !important; 
+  text-shadow: 0 1px 3px #000 !important;
+}
+.town-status-card .desc { 
+  font-size: 11px !important; 
+  color: #ecdcb4 !important; 
+  opacity: 0.85 !important; 
+  line-height: 1.4 !important; 
+}
+
+/* 4. 위험도 게이지 바 디자인 */
+.threat-bar { 
+  height: 6px !important; 
+  background: rgba(0,0,0,0.8) !important; 
+  border-radius: 3px !important; 
+  margin-top: 10px !important; 
+  overflow: hidden !important; 
+  border: 1px solid rgba(0,0,0,0.9) !important; 
+}
+.threat-fill { 
+  height: 100% !important; 
+  background: linear-gradient(90deg, #b5323f, #e0616c) !important; 
+  transition: width 0.5s ease-out !important; 
+  box-shadow: 0 0 8px rgba(224,97,108,0.6) !important;
+}
+
+/* 모바일 좁은 화면 대응 */
+@media(max-width: 650px){
+  .town-hero { height: auto !important; min-height: 480px !important; }
+  .town-status-wrap { width: 100% !important; margin-bottom: 16px !important; }
+  .town-location { min-height: 480px !important; }
+}
+/* =====================================================================
+   TOWN 배너 높이 자동 조절 및 잘림 현상 완벽 해결
+===================================================================== */
+/* 1. 배경 상자가 자식 요소의 높이를 인식하도록 강제 제한 해제 */
+body #app .town-hub .town-hero {
+  height: auto !important;
+  min-height: 330px !important;
+}
+
+/* 2. 가장 중요! 공중에 떠 있던 절대 위치(absolute)를 해제하여 부모 상자를 밀어내도록 수정 */
+body #app .town-hub .town-location {
+  position: relative !important; 
+  height: auto !important;
+  min-height: 330px !important;
+  padding-bottom: 30px !important; /* 하단 칩이 잘리지 않고 넉넉하게 위치할 여백 확보 */
+}
+
+/* 3. 오른쪽 공지사항(Notice)과 겹치지 않게 가로 넓이 최적화 */
+body #app .town-hub .town-location .town-status-wrap {
+  width: calc(100% - 360px) !important;
+  max-width: none !important;
+  margin-bottom: 20px !important; 
+}
+body #app .town-hub .town-location .town-desc {
+  max-width: calc(100% - 360px) !important;
+}
+
+/* 모바일 좁은 화면(공지사항이 아래로 빠질 때) 원상 복구 */
+@media (max-width: 768px) {
+  body #app .town-hub .town-location .town-status-wrap,
+  body #app .town-hub .town-location .town-desc {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }
 </style>
 
@@ -2710,19 +3070,59 @@ function createPlayer(name, baseJob){
   return p;
 }
 
+/* =====================================================================
+   KARMA EFFECTS & STATS CALCULATION
+===================================================================== */
+function getKarmaEffects(p) {
+  let priceMult = 1.0;
+  let atkMult = 1.0;
+  let defMult = 1.0;
+  let critBonus = 0;
+  let desc = [];
+
+  if (p.karma >= 80) {
+      priceMult = 0.8; defMult = 1.15;
+      desc.push("물가 20% 할인"); desc.push("방어력 15% 증가"); desc.push("성자 전용 조우 발생");
+  } else if (p.karma >= 65) {
+      priceMult = 0.9; defMult = 1.05;
+      desc.push("물가 10% 할인"); desc.push("방어력 5% 증가"); desc.push("선인 전용 조우 발생");
+  } else if (p.karma <= 20) {
+      priceMult = 1.2; atkMult = 1.15; defMult = 0.9; critBonus = 0.1;
+      desc.push("물가 20% 바가지"); desc.push("공격력 15%, 크리티컬 10% 증가"); desc.push("방어력 10% 감소"); desc.push("암시장 및 추적자 등장");
+  } else if (p.karma <= 35) {
+      priceMult = 1.1; atkMult = 1.05;
+      desc.push("물가 10% 바가지"); desc.push("공격력 5% 증가"); desc.push("악인 전용 조우 발생");
+  } else {
+      desc.push("특별한 혜택이나 불이익이 없는 평범한 상태입니다.");
+  }
+  return { priceMult, atkMult, defMult, critBonus, desc: desc.join(" / ") };
+}
+
+function getFinalPrice(basePrice) {
+  const p = S.player;
+  if (!p) return basePrice;
+  const k = getKarmaEffects(p);
+  return Math.max(1, Math.floor(basePrice * k.priceMult));
+}
+
 function getAtk(p){
   const wBonus = p.equipped_weapon ? p.equipped_weapon.atk : 0;
   const wEnh = p.equipped_weapon ? (p.equipped_weapon.enhance||0) : 0;
-  return Math.floor(p.atk + wBonus + wEnh*8);
+  const base = p.atk + wBonus + wEnh*8;
+  const k = getKarmaEffects(p);
+  return Math.floor(base * k.atkMult);
 }
 function getDef(p){
   const aBonus = p.equipped_armor ? (p.equipped_armor.def||0) : 0;
-  return Math.floor(p.def_stat + aBonus + p.armor_level*5);
+  const base = p.def_stat + aBonus + p.armor_level*5;
+  const k = getKarmaEffects(p);
+  return Math.floor(base * k.defMult);
 }
 function getCrit(p){
   const accBonus = p.equipped_accessory ? (p.equipped_accessory.crit||0) : 0;
   const baseCrit = p.base_job.includes("도적") ? 0.2 : 0.1;
-  return baseCrit + accBonus;
+  const k = getKarmaEffects(p);
+  return baseCrit + accBonus + k.critBonus;
 }
 function getSpd(p){
   let base = p.spd || 10;
@@ -3211,19 +3611,31 @@ async function town(){
   const currentTown = TOWN_DATA[S.stageIdx];
   const [heroTitle, cPower] = playerTitleAndPower(S.player);
   const rumorIdx = Math.min(S.stageIdx, TOWN_RUMORS.length-1);
-  const [stageName, normalList, eliteList, bossList] = STAGE_DATA[S.stageIdx] || ["미지의 지역", [], [], ["알 수 없는 존재"]];
+  const [stageName] = STAGE_DATA[S.stageIdx] || ["미지의 지역"];
   const p = S.player;
   const invCount = Object.values(p.inventory || {}).reduce((a,b)=>a+b,0);
-  const stages = TOWN_DATA.map((_,i)=>{
-    const cls = i < S.stageIdx ? "town-stage-dot done" : (i === S.stageIdx ? "town-stage-dot current" : "town-stage-dot");
-    return `<div class="${cls}" title="STAGE ${i+1}"></div>`;
-  }).join("");
 
   const rumorSource = aiPack?.rumor?.story || TOWN_RUMORS[rumorIdx];
   const rumorText = String(rumorSource)
     .replace(/🍺\s*\[[^\]]+\]\s*/, "")
     .replace(/^\s*•\s*/, "")
     .replace(/^\s*[-·]\s*/, "");
+
+  // 카르마 적용 텍스트
+  const karmaData = getKarmaEffects(p);
+  const karmaFlavorText = `현재 적용 중인 패시브: ${karmaData.desc}`;
+
+  // 스테이지별 마을 고유 효과 및 위험도 데이터
+  const townFeatures = [
+    { perkIcon: "🛏️", perkName: "초원의 안식처", perkDesc: "여관 이용 시 휴식 효율 극대화", threat: 25, threatLabel: "비교적 안전" },
+    { perkIcon: "👻", perkName: "망자의 축복", perkDesc: "언데드 사냥 시 카르마 추가 획득", threat: 55, threatLabel: "경계 필요" },
+    { perkIcon: "🔨", perkName: "풍부한 광맥", perkDesc: "장비 강화 비용 10% 보정 혜택", threat: 70, threatLabel: "위험 증가" },
+    { perkIcon: "🪓", perkName: "투지의 함성", perkDesc: "전투 진입 시 첫 턴 공격력 상승", threat: 85, threatLabel: "전운 고조" },
+    { perkIcon: "🔥", perkName: "용암의 제련", perkDesc: "무기 강화 시 파괴 확률 소폭 하락", threat: 92, threatLabel: "매우 위험" },
+    { perkIcon: "❄️", perkName: "극한의 적응", perkDesc: "전투 시 얼음 속성 저항력 획득", threat: 96, threatLabel: "생존 주의" },
+    { perkIcon: "⚔️", perkName: "최후의 결의", perkDesc: "모든 스킬 위력 및 크리티컬 증가", threat: 100, threatLabel: "파멸 임박" }
+  ];
+  const feature = townFeatures[S.stageIdx] || townFeatures[0];
 
   const log = logEl();
   log.innerHTML = `
@@ -3233,12 +3645,29 @@ async function town(){
           <div class="town-kicker">SAFE ZONE · STAGE ${String(S.stageIdx+1).padStart(2,'0')}</div>
           <h2 class="town-title">🏡 ${currentTown.name}<span>FRONTIER TOWN</span></h2>
           <p class="town-desc">${currentTown.desc} 이곳에서 장비를 정비하고, 다음 모험을 준비할 수 있습니다.</p>
+          
+          <!-- 지역 혜택 및 위험도 대시보드 -->
+          <div class="town-status-wrap">
+            <div class="town-status-card">
+              <div class="title"><span>지역 혜택</span><span>${feature.perkIcon}</span></div>
+              <div class="content">${feature.perkName}</div>
+              <div class="desc">${feature.perkDesc}</div>
+            </div>
+            <div class="town-status-card">
+              <div class="title"><span>외곽 위험도</span><span style="color:#e0616c;">${feature.threat}%</span></div>
+              <div class="content" style="color:#e0616c;">${feature.threatLabel}</div>
+              <div class="threat-bar"><div class="threat-fill" style="width:${feature.threat}%;"></div></div>
+            </div>
+          </div>
+
           <div class="town-meta">
             <span class="town-chip">🛡️ 안전 지역</span>
             <span class="town-chip">📍 ${stageName} 인근</span>
             <span class="town-chip">💰 ${p.gold} G</span>
           </div>
         </section>
+        
+        <!-- 우측 공지사항 패널 -->
         <section class="town-notice">
           <div class="label">ADVENTURER'S NOTICE</div>
           <strong>“다음 목적지는 <b>${stageName}</b>.<br>준비가 끝났다면 길을 나서십시오.”</strong>
@@ -3246,49 +3675,67 @@ async function town(){
         </section>
       </div>
 
+      <!-- 마을 소식 구역 -->
       <section class="town-section">
         <div class="town-section-head">
           <span class="town-section-title">📜 오늘의 마을 소식</span>
           <span class="town-section-sub">RUMOR BOARD</span>
         </div>
         <div class="town-rumor-wrap">
-          <div class="town-rumor town-rumor-action ${getRumorState(S.stageIdx).status==="claimed" ? "is-done" : ""}" id="rumorBoardAction" role="button" tabindex="0" title="소문을 조사합니다">${rumorText}<span class="town-rumor-source">— ${currentTown.name} 주민의 제보</span>
+          <div class="town-rumor town-rumor-action ${getRumorState(S.stageIdx).status==="claimed" ? "is-done" : ""}" id="rumorBoardAction" role="button" tabindex="0">
+            ${rumorText}<span class="town-rumor-source">— ${currentTown.name} 주민의 제보</span>
             <span class="rumor-action-hint"><span>${getRumorState(S.stageIdx).status==="claimed" ? "이 소문은 해결되었습니다." : "이 소문에는 숨겨진 의뢰가 있을지도 모릅니다."}</span><b>${getRumorState(S.stageIdx).status==="claimed" ? "조사 완료" : "🔎 소문 조사"}</b></span>
           </div>
         </div>
       </section>
 
+      <!-- 세간의 평가 (카르마) 구역 -->
       <section class="town-section">
         <div class="town-section-head">
-          <span class="town-section-title">🗺️ 주변 지역</span>
-          <span class="town-section-sub">AREA INFORMATION</span>
+          <span class="town-section-title">⚖️ 세간의 평가</span>
+          <span class="town-section-sub">REPUTATION & KARMA</span>
         </div>
-        <div class="town-grid">
-          <div class="town-card"><span class="icon">🌲</span><b>일반 지역</b><p>${normalList.join(" · ")}</p></div>
-          <div class="town-card"><span class="icon">💀</span><b>위험 지역</b><p>${eliteList.join(" · ")}</p></div>
-          <div class="town-card"><span class="icon">🔥</span><b>보스의 영역</b><p>${bossList[0]}</p></div>
+        <div class="town-karma-box">
+           <div class="karma-score">👼 나의 선향 지수: ${p.karma} <span>${getKarmaTitle(p.karma)}</span></div>
+           <div class="karma-desc">${karmaFlavorText}</div>
         </div>
       </section>
 
+      <!-- 무작위 조우 이벤트 구역 -->
       <section class="town-section">
         <div class="town-section-head">
-          <span class="town-section-title">⚔️ 심연으로 향하는 길</span>
-          <span class="town-section-sub">WORLD PROGRESS</span>
+          <span class="town-section-title">🎲 마을 둘러보기</span>
+          <span class="town-section-sub">TOWN ENCOUNTER</span>
         </div>
-        <div class="town-progress">${stages}</div>
-        <div class="town-footer-note">현재 STAGE ${S.stageIdx+1} · 다음 지역을 개척하려면 보스 던전을 돌파해야 합니다.</div>
+        <div class="town-encounter-card" id="townEncounterAction" tabindex="0" role="button">
+           <div class="icon">🍺</div>
+           <div class="info">
+             <b>여관의 왁자지껄한 소음</b>
+             <p>잠시 여유를 내어 마을 사람들과 섞여봅니다. 소소한 대화나 뜻밖의 행운, 혹은 시비가 발생할 수 있습니다.</p>
+           </div>
+           <div class="action-btn-mini">둘러보기</div>
+        </div>
       </section>
     </div>
   `;
+
+  // 마을 배경 이미지 세팅
   const townScene = log.querySelector(".town-location");
   if(townScene) townScene.style.setProperty("--town-scene-bg", EMBEDDED_TOWN_SCENES[currentTown.name] || EMBEDDED_TOWN_SCENES["루센트 마을"]);
   log.scrollTop = 0;
+
+  // 이벤트 리스너 세팅
   const rumorBoardAction = log.querySelector("#rumorBoardAction");
   if(rumorBoardAction){
     rumorBoardAction.addEventListener("click",()=>inspectRumor(S.stageIdx));
-    rumorBoardAction.addEventListener("keydown",(e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); inspectRumor(S.stageIdx); } });
+  }
+  
+  const encounterAction = log.querySelector("#townEncounterAction");
+  if(encounterAction){
+    encounterAction.addEventListener("click", triggerTownEncounter);
   }
 
+  // 메뉴 버튼 렌더링
   setPaginatedButtons([
     ["⚔️ 모험 떠나기", dungeonMenu],
     ["📜 퀘스트 게시판", questMenu],
@@ -3310,7 +3757,464 @@ function statusOrSaveMenu(){
     ["마을로 돌아가기", town]
   ]);
 }
+/* =====================================================================
+   TOWN ENCOUNTER (마을 무작위 이벤트 - 20종 확장판)
+===================================================================== */
+function triggerTownEncounter() {
+  setButtons([]);
+  clearBattle();
+  renderScene();
+  
+  const log = logEl();
+  const p = S.player;
+  
+  // 마을 인카운터 리스트 (20종)
+  const events = [
+    {
+      title: "뒷골목의 도박꾼",
+      desc: "수상한 남자가 동전을 튕기며 다가옵니다. '모험가 양반, 나랑 내기 한 판 할래? 100 골드만 걸면 두 배로 불려주지!'",
+      choices: [
+        ["도전한다 (100G 잃거나 200G 획득)", () => {
+          if (p.gold < 100) { displayText("▶ 골드가 부족하여 핀잔만 듣고 쫓겨났습니다."); setTimeout(town, 1500); return; }
+          p.gold -= 100;
+          if (Math.random() < 0.4) {
+            p.gold += 200; goldFlash();
+            displayText("🎉 승리! 도박꾼이 투덜거리며 200 골드를 내어줍니다.");
+          } else {
+            shakeApp();
+            displayText("💥 패배... 눈 깜짝할 새에 100 골드를 잃고 말았습니다.");
+          }
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["무시한다", town]
+      ]
+    },
+    {
+      title: "도움이 필요한 상인",
+      desc: "수레 바퀴가 진흙에 빠져 곤란해하는 상인을 발견했습니다. 짐이 꽤나 무거워 보입니다.",
+      choices: [
+        ["도와준다 (카르마 상승)", () => {
+          p.karma = Math.min(100, p.karma + 5);
+          displayText("👼 힘을 써서 수레를 빼주었습니다. 상인이 연신 고맙다고 인사합니다. (카르마 +5)");
+          autoSave(); setTimeout(town, 1500);
+        }],
+        ["모른 척 지나간다 (카르마 하락)", () => {
+          p.karma = Math.max(0, p.karma - 2);
+          displayText("👿 귀찮은 일에 휘말리기 싫어 모른 척 지나갔습니다. (카르마 -2)");
+          autoSave(); setTimeout(town, 1500);
+        }]
+      ]
+    },
+    {
+      title: "음유시인의 노래",
+      desc: "광장 한가운데서 떠돌이 음유시인이 영웅들의 서사시를 읊고 있습니다. 아름다운 선율입니다.",
+      choices: [
+        ["감상한다 (소량의 경험치 획득)", () => {
+          const expGain = 15 * p.level;
+          p.exp += expGain; cyanFlash();
+          displayText(`✨ 노래를 들으며 마음의 평안과 깨달음을 얻었습니다! (${expGain} EXP 획득)`);
+          levelUp(p).then(() => { autoSave(); setTimeout(town, 2000); });
+        }],
+        ["갈 길을 간다", town]
+      ]
+    },
+    {
+      title: "시비 거는 주정뱅이",
+      desc: "술에 취한 용병이 비틀거리며 다가와 다짜고짜 당신의 어깨를 밀칩니다. '뭐야, 넌 뭔데 날 쳐다봐?!'",
+      choices: [
+        ["주먹으로 응징한다 (카르마 하락, 골드 획득)", () => {
+          p.karma = Math.max(0, p.karma - 5);
+          p.gold += 30; shakeApp();
+          displayText("👿 가볍게 턱을 날려 기절시키고 그의 주머니에서 30 골드를 챙겼습니다! (카르마 -5)");
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["조용히 피한다 (카르마 상승)", () => {
+          p.karma = Math.min(100, p.karma + 2);
+          displayText("👼 더러운 싸움을 피하기 위해 자리를 떴습니다. 성숙한 대처입니다. (카르마 +2)");
+          autoSave(); setTimeout(town, 1500);
+        }]
+      ]
+    },
+    {
+      title: "날쌘 소매치기",
+      desc: "순간적으로 누군가 당신의 허리춤을 스치고 지나갑니다. 지갑이 가벼워진 것 같습니다!",
+      choices: [
+        ["추격한다 (성공 또는 체력 감소)", () => {
+          if (Math.random() < 0.5) {
+            p.gold += 50; goldFlash();
+            displayText("🏃‍♂️ 놈의 멱살을 잡아채고 내 돈과 함께 덤으로 50G를 더 뜯어냈습니다!");
+          } else {
+            const dmg = Math.floor(p.max_hp * 0.1);
+            p.hp = Math.max(1, p.hp - dmg); shakeApp();
+            displayText(`💥 골목길에서 놈의 동료들에게 기습을 당해 체력을 잃었습니다. (HP -${dmg})`);
+          }
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["포기한다 (10G 잃음)", () => {
+          p.gold = Math.max(0, p.gold - 10);
+          displayText("▶ 액댐했다고 생각하기로 했습니다. (10 골드 상실)");
+          autoSave(); setTimeout(town, 1500);
+        }]
+      ]
+    },
+    {
+      title: "떨어진 돈주머니",
+      desc: "인적 드문 골목에서 묵직한 가죽 주머니를 발견했습니다. 꽤 많은 골드가 들어있는 것 같습니다.",
+      choices: [
+        ["경비대에게 넘긴다 (카르마 상승, EXP 획득)", () => {
+          p.karma = Math.min(100, p.karma + 5);
+          const expGain = 20 * p.level;
+          p.exp += expGain; cyanFlash();
+          displayText(`👼 정직하게 분실물을 신고했습니다. 마음이 뿌듯해집니다. (카르마 +5, ${expGain} EXP)`);
+          levelUp(p).then(() => { autoSave(); setTimeout(town, 2000); });
+        }],
+        ["슬쩍 챙긴다 (카르마 하락, 골드 획득)", () => {
+          p.karma = Math.max(0, p.karma - 5);
+          p.gold += 80; goldFlash();
+          displayText("👿 주변을 살핀 뒤 내 주머니에 쓸어 담았습니다. (카르마 -5, 80G 획득)");
+          autoSave(); setTimeout(town, 1500);
+        }]
+      ]
+    },
+    {
+      title: "수상한 약장수",
+      desc: "보라색 망토를 두른 노파가 색깔이 탁한 물약을 내밉니다. '단돈 50골드에 엄청난 힘을 주지. 어때?'",
+      choices: [
+        ["마셔본다 (50G 소모)", () => {
+          if (p.gold < 50) { displayText("▶ 골드가 부족합니다."); setTimeout(town, 1500); return; }
+          p.gold -= 50;
+          if (Math.random() < 0.5) {
+            p.hp = p.max_hp; p.mp = p.max_mp; cyanFlash();
+            displayText("✨ 놀랍게도 최고급 물약이었습니다! HP와 MP가 완전히 회복되었습니다.");
+          } else {
+            const dmg = Math.floor(p.max_hp * 0.3);
+            p.hp = Math.max(1, p.hp - dmg); shakeApp();
+            displayText(`🤢 우웩! 심각한 복통이 밀려옵니다... (HP -${dmg})`);
+          }
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["거절한다", town]
+      ]
+    },
+    {
+      title: "굶주린 떠돌이 개",
+      desc: "앙상하게 마른 떠돌이 개가 꼬리를 내린 채 당신을 애처롭게 쳐다봅니다.",
+      choices: [
+        ["포션을 나눠준다 (포션 1개 소모)", () => {
+          if ((p.inventory["힐링포션(소)"] || 0) < 1) { displayText("▶ 줄 수 있는 포션이 없습니다."); setTimeout(town, 1500); return; }
+          p.inventory["힐링포션(소)"] -= 1;
+          p.karma = Math.min(100, p.karma + 3);
+          p.gold += 100; goldFlash();
+          displayText("👼 포션을 먹고 기운을 차린 개가 어디선가 100 골드를 물고 돌아왔습니다! (카르마 +3)");
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["매몰차게 쫓아낸다 (카르마 하락)", () => {
+          p.karma = Math.max(0, p.karma - 2);
+          displayText("👿 발길질을 하는 시늉을 하자 개가 깨갱거리며 도망갑니다. (카르마 -2)");
+          autoSave(); setTimeout(town, 1500);
+        }]
+      ]
+    },
+    {
+      title: "길 잃은 꼬마",
+      desc: "광장 구석에서 어린아이가 엄마를 잃어버렸는지 훌쩍이며 울고 있습니다.",
+      choices: [
+        ["달래며 부모를 찾아준다 (카르마 상승)", () => {
+          p.karma = Math.min(100, p.karma + 5);
+          displayText("👼 조금 시간이 걸렸지만 부모를 찾아주었습니다. 따뜻한 인사를 받았습니다. (카르마 +5)");
+          autoSave(); setTimeout(town, 1500);
+        }],
+        ["무시하고 지나간다 (카르마 하락)", () => {
+          p.karma = Math.max(0, p.karma - 3);
+          displayText("👿 내 알 바가 아닙니다. 차가운 얼굴로 자리를 떴습니다. (카르마 -3)");
+          autoSave(); setTimeout(town, 1500);
+        }]
+      ]
+    },
+    {
+      title: "마을의 낡은 우물",
+      desc: "동전을 던지면 소원을 이뤄준다는 오래된 우물입니다. 바닥이 보이지 않을 정도로 깊습니다.",
+      choices: [
+        ["동전을 던지며 기원한다 (10G 소모)", () => {
+          if (p.gold < 10) { displayText("▶ 동전이 하나도 없습니다."); setTimeout(town, 1500); return; }
+          p.gold -= 10;
+          if (Math.random() < 0.5) {
+            const expGain = 25 * p.level;
+            p.exp += expGain; cyanFlash();
+            displayText(`✨ 맑은 물방울 소리와 함께 신비한 기운이 스며듭니다. (${expGain} EXP 획득)`);
+            levelUp(p).then(() => { autoSave(); setTimeout(town, 2000); });
+          } else {
+            displayText("▶ 퐁당 소리만 났을 뿐 아무 일도 일어나지 않았습니다.");
+            autoSave(); setTimeout(town, 1500);
+          }
+        }],
+        ["안을 들여다본다 (위험)", () => {
+          const dmg = Math.floor(p.max_hp * 0.15);
+          p.hp = Math.max(1, p.hp - dmg); shakeApp();
+          displayText(`🦇 우물 안에서 갑자기 튀어나온 박쥐 떼에 놀라 넘어져 다쳤습니다! (HP -${dmg})`);
+          autoSave(); setTimeout(town, 2000);
+        }]
+      ]
+    },
+    {
+      title: "신전의 수사",
+      desc: "빛의 신을 모시는 수사가 구호 활동을 위한 기부금을 모으고 있습니다.",
+      choices: [
+        ["기부한다 (30G 소모, 카르마 상승, 풀회복)", () => {
+          if (p.gold < 30) { displayText("▶ 돈이 없어 부끄러움을 느낍니다."); setTimeout(town, 1500); return; }
+          p.gold -= 30; p.hp = p.max_hp; p.mp = p.max_mp;
+          p.karma = Math.min(100, p.karma + 5); cyanFlash();
+          displayText("👼 축복 기도를 받자 온몸의 피로가 씻은 듯이 사라졌습니다! (카르마 +5, HP/MP 풀회복)");
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["헌금함을 몰래 턴다 (카르마 대폭 하락)", () => {
+          p.karma = Math.max(0, p.karma - 15);
+          p.gold += 100;
+          const dmg = Math.floor(p.max_hp * 0.2);
+          p.hp = Math.max(1, p.hp - dmg); shakeApp();
+          displayText(`👿 100 골드를 슬쩍 챙겼으나, 맑은 하늘에서 벼락이 떨어져 맞았습니다!! (카르마 -15, HP -${dmg})`);
+          autoSave(); setTimeout(town, 2500);
+        }]
+      ]
+    },
+    {
+      title: "용병들의 팔씨름",
+      desc: "술집 앞 평상에서 덩치 큰 용병들이 팔씨름 내기를 하며 왁자지껄하게 떠들고 있습니다.",
+      choices: [
+        ["난입하여 실력을 겨룬다 (체력 소모, EXP 획득)", () => {
+          const dmg = Math.floor(p.max_hp * 0.15);
+          p.hp = Math.max(1, p.hp - dmg);
+          const expGain = 35 * p.level;
+          p.exp += expGain; shakeApp();
+          displayText(`💥 온 힘을 다해 겨뤄 모두의 인정을 받았습니다! 근육통이 생겼지만 크게 성장했습니다. (HP -${dmg}, ${expGain} EXP)`);
+          levelUp(p).then(() => { autoSave(); setTimeout(town, 2500); });
+        }],
+        ["구경만 한다", town]
+      ]
+    },
+    {
+      title: "버려진 낡은 책",
+      desc: "골목길 나무 상자 위에 먼지 쌓인 책 한 권이 놓여 있습니다. 알 수 없는 언어로 적혀 있습니다.",
+      choices: [
+        ["시간을 내어 읽어본다 (MP 소모, EXP 획득)", () => {
+          if (p.mp < 20) { displayText("▶ 머리가 아파와 더 이상 읽을 수 없습니다."); setTimeout(town, 1500); return; }
+          p.mp -= 20;
+          const expGain = 30 * p.level;
+          p.exp += expGain; cyanFlash();
+          displayText(`✨ 심연의 마력에 대한 고서였습니다. 마나를 소모해 지식을 얻었습니다. (${expGain} EXP 획득)`);
+          levelUp(p).then(() => { autoSave(); setTimeout(town, 2000); });
+        }],
+        ["상인에게 팔아치운다 (골드 획득)", () => {
+          p.gold += 40; goldFlash();
+          displayText("💰 골동품 상인에게 적당히 둘러대어 40 골드를 받았습니다.");
+          autoSave(); setTimeout(town, 1500);
+        }]
+      ]
+    },
+    {
+      title: "암흑 교단의 전단지",
+      desc: "검은 로브를 깊게 눌러쓴 자가 은밀하게 다가와 이단의 사상이 담긴 전단지와 함께 돈을 건넵니다.",
+      choices: [
+        ["조용히 돈만 받는다 (카르마 하락, 골드 획득)", () => {
+          p.karma = Math.max(0, p.karma - 5);
+          p.gold += 50; goldFlash();
+          displayText("👿 타락의 대가는 달콤합니다. 교단의 책자를 챙기고 50 골드를 얻었습니다. (카르마 -5)");
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["찢어버리고 일갈한다 (카르마 상승, EXP 획득)", () => {
+          p.karma = Math.min(100, p.karma + 3);
+          const expGain = 20 * p.level;
+          p.exp += expGain; cyanFlash();
+          displayText(`👼 사악한 무리를 쫓아내며 정신이 한층 맑아졌습니다. (카르마 +3, ${expGain} EXP)`);
+          levelUp(p).then(() => { autoSave(); setTimeout(town, 2000); });
+        }]
+      ]
+    },
+    {
+      title: "떠돌이 대장장이",
+      desc: "작은 짐수레를 끄는 대장장이가 당신의 무기를 힐끗 봅니다. '돈만 내면 날을 날카롭게 세워주지.'",
+      choices: [
+        ["무기 손질을 맡긴다 (50G 소모)", () => {
+          if (p.gold < 50) { displayText("▶ 골드가 부족합니다."); setTimeout(town, 1500); return; }
+          p.gold -= 50;
+          p.next_attack_boost = true; cyanFlash();
+          displayText("✨ 무기에서 눈부신 빛이 납니다! (다음 전투에서 첫 번째 타격이 '카운터 태세' 1.5배로 적용됩니다)");
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["사양한다", town]
+      ]
+    },
+    {
+      title: "뒷골목의 고양이",
+      desc: "통통한 길고양이 한 마리가 당신의 부츠에 머리를 비비며 골골거립니다.",
+      choices: [
+        ["상냥하게 쓰다듬는다 (MP 회복)", () => {
+          p.mp = Math.min(p.max_mp, p.mp + 30);
+          displayText("👼 마음이 정화되는 기분입니다. 작은 힐링을 받았습니다. (MP 30 회복)");
+          autoSave(); setTimeout(town, 1500);
+        }],
+        ["거추장스러워 발로 찬다 (카르마 하락, HP 소모)", () => {
+          p.karma = Math.max(0, p.karma - 3);
+          p.hp = Math.max(1, p.hp - 10); shakeApp();
+          displayText("👿 하악! 고양이가 날카로운 발톱으로 할퀴고 도망갔습니다. (HP -10, 카르마 -3)");
+          autoSave(); setTimeout(town, 2000);
+        }]
+      ]
+    },
+    {
+      title: "수상한 요리사",
+      desc: "괴상한 악취가 나는 스튜를 끓이는 요리사가 시식할 사람을 찾고 있습니다.",
+      choices: [
+        ["눈 딱 감고 시식한다 (풀회복 또는 체력 반토막)", () => {
+          if (Math.random() < 0.5) {
+            p.hp = p.max_hp; cyanFlash();
+            displayText("✨ 냄새와 달리 엄청난 보양식이었습니다! 기력이 솟구칩니다. (HP 풀회복)");
+          } else {
+            const dmg = Math.floor(p.hp * 0.5);
+            p.hp = Math.max(1, p.hp - dmg); shakeApp();
+            displayText(`🤢 지독한 식중독에 걸려 한참을 앓아누웠습니다... (현재 HP의 절반 상실)`);
+          }
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["정중히 사양한다", town]
+      ]
+    },
+    {
+      title: "짐꾼 구인 공고",
+      desc: "상단에서 무거운 화물을 옮겨줄 단기 아르바이트를 구하고 있습니다. 보수는 쏠쏠해 보입니다.",
+      choices: [
+        ["고된 노동을 한다 (HP 소모, 골드 획득)", () => {
+          const dmg = Math.floor(p.max_hp * 0.2);
+          if (p.hp <= dmg) { displayText("▶ 당장 쓰러질 것 같아 무리한 노동은 불가능합니다."); setTimeout(town, 1500); return; }
+          p.hp -= dmg;
+          p.gold += 80; goldFlash();
+          displayText(`💰 온몸이 땀으로 젖었지만, 일당으로 80 골드를 받았습니다. (HP -${dmg})`);
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["휴식이 먼저다", town]
+      ]
+    },
+    {
+      title: "음산한 점술가",
+      desc: "보라색 천막 안에서 수정구슬을 닦던 점술가가 당신을 부릅니다. '운명의 방향을 섞어줄까?'",
+      choices: [
+        ["미래를 점친다 (20G 소모, 카르마 중립화)", () => {
+          if (p.gold < 20) { displayText("▶ 점채값조차 없습니다."); setTimeout(town, 1500); return; }
+          p.gold -= 20;
+          p.karma = 50; cyanFlash();
+          displayText("✨ 점술가의 주문과 함께 선악의 기운이 뒤섞여 당신의 카르마가 완전히 '중립(50)'으로 돌아왔습니다.");
+          autoSave(); setTimeout(town, 2500);
+        }],
+        ["미신이라며 무시한다", town]
+      ]
+    },
+    {
+      title: "밤거리의 암살자",
+      desc: "마을 외곽을 걷던 중, 골목의 짙은 그림자 속에서 당신을 노리는 서늘한 살기가 느껴집니다!",
+      choices: [
+        ["기척을 느끼고 반격한다 (성공시 골드, 실패시 큰 피해)", () => {
+          if (Math.random() < 0.5) {
+            p.gold += 150; goldFlash();
+            displayText("💥 멋진 카운터! 당황한 암살자가 골드 주머니를 떨어뜨리고 달아났습니다! (150G 획득)");
+          } else {
+            const dmg = Math.floor(p.max_hp * 0.35);
+            p.hp = Math.max(1, p.hp - dmg); shakeApp();
+            displayText(`🩸 독이 발린 단검에 스치고 말았습니다! 시야가 흐려집니다... (HP -${dmg})`);
+          }
+          autoSave(); setTimeout(town, 2000);
+        }],
+        ["숨죽여 지나가길 기다린다", () => {
+          displayText("▶ 식은땀을 흘리며 어둠 속에 몸을 숨겼고, 다행히 살기가 사라졌습니다.");
+          autoSave(); setTimeout(town, 1500);
+        }]
+      ]
+    }
+  ];
 
+  const ev = events[Math.floor(Math.random() * events.length)]; // 무작위로 1개 선택
+  
+  log.innerHTML = `
+    <div class="encounter-wrap">
+      <div class="encounter-card">
+        <div class="encounter-kicker">RANDOM ENCOUNTER</div>
+        <div class="encounter-title">🎲 ${ev.title}</div>
+        <div class="encounter-story">“${ev.desc}”</div>
+      </div>
+    </div>
+  `;
+  
+  setPaginatedButtons(ev.choices);
+
+  // --- 기존의 20가지 이벤트들이 선언된 이후 아래에 다음 코드를 추가 ---
+
+  // [조건부 특수 이벤트]
+  if (p.karma >= 80) { // 성자 전용
+    events.push({
+      title: "성기사단의 보급품 지원",
+      desc: "은빛 갑옷을 입은 성기사가 다가옵니다. '당신의 숭고한 행실은 빛의 교단에도 잘 알려져 있습니다. 부디 이것을 받아주십시오.'",
+      choices: [
+        ["감사히 받는다 (대형 포션 3개 획득)", () => {
+          p.inventory["힐링포션(대)"] = (p.inventory["힐링포션(대)"]||0) + 3;
+          cyanFlash();
+          displayText("✨ 빛의 교단으로부터 힐링포션(대) 3개를 무상으로 지원받았습니다!");
+          autoSave(); setTimeout(town, 2000);
+        }]
+      ]
+    });
+  }
+
+  if (p.karma >= 65) { // 선인 전용
+    events.push({
+      title: "은혜를 갚는 상인",
+      desc: "예전에 도와주었던 상인이 환하게 웃으며 달려옵니다. '그때의 은혜는 잊지 않고 있습니다! 작지만 제 성의입니다.'",
+      choices: [
+        ["받아둔다 (500G 획득)", () => {
+          p.gold += 500; goldFlash();
+          displayText("💰 상인이 쥐여준 주머니 안에는 무려 500 골드가 들어있었습니다!");
+          autoSave(); setTimeout(town, 2000);
+        }]
+      ]
+    });
+  }
+
+  if (p.karma <= 35) { // 악인 전용
+    events.push({
+      title: "뒷골목 정보상의 은밀한 거래",
+      desc: "후드를 뒤집어쓴 자가 귓속말을 합니다. '악명 높은 모험가님. 위험한 물건이 하나 들어왔는데... 헐값에 넘기겠습니다.'",
+      choices: [
+        ["희귀 암살 무기 구매 (1000G)", () => {
+          if (p.gold < 1000) { displayText("▶ 돈이 부족해 정보상이 코웃음을 치며 사라집니다."); setTimeout(town, 1500); return; }
+          p.gold -= 1000;
+          p.equipment_inventory.push({
+            name: "칠흑의 암살 단검", type: "검", atk: 55, spd: 30, crit: 0.2, price: 5000, effect: "none", desc: "[암시장 전용] 치명타와 속도를 대폭 올려주는 불법 개조 단검"
+          });
+          goldFlash();
+          displayText("🗡️ 암시장에서 5000 골드 가치의 [칠흑의 암살 단검]을 1000 골드에 헐값으로 사들였습니다!");
+          autoSave(); setTimeout(town, 2500);
+        }],
+        ["함정일지 모르니 거절한다", town]
+      ]
+    });
+  }
+
+  if (p.karma <= 20) { // 악마 전용
+    events.push({
+      title: "현상금 사냥꾼의 기습!",
+      desc: "당신의 악명과 목에 걸린 현상금을 노리고 그림자 속에서 숙련된 사냥꾼 3명이 동시에 덮쳐옵니다!",
+      choices: [
+        ["피비린내 나는 혈투 (HP 40% 감소, 막대한 EXP)", () => {
+          const dmg = Math.floor(p.max_hp * 0.4);
+          p.hp = Math.max(1, p.hp - dmg);
+          const expGain = 120 * p.level;
+          p.exp += expGain;
+          shakeApp();
+          displayText(`💥 무자비한 반격으로 사냥꾼들을 모두 베어 넘겼습니다. 큰 상처를 입었지만 목숨을 건 혈투 끝에 엄청난 실전 경험을 얻습니다! (HP -${dmg}, ${expGain} EXP 획득)`);
+          levelUp(p).then(() => { autoSave(); setTimeout(town, 3000); });
+        }]
+      ]
+    });
+  }
+}
 function travelTown(){
   setButtons([]);
   renderScene();
@@ -3726,35 +4630,53 @@ function shopMenu(){
   renderScene();
   S._shopCategory="";
   const townName=shopEscape(TOWN_DATA[S.stageIdx]?.name || "루센트 마을");
+  const p = S.player;
+  
   const cards=Object.entries(SHOP_META).map(([cat,m])=>{
     const items=SHOP_ITEMS[cat]||[];
-    const cheapest=items.length?Math.min(...items.map(x=>x.price)):0;
+    const cheapest=items.length ? getFinalPrice(Math.min(...items.map(x=>x.price))) : 0;
     return `<button class="shop-category-card ${m.accent}" data-shop-tab="${cat}">
       <div class="shop-category-art"><span>${m.icon}</span><i>${String(items.length).padStart(2,'0')}</i></div>
       <div class="shop-category-copy"><div class="shop-category-label">${m.label}</div><h3>${cat} 상점</h3><p>${m.desc}</p></div>
       <div class="shop-category-foot"><span>최저 ${cheapest.toLocaleString()} G</span><b>입장 ›</b></div>
     </button>`;
   }).join("");
+  
+  const karmaMsg = getKarmaEffects(p).priceMult < 1.0 ? "✨ 영웅을 위한 특별 할인이 적용 중입니다!" : (getKarmaEffects(p).priceMult > 1.0 ? "👿 불길한 자에겐 물건값을 비싸게 받습니다." : "장비는 중복 구매할 수 없으며, 포션은 제한 없이 구매 가능합니다.");
+
   renderShopShell(`
     <div class="shop-location"><span>📍 ${townName}</span><b>필요한 장비를 골라보세요</b></div>
-    <div class="shop-welcome"><strong>오늘도 좋은 물건이 들어왔습니다.</strong><span>장비는 중복 구매할 수 없으며, 포션은 수량만큼 구매할 수 있습니다.</span></div>
+    <div class="shop-welcome"><strong>오늘도 좋은 물건이 들어왔습니다.</strong><span>${karmaMsg}</span></div>
     <div class="shop-section-title"><div><span>SHOP</span><h3>무엇을 찾으시나요?</h3></div><small>4 CATEGORIES</small></div>
     <div class="shop-category-grid">${cards}</div>
   `);
   setButtons([["↩ 마을로 돌아가기",town]]);
 }
+
 function shopCategory(cat){
   setButtons([]);
   renderScene();
   S._shopCategory=cat;
   const meta=SHOP_META[cat];
   const items=SHOP_ITEMS[cat]||[];
+  const p = S.player;
+  
   const cards=items.map((item,idx)=>{
+    const finalPrice = getFinalPrice(item.price);
     const [rarity,rarityClass]=shopRarity(item);
     const owned=shopOwned(item,cat);
-    const state=shopButtonState(item,cat);
+    const poor = p.gold < finalPrice;
+    
+    let state = {disabled:false, label:"구매하기"};
+    if(cat!=="포션" && owned) state = {disabled:true,label:"보유 중"};
+    else if(poor) state = {disabled:true,label:"골드 부족"};
+
     const qty=cat==="포션" ? `<span class="shop-qty">보유 ${owned}개</span>` : (owned?`<span class="shop-owned">보유 중</span>`:``);
     const weaponEnh=cat==="무기"?`<span class="shop-level">+0</span>`:"";
+    
+    // 할증/할인에 따른 색상 변경
+    const priceColor = getKarmaEffects(p).priceMult < 1.0 ? "#287a2a" : (getKarmaEffects(p).priceMult > 1.0 ? "#a83232" : "#704a0e");
+
     return `<article class="shop-item-card ${rarityClass} ${state.disabled?'is-disabled':''}">
       <div class="shop-item-visual"><span class="shop-item-icon">${shopIcon(item,cat)}</span><span class="shop-rarity">${rarity}</span>${weaponEnh}</div>
       <div class="shop-item-body">
@@ -3764,7 +4686,7 @@ function shopCategory(cat){
         <div class="shop-stat-row">${shopStats(item,cat)}</div>
       </div>
       <div class="shop-item-buy">
-        <div class="shop-price"><span>💰</span>${item.price.toLocaleString()}<small>G</small></div>
+        <div class="shop-price" style="color:${priceColor};"><span>💰</span>${finalPrice.toLocaleString()}<small>G</small></div>
         <button class="shop-buy-btn" ${state.disabled?'disabled':''} data-shop-buy="${idx}" data-shop-cat="${shopEscape(cat)}">${state.label}</button>
       </div>
     </article>`;
@@ -3782,8 +4704,10 @@ function shopCategory(cat){
     ["↩ 마을로 돌아가기",town]
   ]);
 }
+
 function buyItem(item,cat){
-  if(S.player.gold < item.price){ toast("골드가 부족합니다!"); return; }
+  const finalPrice = getFinalPrice(item.price);
+  if(S.player.gold < finalPrice){ toast("골드가 부족합니다!"); return; }
   if(cat!=="포션"){
     const p=S.player;
     const equippedNames=[p.equipped_weapon,p.equipped_armor,p.equipped_accessory].filter(Boolean).map(x=>x.name);
@@ -3793,7 +4717,7 @@ function buyItem(item,cat){
       return;
     }
   }
-  S.player.gold -= item.price;
+  S.player.gold -= finalPrice;
   if(cat==="포션"){
     const pName=item.name;
     S.player.inventory[pName]=(S.player.inventory[pName]||0)+1;
@@ -3813,9 +4737,13 @@ function townFacilityMenu(){
   clearBattle();
   renderScene();
   const p = S.player;
-  const innPrice = 50 + p.inn_use_count*30;
+  const baseInnPrice = 50 + p.inn_use_count*30;
+  const innPrice = getFinalPrice(baseInnPrice); // 카르마 할인/할증 적용
+  
   displayText("==================================================\n           🏨 마을 편의시설\n==================================================", {clear:true});
   displayText("마을의 편의시설을 이용합니다. 무엇을 하시겠습니까?");
+  if(getKarmaEffects(p).priceMult < 1.0) displayText(`✨ 선향 혜택: 편의시설 요금이 할인 중입니다!`, {highlight:true});
+  if(getKarmaEffects(p).priceMult > 1.0) displayText(`👿 악향 페널티: 편의시설이 당신에게 바가지를 씌웁니다!`, {highlight:true});
   displayText(`💰 보유 골드: ${p.gold} G &nbsp;|&nbsp; ♥ HP: ${p.hp}/${p.max_hp} | ♣ MP: ${p.mp}/${p.max_mp}\n`);
   displayText(` - 여관 휴식: ${innPrice} 골드를 소모하여 체력과 마나를 모두 회복합니다.`);
   displayText(" - 대장간: 장착 중인 무기나 방어구를 강화합니다.");
@@ -3834,7 +4762,9 @@ function townFacilityMenu(){
 
 function rest(){
   const p = S.player;
-  const innPrice = 50 + p.inn_use_count*30;
+  const baseInnPrice = 50 + p.inn_use_count*30;
+  const innPrice = getFinalPrice(baseInnPrice);
+  
   if(p.gold >= innPrice){
     p.gold -= innPrice; p.inn_use_count += 1;
     p.hp = p.max_hp; p.mp = p.max_mp;
