@@ -1178,6 +1178,13 @@ body #app .dungeon-board .dungeon-hero > div:first-child {
   .dungeon-intel-item span { font-size: 8px; }
   .dungeon-intel-item b { font-size: 11px; }
 }
+body #app .shop-tabs {
+    grid-template-columns: repeat(5, 1fr) !important;
+}
+@media(max-width: 500px){
+    body #app .shop-tab span { font-size: 15px !important; }
+    body #app .shop-tab em { font-size: 7.5px !important; letter-spacing: -0.5px; }
+}
 </style>
 <style id="dungeon-compact-fix">
 /* Dungeon hero: remove excessive vertical whitespace and keep the header readable. */
@@ -4789,11 +4796,21 @@ function shopButtonState(item, cat){
   if(poor) return {disabled:true,label:"골드 부족"};
   return {disabled:false,label:"구매하기"};
 }
+/* =====================================================================
+   상점 탭 렌더링 (매입소 탭 추가)
+===================================================================== */
 function shopCategoryTabs(active){
-  return Object.keys(SHOP_META).map(cat=>`
+  const tabs = Object.keys(SHOP_META).map(cat=>`
     <button class="shop-tab ${cat===active?'active':''}" data-shop-tab="${cat}">
       <span>${SHOP_META[cat].icon}</span><em>${cat}</em>
     </button>`).join("");
+    
+  const sellTab = `
+    <button class="shop-tab ${active==='매입소'?'active':''}" onclick="shopSellMenu()">
+      <span>⚖️</span><em>매입소</em>
+    </button>`;
+    
+  return tabs + sellTab;
 }
 function bindShopUI(){
   const log=logEl();
@@ -4844,10 +4861,12 @@ function shopMenu(){
     <div class="shop-category-grid">${cards}</div>
   `);
   // 변경된 코드 (전리품 일괄 판매 버튼 추가):
-    setButtons([
-      ["📦 전리품 모두 팔기", sellAllLoot], 
-      ["↩ 마을로 돌아가기", town]
-    ]);
+// 기존 shopMenu() 함수 내부의 하단 버튼 부분 교체
+  setButtons([
+    ["⚖️ 개별 판매 (매입소)", shopSellMenu],
+    ["📦 전리품 모두 팔기", sellAllLoot], 
+    ["↩ 마을로 돌아가기", town]
+  ]);
 }
 
 function shopCategory(cat){
@@ -5058,6 +5077,78 @@ function sellAllLoot() {
   }
   
   setTimeout(shopMenu, 2500);
+}
+/* =====================================================================
+   전리품 개별 매각 (매입소 화면 및 1개 팔기 로직)
+===================================================================== */
+function shopSellMenu(){
+  setButtons([]);
+  renderScene();
+  S._shopCategory = "매입소"; 
+  const p = S.player;
+  const karmaMult = getKarmaEffects(p).priceMult; 
+  
+  const loots = Object.entries(p.inventory).filter(([k,v])=>v>0 && !k.includes("포션"));
+  
+  let cards = "";
+  if (loots.length === 0) {
+      cards = `<div style="grid-column:1/-1; text-align:center; padding:30px; color:#704a0e; font-weight:bold; background:rgba(255,250,228,0.5); border:1px dashed #a57422;">가방에 판매할 전리품이 없습니다.</div>`;
+  } else {
+      cards = loots.map(([item, qty], idx) => {
+          const basePrice = LOOT_PRICES[item] || 10;
+          // 카르마에 따라 매입가 변동 (선향은 비싸게 쳐주고, 악향은 후려칩니다)
+          const finalPrice = karmaMult > 1.0 ? Math.floor(basePrice * 0.8) : (karmaMult < 1.0 ? Math.floor(basePrice * 1.2) : basePrice);
+          
+          return `<article class="shop-item-card common">
+            <div class="shop-item-visual"><span class="shop-item-icon">📦</span><span class="shop-rarity">전리품</span></div>
+            <div class="shop-item-body">
+              <div class="shop-item-type">소재 <span class="shop-qty" style="color:#b5323f;">보유 ${qty}개</span></div>
+              <h3>${item}</h3>
+              <p>던전에서 획득한 전리품입니다.</p>
+              <div class="shop-stat-row"><span>매입가: <b>${finalPrice}G</b></span></div>
+            </div>
+            <div class="shop-item-buy">
+              <div class="shop-price" style="color:#287a2a;"><span>💰</span>${finalPrice.toLocaleString()}<small>G</small></div>
+              <button class="shop-buy-btn" style="background:linear-gradient(180deg,#4a702e,#2a4a15); border-color:#2a4a15; color:#fff;" onclick="sellSingleLoot('${item}', ${finalPrice})">1개 팔기</button>
+            </div>
+          </article>`;
+      }).join("");
+  }
+
+  renderShopShell(`
+    <div class="shop-category-head" style="background:linear-gradient(135deg, rgba(230,240,220,0.9), rgba(180,200,160,0.4)); border-color:#7a9c5c;">
+      <div class="shop-category-bigicon" style="background:linear-gradient(145deg,#2e4a15,#5c8a2e); border-color:#7a9c5c;">⚖️</div>
+      <div><div class="shop-kicker">TRADE</div><h2>전리품 매입소</h2><p>던전에서 얻은 전리품을 정당한 가격에 개별 매각할 수 있습니다.</p></div>
+    </div>
+    <div class="shop-list-head"><strong>보유 중인 전리품</strong><span>${loots.length} TYPES</span></div>
+    <div class="shop-item-grid">${cards}</div>
+  `);
+
+  // 하단 버튼 구성
+  setButtons([
+    ["📦 모두 팔기 (일괄 매각)", sellAllLoot],
+    ["🛒 상점 메인", shopMenu],
+    ["↩ 마을로 돌아가기", town]
+  ]);
+}
+
+function sellSingleLoot(itemName, price) {
+  const p = S.player;
+  if (!p.inventory[itemName] || p.inventory[itemName] <= 0) {
+      toast("해당 전리품이 없습니다.");
+      return;
+  }
+  
+  p.inventory[itemName] -= 1;
+  p.gold += price;
+  autoSave();
+  
+  // 판매 완료 시 반짝이는 효과와 메시지
+  goldFlash();
+  toast(`[${itemName}] 판매 완료! (+${price}G)`);
+  
+  // 수량 변동을 반영하기 위해 화면 즉시 새로고침
+  shopSellMenu();
 }
 function blacksmith(){
   setButtons([]);
